@@ -822,7 +822,7 @@ export default function ProductsClient({
                                                         type="checkbox"
                                                         checked={selectedIds.has(product.id)}
                                                         onChange={() => toggleSelectOne(product.id)}
-                                                        aria-label={`Select product ${product.Name}`}
+                                                        aria-label={`Select product ${product.name}`}
                                                     />
                                                 </td>
                                                 <td className="p-3 sm:p-5">

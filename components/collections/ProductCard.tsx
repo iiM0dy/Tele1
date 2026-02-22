@@ -28,9 +28,10 @@ interface ProductCardProps {
     hideInfo?: boolean;
     index?: number;
     layout?: 'large' | 'medium' | 'compact';
+    sizes?: string;
 }
 
-export default function ProductCard({ product, hideInfo, index, layout = 'medium' }: ProductCardProps) {
+export default function ProductCard({ product, hideInfo, index, layout = 'medium', sizes }: ProductCardProps) {
     const { t } = useLanguage();
     const { addItem } = useCart();
 
@@ -43,6 +44,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
     const isPriority = typeof index === 'number' && index < 4;
 
     const getSizes = () => {
+        if (sizes) return sizes;
         if (layout === 'large') return "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw";
         if (layout === 'compact') return "(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 16vw";
         return "(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw";
