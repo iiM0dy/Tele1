@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                  String   @id @default(cuid())
+  password            String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  username            String   @unique
+  canDeleteBanners    Boolean  @default(true)
+  canDeleteCategories Boolean  @default(true)
+  canDeleteOrders     Boolean  @default(true)
+  canDeleteProducts   Boolean  @default(true)
+  canDeletePromoCodes Boolean  @default(true)
+  canManageBanners    Boolean  @default(true)
+  canManageCategories Boolean  @default(true)
+  canManageOrders     Boolean  @default(true)
+  canManageProducts   Boolean  @default(true)
+  canManagePromoCodes Boolean  @default(true)
+  role                Role     @default(ADMIN)
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  nameAr      String?
+  slug        String?
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isFeatured  Boolean   @default(false)
+  products    Product[]
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([categoryId])
+}
+
+model Product {
+  id            String      @id @default(cuid())
+  Name          String
+  SKU           String?
+  Category    String
+  Price         Decimal     @db.Decimal(10, 2)
+  Stock         Int         @default(0)
+  Status        String      @default("ACTIVE") // New field for Status
+  IsTrending    Boolean     @default(false)
+  BestSeller    Boolean     @default(false)
+  Images        String
+  supImage1     String?
+  supImage2     String?
+  badge         String?
+  slug          String      @unique
+  description   String?
+  discountPrice Decimal?    @db.Decimal(10, 2)
+  discountType  String? // "PERCENTAGE" | "FIXED"
+  discountValue Decimal?    @db.Decimal(10, 2)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[]
+  reviews       Review[]
+  category      Category    @relation(fields: [Category], references: [id])
+  subCategoryId String?
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+
+  @@index([Category])
+  @@index([subCategoryId])
+  @@index([Name])
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  totalAmount   Decimal     @db.Decimal(10, 2)
+  status        OrderStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  city          String
+  streetAddress String
+  postalCode    String?
+  email         String?
+  Name          String
+  phone         String
+  discount      Decimal     @default(0) @db.Decimal(10, 2)
+  promoCodeId   String?
+  promoCode     PromoCode?  @relation(fields: [promoCodeId], references: [id])
+  items         OrderItem[]
+}
+
+model Banner {
+  id         String   @id @default(cuid())
+  title      String?
+  subtitle   String?
+  titleAr    String?
+  subtitleAr String?
+  image      String
+  buttonText String?  @default("Shop Now")
+  link       String?  @default("/products")
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  name        String
+  image       String?
+  description String
+  rating      Int      @default(5)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PromoCode {
+  id                 String   @id @default(cuid())
+  code               String   @unique
+  discountPercentage Int
+  delegateName       String?
+  isActive           Boolean  @default(true)
+  usageCount         Int      @default(0)
+  totalSales         Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  orders             Order[]
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Settings {
+  id                  String   @id @default("site-settings")
+  categoriesCtaTitle  String?  @default("Need expert advice?")
+  categoriesCtaDesc   String?  @default("Our consultants are here to help you find the perfect products for your needs.")
+  categoriesCtaTitleAr String? @default("هل تحتاجين إلى نصيحة الخبراء؟")
+  categoriesCtaDescAr  String? @default("مستشارونا هنا لمساعدتك في العثور على المنتجات المثالية لاحتياجاتك.")
+  categoriesCtaImage   String? @default("https://via.placeholder.com/400x300")
+  
+  // Shipping & Returns Page Content
+  shippingTitle        String? @default("Fast & Reliable Shipping")
+  shippingDesc         String? @default("We ensure your products reach you in perfect condition, wherever you are.")
+  shippingTitleAr      String? @default("شحن سريع وموثوق")
+  shippingDescAr       String? @default("نحن نضمن وصول منتجاتك إليك في حالة ممتازة.")
+  
+  verificationTitle    String? @default("Verification Process")
+  verificationDesc     String? @default("Orders are processed within 24-48 hours. You will receive a confirmation email once your package has shipped.")
+  verificationTitleAr  String? @default("عملية التحقق")
+  verificationDescAr   String? @default("يتم معالجة الطلبات في غضون 24-48 ساعة. ستتلقى رسالة تأكيد بالبريد الإلكتروني بمجرد شحن طردك.")
+  
+  standardShippingTime String? @default("3-5 Business Days")
+  expressShippingTime  String? @default("1-2 Business Days")
+  
+  returnsTitle         String? @default("Returns & Exchanges")
+  returnsDesc          String? @default("Your satisfaction is our priority. If you're not happy with your purchase, we're here to help.")
+  returnsTitleAr       String? @default("المرتجعات والاستبدال")
+  returnsDescAr        String? @default("رضاكم هو أولويتنا. إذا لم تكن راضيًا عن مشترياتك، فنحن هنا للمساعدة.")
+  
+  finalSaleTitle       String? @default("Final Sale Items")
+  finalSaleDesc        String? @default("Certain items are final sale for hygiene reasons.")
+  finalSaleTitleAr     String? @default("أصناف البيع النهائي")
+  finalSaleDescAr      String? @default("بعض العناصر هي بيع نهائي لأسباب صحية.")
+  
+  // Hygiene Section
+  hygieneTitle         String? @default("Hygiene & Safety Protocols")
+  hygieneDesc          String? @default("For your safety, we follow strict protocols for handling all products.")
+  hygieneTitleAr       String? @default("بروتوكولات النظافة والسلامة")
+  hygieneDescAr        String? @default("من أجل سلامتك، نتبع بروتوكولات صارمة للتعامل مع جميع المنتجات.")
+  
+  // Shipping & Returns Image
+  shippingReturnsImage String? @default("https://via.placeholder.com/800x400")
+  
+  updatedAt           DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+}
