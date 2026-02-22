@@ -1183,7 +1183,10 @@ export async function bulkCreateProducts(products: any[]) {
 
             if (!category) {
                 category = await prisma.category.create({
-                    data: { name: categoryName },
+                    data: {
+                        name: categoryName,
+                        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200"
+                    },
                     include: { subCategories: true },
                 });
                 categoryMap.set(categoryNameLower, category);

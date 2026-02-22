@@ -246,18 +246,12 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                 subCategories.map((sub) => (
                                     <div key={sub.id} className="bg-white/2 border border-white/5 rounded-2xl p-4 flex gap-4 group hover:border-accent/30 transition-all">
                                         <div className="w-16 h-16 rounded-xl bg-white/5 relative overflow-hidden shrink-0">
-                                            {sub.image ? (
-                                                <Image
-                                                    src={sub.image}
-                                                    alt={sub.name}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-white/60">
-                                                    <MdImage className="text-2xl" />
-                                                </div>
-                                            )}
+                                            <Image
+                                                src={sub.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"}
+                                                alt={sub.name}
+                                                fill
+                                                className="object-cover"
+                                            />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <h4 className="text-white text-[13px] font-black tracking-tight truncate">
