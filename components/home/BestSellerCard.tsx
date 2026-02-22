@@ -25,7 +25,7 @@ interface Product {
     };
 }
 
-export default function BestSellerCard({ product }: { product: any }) {
+export default function BestSellerCard({ product, index }: { product: any; index?: number }) {
     const { t, language } = useLanguage();
     const { addItem, setIsDrawerOpen } = useCart();
 
@@ -33,6 +33,7 @@ export default function BestSellerCard({ product }: { product: any }) {
     const hoverImage = product.Images?.[1];
     const price = Number(product.Price);
     const discountPrice = product.discountPrice ? Number(product.discountPrice) : null;
+    const isPriority = typeof index === 'number' && index < 4;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -73,16 +74,15 @@ export default function BestSellerCard({ product }: { product: any }) {
                         src={mainImage}
                         alt={product.Name}
                         fill
-                        unoptimized
                         className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                         sizes="(max-width: 699px) 74vw, (max-width: 999px) 38vw, 25vw"
+                        priority={isPriority}
                     />
                     {hoverImage && (
                         <Image
                             src={hoverImage}
                             alt={product.Name}
                             fill
-                            unoptimized
                             className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
                             sizes="(max-width: 699px) 74vw, (max-width: 999px) 38vw, 25vw"
                         />

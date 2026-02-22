@@ -66,7 +66,6 @@ export default function HeroSlideshow({ banners = [] }: { banners?: Banner[] }) 
                                 alt={displayTitle || "Hero Banner"}
                                 fill
                                 priority={index === 0}
-                                unoptimized
                                 className="object-cover object-center scale-105 animate-slow-zoom"
                                 sizes="100vw"
                             />

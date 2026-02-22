@@ -24,7 +24,7 @@ interface Product {
     };
 }
 
-export function ProductCard({ product }: { product: any }) {
+export function ProductCard({ product, index }: { product: any; index: number }) {
     const { t } = useLanguage();
     const { addItem } = useCart();
     const pathname = usePathname();
@@ -33,6 +33,7 @@ export function ProductCard({ product }: { product: any }) {
     const hoverImage = product.Images?.[1];
     const price = Number(product.Price);
     const discountPrice = product.discountPrice ? Number(product.discountPrice) : null;
+    const isPriority = index < 4;
 
     console.log('ProductCard rendering:', { name: product.Name, mainImage });
 
@@ -57,7 +58,8 @@ export function ProductCard({ product }: { product: any }) {
                     src={mainImage}
                     alt={product.Name}
                     fill
-                    unoptimized
+                    sizes="(max-width: 1024px) 50vw, 33vw"
+                    priority={isPriority}
                     className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                 />
                 {hoverImage && (
@@ -65,7 +67,7 @@ export function ProductCard({ product }: { product: any }) {
                         src={hoverImage}
                         alt={product.Name}
                         fill
-                        unoptimized
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                         className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
                     />
                 )}
@@ -139,8 +141,8 @@ export default function ProductGrid({ products, title }: { products: Product[], 
                     </div>
                 )}
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-                    {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                    {products.map((product, index) => (
+                        <ProductCard key={product.id} product={product} index={index} />
                     ))}
                 </div>
                 

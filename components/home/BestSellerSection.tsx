@@ -83,12 +83,12 @@ export default function BestSellerSection({ products }: { products: any[] }) {
                         ref={scrollRef}
                         className="flex overflow-x-auto gap-4 md:gap-6 scrollbar-hide snap-x snap-mandatory touch-pan-x"
                     >
-                        {displayProducts.map((product) => (
+                        {displayProducts.map((product, index) => (
                             <div 
                                 key={product.id} 
                                 className="min-w-[75%] md:min-w-[calc(25%-18px)] snap-start"
                             >
-                                <BestSellerCard product={product} />
+                                <BestSellerCard product={product} index={index} />
                             </div>
                         ))}
                     </div>

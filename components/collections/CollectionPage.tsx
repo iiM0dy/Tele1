@@ -268,11 +268,12 @@ export default function CollectionPage({ products, collectionName, collectionNam
                     {processedProducts.length > 0 ? (
                         <>
                             <div className={`grid ${getGridCols()} gap-x-4 gap-y-12 md:gap-x-6 md:gap-y-16`}>
-                                {processedProducts.map((product) => (
+                                {processedProducts.map((product, index) => (
                                     <ProductCard 
                                         key={product.id} 
                                         product={product} 
                                         hideInfo={layout === 'compact'}
+                                        index={index}
                                     />
                                 ))}
                             </div>
@@ -352,7 +353,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
     );
 }
 
-function ProductCard({ product, hideInfo }: { product: Product, hideInfo?: boolean }) {
+function ProductCard({ product, hideInfo, index }: { product: Product, hideInfo?: boolean, index?: number }) {
     const { t } = useLanguage();
     const { addItem } = useCart();
 
@@ -362,6 +363,7 @@ function ProductCard({ product, hideInfo }: { product: Product, hideInfo?: boole
     const price = Number(product.Price);
     const discountPrice = product.discountPrice ? Number(product.discountPrice) : null;
     const hoverImage = images[1];
+    const isPriority = typeof index === 'number' && index < 4;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -383,7 +385,8 @@ function ProductCard({ product, hideInfo }: { product: Product, hideInfo?: boole
                     src={mainImage}
                     alt={product.Name}
                     fill
-                    unoptimized
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    priority={isPriority}
                     className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                 />
                 {hoverImage && (
@@ -391,7 +394,7 @@ function ProductCard({ product, hideInfo }: { product: Product, hideInfo?: boole
                         src={hoverImage}
                         alt={product.Name}
                         fill
-                        unoptimized
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
                     />
                 )}
