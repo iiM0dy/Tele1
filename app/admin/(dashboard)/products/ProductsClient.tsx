@@ -5,42 +5,42 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { 
-    deleteProduct, 
-    toggleProductTrending, 
-    bulkToggleTrending, 
-    bulkCreateProducts, 
-    bulkRemoveSale, 
-    bulkDeleteProducts, 
-    toggleBestSeller, 
+import {
+    deleteProduct,
+    toggleProductTrending,
+    bulkToggleTrending,
+    bulkCreateProducts,
+    bulkRemoveSale,
+    bulkDeleteProducts,
+    toggleBestSeller,
     bulkToggleBestSeller,
-    getAllAdminProductsForExport 
+    getAllAdminProductsForExport
 } from "../../../../lib/admin-actions";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useLanguage } from "@/app/context/LanguageContext";
-import { 
-    MdChevronRight, 
-    MdChevronLeft, 
-    MdFileUpload, 
-    MdFileDownload, 
-    MdAdd, 
-    MdSearch, 
-    MdExpandMore, 
-    MdLocalFireDepartment, 
-    MdSell, 
-    MdTrendingDown, 
-    MdMoneyOff, 
-    MdDelete, 
+import {
+    MdChevronRight,
+    MdChevronLeft,
+    MdFileUpload,
+    MdFileDownload,
+    MdAdd,
+    MdSearch,
+    MdExpandMore,
+    MdLocalFireDepartment,
+    MdSell,
+    MdTrendingDown,
+    MdMoneyOff,
+    MdDelete,
     MdEdit,
     MdSync,
     MdStar,
     MdStarOutline
 } from 'react-icons/md';
 
-const AddProductModal = dynamic(() => import("./AddProductModal"), { 
+const AddProductModal = dynamic(() => import("./AddProductModal"), {
     ssr: false,
-    loading: () => null 
+    loading: () => null
 });
 
 interface Product {
@@ -88,13 +88,13 @@ interface Stats {
     bestSellers: number;
 }
 
-export default function ProductsClient({ 
-    products = [], 
+export default function ProductsClient({
+    products = [],
     categories = [],
     pagination = { total: 0, pages: 1, page: 1, limit: 20 },
     initialStats = { total: 0, outOfStock: 0, lowStock: 0, categories: 0, bestSellers: 0 }
-}: { 
-    products: Product[], 
+}: {
+    products: Product[],
     categories: Category[],
     pagination: Pagination,
     initialStats: Stats
@@ -104,24 +104,24 @@ export default function ProductsClient({
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    
+
     const canDelete = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteProducts;
     const canEdit = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageProducts;
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-    
+
     // Initialize filters from URL
     const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || "");
     const selectedCategory = searchParams.get('category') || "all";
     const selectedStockStatus = searchParams.get('stock') || "all";
     const showTrendingOnly = searchParams.get('trending') === "true";
     const showBestSellerOnly = searchParams.get('bestSeller') === "true";
-    
+
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
     const [isSubmittingBulk, setIsSubmittingBulk] = useState(false);
-    
+
     // Update searchQuery when URL changes (e.g. back button)
     useEffect(() => {
         setSearchQuery(searchParams.get('search') || "");
@@ -137,12 +137,12 @@ export default function ProductsClient({
                 params.set(key, value);
             }
         });
-        
+
         // Reset page to 1 when filters change (unless page is explicitly updated)
         if (!updates.page && (updates.search !== undefined || updates.category !== undefined || updates.stock !== undefined || updates.trending !== undefined || updates.bestSeller !== undefined)) {
             params.set('page', '1');
         }
-        
+
         router.push(`${pathname}?${params.toString()}`);
     }, [pathname, router, searchParams]);
 
@@ -267,7 +267,7 @@ export default function ProductsClient({
     const handleBulkDelete = async () => {
         if (selectedIds.size === 0) return;
         const ids = Array.from(selectedIds);
-        
+
         if (!confirm(t('admin.confirmBulkDelete').replace('{count}', ids.length.toString()))) {
             return;
         }
@@ -279,7 +279,7 @@ export default function ProductsClient({
                 if (result.partial) {
                     toast(t('admin.bulkDeleteProductsPartial')
                         .replace('{count}', result.count?.toString() || '0')
-                        .replace('{names}', result.names || ''), 
+                        .replace('{names}', result.names || ''),
                         { icon: '⚠️', duration: 6000 }
                     );
                 } else {
@@ -420,7 +420,7 @@ export default function ProductsClient({
             }
 
             const XLSX = await import('xlsx');
-            
+
             // Prepare data for Excel
             const excelData = exportData.map((p: any) => ({
                 [t('admin.name') || "Name"]: p.name,
@@ -435,7 +435,7 @@ export default function ProductsClient({
             const worksheet = XLSX.utils.json_to_sheet(excelData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
-            
+
             // Generate Excel file and trigger download
             XLSX.writeFile(workbook, `tele1_products_${new Date().toISOString().split('T')[0]}.xlsx`);
 
@@ -453,6 +453,7 @@ export default function ProductsClient({
 
         setIsSubmittingBulk(true);
         const reader = new FileReader();
+
         reader.onload = async (event) => {
             try {
                 let data: any[] = [];
@@ -466,32 +467,97 @@ export default function ProductsClient({
                         return;
                     }
 
-                    const headers = lines[0].split(',').map(h => h.trim());
+                    // Simple CSV parsing that handles quotes
+                    const parseCSVLine = (line: string) => {
+                        const result = [];
+                        let cur = "";
+                        let inQuotes = false;
+                        for (let i = 0; i < line.length; i++) {
+                            const char = line[i];
+                            if (char === '"') {
+                                inQuotes = !inQuotes;
+                            } else if (char === ',' && !inQuotes) {
+                                result.push(cur.trim());
+                                cur = "";
+                            } else {
+                                cur += char;
+                            }
+                        }
+                        result.push(cur.trim());
+                        return result;
+                    };
+
+                    const headers = parseCSVLine(lines[0]);
                     data = lines.slice(1).filter(line => line.trim()).map(line => {
-                        const values = line.split(',').map(v => v.replace(/^"|"$/g, '').trim());
+                        const values = parseCSVLine(line);
                         const obj: any = {};
                         headers.forEach((header, i) => {
-                            obj[header] = values[i];
+                            if (header) obj[header] = values[i];
                         });
                         return obj;
                     });
                 } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
                     const XLSX = await import('xlsx');
-                    const bstr = event.target?.result;
-                    const wb = XLSX.read(bstr, { type: 'binary' });
+                    const arrayBuffer = event.target?.result as ArrayBuffer;
+                    const wb = XLSX.read(arrayBuffer, { type: 'array' });
                     const wsname = wb.SheetNames[0];
                     const ws = wb.Sheets[wsname];
                     data = XLSX.utils.sheet_to_json(ws);
                 }
 
-                if (data.length === 0) {
+                if (!data || data.length === 0) {
                     toast.error(t('admin.fileEmpty'));
                     return;
                 }
 
-                const result = await bulkCreateProducts(data);
+                // Normalize data keys to match what server expects (case-insensitive and map common translations)
+                const normalizedData = data.map(item => {
+                    const normalized: any = {};
+                    Object.keys(item).forEach(key => {
+                        const value = item[key];
+                        const k = key.trim().toLowerCase();
+
+                        // Map various header names to the canonical ones
+                        if (k === 'name' || k === t('admin.name').toLowerCase() || k === 'product name' || k === 'الاسم' || k === 'اسم المنتج') {
+                            normalized.Name = value;
+                        } else if (k === 'description' || k === 'الوصف' || k === t('admin.description').toLowerCase()) {
+                            normalized.Description = value;
+                        } else if (k === 'price' || k === 'السعر' || k === t('admin.price').toLowerCase()) {
+                            normalized.Price = value;
+                        } else if (k === 'stock' || k === 'المخزون' || k === 'الكمية' || k === t('admin.stock').toLowerCase()) {
+                            normalized.Stock = value;
+                        } else if (k === 'sku' || k === 'رمز المنتج' || k === t('admin.sku').toLowerCase()) {
+                            normalized.SKU = value;
+                        } else if (k === 'category' || k === 'الفئة' || k === 'القسم' || k === t('admin.category').toLowerCase()) {
+                            normalized.Category = value;
+                        } else if (k === 'sub category' || k === 'subcategory' || k === 'الفئة الفرعية' || k === 'القسم الفرعي' || k === t('admin.subCategory').toLowerCase()) {
+                            normalized.SubCategory = value;
+                        } else if (k === 'images' || k === 'الصور' || k === t('admin.images').toLowerCase()) {
+                            normalized.Images = value;
+                        } else if (k === 'is trending' || k === 'trending' || k === 'رائج') {
+                            normalized.IsTrending = value;
+                        } else if (k === 'best seller' || k === 'best sellers' || k === 'الأكثر مبيعاً' || k === 'الأكثر مبيعا') {
+                            normalized.BestSeller = value;
+                        } else if (k === 'discount price' || k === 'سعر الخصم') {
+                            normalized.DiscountPrice = value;
+                        } else if (k === 'discount type' || k === 'نوع الخصم') {
+                            normalized.DiscountType = value;
+                        } else if (k === 'discount value' || k === 'قيمة الخصم') {
+                            normalized.DiscountValue = value;
+                        } else if (k === 'badge' || k === 'شارة') {
+                            normalized.Badge = value;
+                        } else {
+                            // Keep other keys as is
+                            normalized[key] = value;
+                        }
+                    });
+                    return normalized;
+                });
+
+                const result = await bulkCreateProducts(normalizedData);
                 if (result.success) {
                     toast.success(t('admin.importSuccess').replace('{count}', result.count?.toString() || '0'));
+                    router.refresh();
                 } else {
                     toast.error(result.error || t('admin.importError'));
                 }
@@ -507,7 +573,7 @@ export default function ProductsClient({
         if (file.name.toLowerCase().endsWith('.csv')) {
             reader.readAsText(file);
         } else {
-            reader.readAsBinaryString(file);
+            reader.readAsArrayBuffer(file);
         }
     };
 
@@ -526,13 +592,13 @@ export default function ProductsClient({
                                 <span className="text-white font-black uppercase tracking-[0.2em] text-[10px]">{t('admin.products')}</span>
                             </div>
                             <h2 className="text-3xl font-black text-white tracking-tight uppercase">{t('admin.products')}</h2>
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.manageCatalog')}</p>
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.manageCatalog')}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-3">
                             <div className="relative">
                                 <button
                                     onClick={() => setShowExportMenu(!showExportMenu)}
-                                    className="bg-white/[0.02] border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 transition-all shadow-sm hover:border-accent/30"
+                                    className="bg-white/[0.02] border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all shadow-sm hover:border-accent/30"
                                     aria-label="Export data options"
                                     aria-expanded={showExportMenu}
                                     aria-haspopup="true"
@@ -541,11 +607,11 @@ export default function ProductsClient({
                                     {t('admin.exportData')}
                                     <MdExpandMore className={`text-[16px] transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
                                 </button>
-                                
+
                                 {showExportMenu && (
                                     <>
-                                        <div 
-                                            className="fixed inset-0 z-10" 
+                                        <div
+                                            className="fixed inset-0 z-10"
                                             onClick={() => setShowExportMenu(false)}
                                         />
                                         <div className="absolute top-full mt-2 right-0 w-48 bg-[#0F172A] border border-white/5 rounded-2xl shadow-xl z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
@@ -571,7 +637,7 @@ export default function ProductsClient({
                                     </>
                                 )}
                             </div>
-                            <label className="bg-white/[0.02] border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 transition-all shadow-sm cursor-pointer hover:border-accent/30">
+                            <label className="bg-white/2 border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all shadow-sm cursor-pointer hover:border-accent/30">
                                 <MdFileDownload className="text-[20px] text-accent" />
                                 {t('admin.importData')}
                                 <input
@@ -589,7 +655,7 @@ export default function ProductsClient({
                                         setSelectedProduct(null);
                                         setIsAddModalOpen(true);
                                     }}
-                                    className="bg-accent hover:bg-accent/90 text-white h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                                    className="bg-accent hover:bg-accent/90 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                                 >
                                     <MdAdd className="text-[20px]" />
                                     {t('admin.addNewProduct')}
@@ -610,34 +676,34 @@ export default function ProductsClient({
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalProducts')}</p>
+                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.totalProducts')}</p>
                             <p className="text-2xl font-black text-white tracking-tight">{stats.total.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.trending')}</p>
+                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.trending')}</p>
                             <p className="text-2xl font-black text-accent tracking-tight">{products.filter(p => p.isTrending).length}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.outOfStock')}</p>
+                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.outOfStock')}</p>
                             <p className="text-2xl font-black text-red-500 tracking-tight">{stats.outOfStock.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.lowInventory')}</p>
+                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.lowInventory')}</p>
                             <p className="text-2xl font-black text-orange-500 tracking-tight">{stats.lowStock.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.categories')}</p>
+                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.categories')}</p>
                             <p className="text-2xl font-black text-white tracking-tight">{stats.categories.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.bestSeller')}</p>
+                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.bestSeller')}</p>
                             <p className="text-2xl font-black text-accent tracking-tight">{stats.bestSellers.toLocaleString()}</p>
                         </div>
                     </div>
 
                     {/* Filters & Table Container */}
-                    <div className="bg-white/[0.02] border border-white/5 rounded-3xl shadow-sm overflow-hidden">
+                    <div className="bg-white/2 border border-white/5 rounded-3xl shadow-sm overflow-hidden">
                         {/* Toolbar */}
                         <div className="p-6 border-b border-white/5 flex flex-col lg:flex-row gap-4 lg:items-center justify-between">
                             <div className="relative w-full lg:w-80">
@@ -645,7 +711,7 @@ export default function ProductsClient({
                                     <MdSearch className="text-accent text-[20px]" />
                                 </span>
                                 <input
-                                    className={`block w-full ${dir === 'rtl' ? 'pr-10 pl-3' : 'pl-10 pr-3'} py-3 border border-white/5 rounded-2xl bg-white/[0.02] text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder-white/20 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all outline-none`}
+                                    className={`block w-full ${dir === 'rtl' ? 'pr-10 pl-3' : 'pl-10 pr-3'} py-3 border border-white/5 rounded-2xl bg-white/2 text-[13px] font-medium tracking-normal text-white placeholder-white/20 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all outline-none`}
                                     placeholder={t('admin.searchPlaceholder')}
                                     type="text"
                                     value={searchQuery}
@@ -657,7 +723,7 @@ export default function ProductsClient({
                                 {/* Category Filter */}
                                 <div className="relative flex-1 sm:flex-initial">
                                     <select
-                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
+                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[12px] font-medium tracking-normal text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
                                         value={selectedCategory}
                                         onChange={(e) => updateUrl({ category: e.target.value })}
                                         aria-label="Filter by category"
@@ -673,7 +739,7 @@ export default function ProductsClient({
                                 {/* Stock Filter */}
                                 <div className="relative flex-1 sm:flex-initial">
                                     <select
-                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
+                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[12px] font-medium tracking-normal text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
                                         value={selectedStockStatus}
                                         onChange={(e) => updateUrl({ stock: e.target.value })}
                                         aria-label="Filter by stock status"
@@ -691,9 +757,9 @@ export default function ProductsClient({
                                 {/* Trending Filter Toggle */}
                                 <button
                                     onClick={() => updateUrl({ trending: !showTrendingOnly ? 'true' : null })}
-                                    className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${showTrendingOnly
+                                    className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-[11px] font-semibold tracking-wider transition-all ${showTrendingOnly
                                         ? 'bg-accent text-white'
-                                        : 'bg-white/[0.02] border border-white/5 text-white hover:border-accent/30 hover:text-accent'
+                                        : 'bg-white/2 border border-white/5 text-white hover:border-accent/30 hover:text-accent'
                                         }`}
                                 >
                                     <MdLocalFireDepartment className={`text-[20px] ${showTrendingOnly ? 'text-white' : 'text-accent'}`} />
@@ -705,93 +771,95 @@ export default function ProductsClient({
                                     onClick={() => updateUrl({ bestSeller: !showBestSellerOnly ? 'true' : null })}
                                     className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${showBestSellerOnly
                                         ? 'bg-accent text-white'
-                                        : 'bg-white/[0.02] border border-white/5 text-white hover:border-accent/30 hover:text-accent'
+                                        : 'bg-white/2 border border-white/5 text-white hover:border-accent/30 hover:text-accent'
                                         }`}
                                 >
                                     <MdStar className={`text-[20px] ${showBestSellerOnly ? 'text-white' : 'text-accent'}`} />
                                     <span className="hidden sm:inline">{t('admin.bestSellerOnly')}</span>
                                 </button>
                             </div>
-                        </div>
+                        </div >
 
                         {/* Bulk Actions Bar */}
-                        {selectedIds.size > 0 && (
-                            <div className="bg-accent/10 border-b border-white/5 px-6 py-4 flex items-center justify-between animate-in slide-in-from-top duration-300">
-                                <div className="flex items-center gap-3">
-                                    <span className="flex items-center justify-center size-6 bg-accent text-white text-[10px] font-black rounded-full">{selectedIds.size}</span>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">{t('admin.selected')}</span>
-                                    <button
-                                        onClick={() => setSelectedIds(new Set())}
-                                        className="text-[10px] text-white/40 hover:text-accent transition-colors font-black uppercase tracking-[0.2em] ml-2 underline"
-                                    >
-                                        {t('admin.deselectAll')}
-                                    </button>
+                        {
+                            selectedIds.size > 0 && (
+                                <div className="bg-accent/10 border-b border-white/5 px-6 py-4 flex items-center justify-between animate-in slide-in-from-top duration-300">
+                                    <div className="flex items-center gap-3">
+                                        <span className="flex items-center justify-center size-6 bg-accent text-white text-[10px] font-black rounded-full">{selectedIds.size}</span>
+                                        <span className="text-[11px] font-semibold tracking-wider text-white">{t('admin.selected')}</span>
+                                        <button
+                                            onClick={() => setSelectedIds(new Set())}
+                                            className="text-[11px] text-white/40 hover:text-accent transition-colors font-semibold tracking-wider ml-2 underline"
+                                        >
+                                            {t('admin.deselectAll')}
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        {canEdit && (
+                                            <button
+                                                onClick={handleBulkRemoveTrending}
+                                                disabled={isSubmittingBulk}
+                                                className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[11px] font-semibold tracking-wider rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
+                                            >
+                                                {isSubmittingBulk ? (
+                                                    <MdSync className="animate-spin text-[18px]" />
+                                                ) : (
+                                                    <MdTrendingDown className="text-[18px]" />
+                                                )}
+                                                {t('admin.removeTrending')}
+                                            </button>
+                                        )}
+                                        {canEdit && (
+                                            <button
+                                                onClick={() => handleBulkToggleBestSeller(false)}
+                                                disabled={isSubmittingBulk}
+                                                className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
+                                            >
+                                                {isSubmittingBulk ? (
+                                                    <MdSync className="animate-spin text-[18px]" />
+                                                ) : (
+                                                    <MdStarOutline className="text-[18px]" />
+                                                )}
+                                                {t('admin.removeBestSeller')}
+                                            </button>
+                                        )}
+                                        {canEdit && (
+                                            <button
+                                                onClick={handleBulkRemoveSale}
+                                                disabled={isSubmittingBulk}
+                                                className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
+                                            >
+                                                {isSubmittingBulk ? (
+                                                    <MdSync className="animate-spin text-[18px]" />
+                                                ) : (
+                                                    <MdMoneyOff className="text-[18px]" />
+                                                )}
+                                                {t('admin.removeSale')}
+                                            </button>
+                                        )}
+                                        {canDelete && (
+                                            <button
+                                                onClick={handleBulkDelete}
+                                                disabled={isSubmittingBulk}
+                                                className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all disabled:opacity-50"
+                                            >
+                                                {isSubmittingBulk ? (
+                                                    <MdSync className="animate-spin text-[18px]" />
+                                                ) : (
+                                                    <MdDelete className="text-[18px]" />
+                                                )}
+                                                {t('admin.deleteSelected')}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    {canEdit && (
-                                        <button
-                                            onClick={handleBulkRemoveTrending}
-                                            disabled={isSubmittingBulk}
-                                            className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
-                                        >
-                                            {isSubmittingBulk ? (
-                                                <MdSync className="animate-spin text-[18px]" />
-                                            ) : (
-                                                <MdTrendingDown className="text-[18px]" />
-                                            )}
-                                            {t('admin.removeTrending')}
-                                        </button>
-                                    )}
-                                    {canEdit && (
-                                        <button
-                                            onClick={() => handleBulkToggleBestSeller(false)}
-                                            disabled={isSubmittingBulk}
-                                            className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
-                                        >
-                                            {isSubmittingBulk ? (
-                                                <MdSync className="animate-spin text-[18px]" />
-                                            ) : (
-                                                <MdStarOutline className="text-[18px]" />
-                                            )}
-                                            {t('admin.removeBestSeller')}
-                                        </button>
-                                    )}
-                                    {canEdit && (
-                                        <button
-                                            onClick={handleBulkRemoveSale}
-                                            disabled={isSubmittingBulk}
-                                            className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
-                                        >
-                                            {isSubmittingBulk ? (
-                                                <MdSync className="animate-spin text-[18px]" />
-                                            ) : (
-                                                <MdMoneyOff className="text-[18px]" />
-                                            )}
-                                            {t('admin.removeSale')}
-                                        </button>
-                                    )}
-                                    {canDelete && (
-                                        <button
-                                            onClick={handleBulkDelete}
-                                            disabled={isSubmittingBulk}
-                                            className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all disabled:opacity-50"
-                                        >
-                                            {isSubmittingBulk ? (
-                                                <MdSync className="animate-spin text-[18px]" />
-                                            ) : (
-                                                <MdDelete className="text-[18px]" />
-                                            )}
-                                            {t('admin.deleteSelected')}
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        )}
+                            )
+                        }
 
                         {/* Table */}
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse min-w-[900px]">
-                                <thead className="bg-white/[0.02] border-b border-white/5 text-[10px] font-black text-white/60 uppercase tracking-[0.2em]">
+                                <thead className="bg-white/[0.02] border-b border-white/5 text-[10px] font-semibold text-white/40 tracking-widest">
                                     <tr>
                                         <th className="p-3 sm:p-5 w-10 sm:w-12 text-center">
                                             <input
@@ -837,8 +905,8 @@ export default function ProductsClient({
                                                             />
                                                         </div>
                                                         <div className="flex flex-col min-w-0">
-                                                            <span className="font-black text-white text-xs sm:text-sm line-clamp-1 uppercase tracking-tight">{product.name}</span>
-                                                            <span className="text-[10px] text-white/60 font-black uppercase tracking-[0.2em]">{t('admin.sku')}: {product.sku || 'N/A'}</span>
+                                                            <span className="font-semibold text-white text-xs sm:text-sm line-clamp-1 tracking-tight">{product.name}</span>
+                                                            <span className="text-[10px] text-white/60 font-semibold tracking-wider">{t('admin.sku')}: {product.sku || 'N/A'}</span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1007,9 +1075,9 @@ export default function ProductsClient({
                                 </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </div >
+                </div >
+            </div >
+        </div >
     );
 }

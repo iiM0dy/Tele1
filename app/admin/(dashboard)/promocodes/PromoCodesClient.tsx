@@ -85,10 +85,10 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                 <div className="max-w-[1200px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div className="">
-                            <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
+                            <h3 className="text-3xl font-black text-white tracking-tight leading-tight">
                                 {t('admin.promoCodes')}
                             </h3>
-                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 tracking-wider text-[11px] font-semibold">
                                 {t('admin.manageCodes')}
                             </p>
                         </div>
@@ -98,7 +98,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchCodes')}
-                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/40`}
+                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[13px] font-medium focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/40`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -106,7 +106,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                             {canManage && (
                                 <button
                                     onClick={handleAdd}
-                                    className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-black rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/90 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] w-full md:w-auto"
+                                    className="flex items-center justify-center gap-2 flex-1 px-6 py-4 rounded-2xl border border-white/5 text-white/60 font-semibold text-[11px] tracking-wider hover:bg-white/5 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] w-full md:w-auto"
                                     aria-label={t('admin.addCode') || "Add promo code"}
                                 >
                                     <MdAdd className="text-xl" />
@@ -124,47 +124,47 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
 
                     {/* Stats Summary */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-                        <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalSales')}</p>
+                        <div className="bg-white/2 p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.totalSales')}</p>
                             <p className="text-2xl font-black text-white tracking-wider">
                                 ${promoCodes.reduce((sum, pc) => sum + pc.totalSales, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                             </p>
                         </div>
-                        <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.activeCodes')}</p>
+                        <div className="bg-white/2 p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.activeCodes')}</p>
                             <p className="text-2xl font-black text-accent tracking-wider">
                                 {promoCodes.filter(pc => pc.isActive).length}
                             </p>
                         </div>
                     </div>
 
-                    <div className="bg-white/[0.02] rounded-[2.5rem] border border-white/5 overflow-hidden">
+                    <div className="bg-white/2 rounded-[2.5rem] border border-white/5 overflow-hidden">
                         <div className="overflow-x-auto scrollbar-hide">
                             <table className={`w-full text-left border-collapse ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                 <thead>
-                                    <tr className="border-b border-white/5 bg-white/[0.01]">
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.code')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.discount')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.delegate')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalSales')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.thisMonth')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.usage')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.status')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
+                                    <tr className="border-b border-white/5 bg-white/1">
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.code')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.discount')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.delegate')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalSales')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.thisMonth')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.usage')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.status')}</th>
+                                        <th className={`p-6 text-sm font-semibold text-white tracking-wider ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
                                     {filteredPromoCodes.map((pc) => (
-                                        <tr key={pc.id} className="group hover:bg-white/[0.02] transition-colors">
+                                        <tr key={pc.id} className="group hover:bg-white/2 transition-colors">
                                             <td className="p-6">
-                                                <span className="font-black text-accent bg-accent/10 px-3 py-1.5 rounded-xl text-[10px] uppercase tracking-[0.2em] border border-accent/10">
+                                                <span className="font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-xl text-[10px] tracking-wider border border-accent/10">
                                                     {pc.code}
                                                 </span>
                                             </td>
                                             <td className="p-6 font-black text-accent text-[11px] tracking-wider">
                                                 {pc.discountPercentage}%
                                             </td>
-                                            <td className="p-6 text-white font-black text-[10px] uppercase tracking-[0.2em]">
+                                            <td className="p-6 text-white font-semibold text-[11px] tracking-wider">
                                                 {pc.delegateName || <span className="text-white/40 lowercase font-medium">{t('admin.none')}</span>}
                                             </td>
                                             <td className="p-6 font-black text-white text-[11px] tracking-wider">
@@ -177,7 +177,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                                 {pc.usageCount}
                                             </td>
                                             <td className="p-6">
-                                                <span className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] border ${pc.isActive
+                                                <span className={`px-3 py-1.5 rounded-xl text-[10px] font-semibold tracking-wider border ${pc.isActive
                                                     ? "bg-accent/10 text-accent border-accent/20"
                                                     : "bg-white/5 text-white/40 border-white/10"
                                                     }`}>
@@ -224,8 +224,8 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                     ))}
                                     {filteredPromoCodes.length === 0 && (
                                         <tr>
-                                            <td colSpan={8} className="text-center py-20 bg-white/[0.01]">
-                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+                                            <td colSpan={8} className="text-center py-20 bg-white/1">
+                                                <p className="text-[11px] font-semibold tracking-wider text-white/20">
                                                     {searchQuery ? t('admin.noCodesFound') : t('admin.noCodesCreated')}
                                                 </p>
                                             </td>

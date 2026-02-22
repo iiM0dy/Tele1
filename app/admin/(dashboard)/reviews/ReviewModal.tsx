@@ -76,7 +76,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const filteredProducts = products.filter(p => 
+    const filteredProducts = products.filter(p =>
         p.Name.toLowerCase().includes(productSearch.toLowerCase())
     ).slice(0, 50); // Limit to 50 for performance
 
@@ -84,7 +84,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!formData.name || !formData.description || !formData.rating) {
             toast.error(t('admin.addReviewModal.fillRequiredFields'));
             return;
@@ -97,7 +97,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                 productId: formData.productId || undefined,
             };
 
-            const result = review 
+            const result = review
                 ? await updateReview(review.id, data)
                 : await createReview(data);
 
@@ -118,9 +118,9 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
             <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={onClose} />
-            
+
             <div className={`relative w-full max-w-xl bg-[#202126] border border-white/10 rounded-[40px] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300`}>
                 <div className="p-8 sm:p-10 max-h-[90vh] overflow-y-auto scrollbar-hide">
                     <div className="flex items-start justify-between mb-10">
@@ -128,7 +128,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                             <h3 className="text-2xl font-black text-white uppercase tracking-[0.2em]">
                                 {review ? t('admin.addReviewModal.titleEdit') : t('admin.addReviewModal.titleAdd')}
                             </h3>
-                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 tracking-wider text-[11px] font-semibold">
                                 {review ? t('admin.addReviewModal.subtitleEdit') : t('admin.addReviewModal.subtitleAdd')}
                             </p>
                         </div>
@@ -144,7 +144,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                         <div className="grid grid-cols-1 gap-6">
                             {/* Customer Name */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[11px] font-semibold text-white/60 tracking-wider px-1">
                                     {t('admin.addReviewModal.customerName')}
                                 </label>
                                 <input
@@ -152,13 +152,13 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     placeholder={t('admin.addReviewModal.customerNamePlaceholder')}
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
+                                    className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-[13px] font-medium text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
                                 />
                             </div>
 
                             {/* Customer Image */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[11px] font-semibold text-white/60 tracking-wider px-1">
                                     {t('admin.addReviewModal.customerImage')}
                                 </label>
                                 <input
@@ -166,16 +166,16 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     value={formData.image}
                                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                                     placeholder="https://..."
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
+                                    className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-[13px] font-medium text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
                                 />
                             </div>
 
                             {/* Rating */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[11px] font-semibold text-white/60 tracking-wider px-1">
                                     {t('admin.addReviewModal.rating')}
                                 </label>
-                                <div className="flex gap-2 p-2 bg-white/[0.02] border border-white/5 rounded-2xl w-fit">
+                                <div className="flex gap-2 p-2 bg-white/2 border border-white/5 rounded-2xl w-fit">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <button
                                             key={star}
@@ -195,7 +195,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
 
                             {/* Comment */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[11px] font-semibold text-white/60 tracking-wider px-1">
                                     {t('admin.addReviewModal.comment')}
                                 </label>
                                 <textarea
@@ -203,19 +203,19 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     placeholder={t('admin.addReviewModal.commentPlaceholder')}
                                     rows={4}
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all resize-none"
+                                    className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-[13px] font-medium text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all resize-none"
                                 />
                             </div>
 
                             {/* Searchable Product Select */}
                             <div className="space-y-2 relative" ref={dropdownRef}>
-                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[11px] font-semibold text-white/60 tracking-wider px-1">
                                     {t('admin.addReviewModal.product')}
                                 </label>
-                                
-                                <div 
+
+                                <div
                                     onClick={() => setIsProductSelectOpen(!isProductSelectOpen)}
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white cursor-pointer hover:border-white/10 transition-all flex items-center justify-between"
+                                    className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-[13px] font-medium text-white cursor-pointer hover:border-white/10 transition-all flex items-center justify-between"
                                 >
                                     <span className={selectedProduct ? "text-white" : "text-white/40"}>
                                         {selectedProduct ? selectedProduct.Name : t('admin.addReviewModal.selectProduct')}
@@ -224,7 +224,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                 </div>
 
                                 {isProductSelectOpen && (
-                                    <div className="absolute bottom-full mb-2 left-0 right-0 bg-[#0F0F0F] border border-white/10 rounded-3xl shadow-2xl overflow-hidden z-[110] animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                    <div className="absolute bottom-full mb-2 left-0 right-0 bg-[#0F0F0F] border border-white/10 rounded-3xl shadow-2xl overflow-hidden z-110 animate-in fade-in slide-in-from-bottom-2 duration-200">
                                         <div className="p-4 border-b border-white/5">
                                             <div className="relative">
                                                 <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/40`} />
@@ -247,12 +247,12 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                                 }}
                                                 className="w-full px-6 py-3 text-left hover:bg-white/5 transition-all flex items-center justify-between group"
                                             >
-                                                <span className="text-[10px] font-black uppercase tracking-[0.1em] text-white/40 group-hover:text-white">
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-white/40 group-hover:text-white">
                                                     {t('admin.none')}
                                                 </span>
                                                 {formData.productId === "" && <MdCheck className="text-accent" />}
                                             </button>
-                                            
+
                                             {filteredProducts.map((product) => (
                                                 <button
                                                     key={product.id}
@@ -263,15 +263,15 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                                     }}
                                                     className="w-full px-6 py-3 text-left hover:bg-white/5 transition-all flex items-center justify-between group"
                                                 >
-                                                    <span className={`text-[10px] font-black uppercase tracking-[0.1em] transition-colors ${formData.productId === product.id ? 'text-accent' : 'text-white/60 group-hover:text-white'}`}>
+                                                    <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${formData.productId === product.id ? 'text-accent' : 'text-white/60 group-hover:text-white'}`}>
                                                         {product.Name}
                                                     </span>
                                                     {formData.productId === product.id && <MdCheck className="text-accent" />}
                                                 </button>
                                             ))}
-                                            
+
                                             {filteredProducts.length === 0 && (
-                                                <div className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.1em] text-white/20 text-center">
+                                                <div className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-white/20 text-center">
                                                     {t('admin.noProductsMatch')}
                                                 </div>
                                             )}
@@ -292,7 +292,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="flex-[2] bg-accent text-white px-8 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="flex-2 bg-accent text-white px-8 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                             >
                                 {isSubmitting ? (
                                     <MdSync className="animate-spin text-xl" />

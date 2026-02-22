@@ -29,28 +29,25 @@ const CollectionList = async ({ categories }: CollectionListProps) => {
             // Check if this is the last item
             const isLast = index === categories.length - 1;
             const displayName = isAr && category.nameAr ? category.nameAr : category.name;
-            const sizes = isLast 
-                ? "(max-width: 768px) 100vw, 100vw"
-                : "(max-width: 768px) 100vw, 50vw";
-            
+            const sizes = isLast
+              ? "(max-width: 768px) 100vw, 100vw"
+              : "(max-width: 768px) 100vw, 50vw";
+
             return (
-              <Link 
-                key={category.id} 
+              <Link
+                key={category.id}
                 href={`/collections/${category.slug}`}
-                className={`group relative overflow-hidden h-[400px] rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 ${
-                  isLast ? 'md:col-span-2' : 'md:col-span-1'
-                }`}
+                className={`group relative overflow-hidden h-[400px] rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 ${isLast ? 'md:col-span-2' : 'md:col-span-1'
+                  }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                {category.image && (
-                  <Image
-                    src={category.image}
-                    alt={displayName}
-                    fill
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                    sizes={sizes}
-                  />
-                )}
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent z-10" />
+                <Image
+                  src={category.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80"}
+                  alt={displayName}
+                  fill
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                  sizes={sizes}
+                />
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                   <span className="px-10 py-4 bg-accent text-black text-xs font-black uppercase tracking-[0.2em] rounded-xl transform translate-y-0 md:translate-y-4 opacity-100 md:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 shadow-xl shadow-accent/20">
                     {displayName}

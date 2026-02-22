@@ -7,10 +7,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export async function getUsers() {
-    // const session = await getServerSession(authOptions);
-    // if (!session || session.user.role !== 'SUPER_ADMIN') {
-    //     return [];
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || session.user.role !== 'SUPER_ADMIN') {
+        return [];
+    }
 
     try {
         const users = await prisma.user.findMany({
@@ -33,10 +33,10 @@ export async function getUsers() {
 }
 
 export async function createUser(data: any) {
-    // const session = await getServerSession(authOptions);
-    // if (!session || session.user.role !== 'SUPER_ADMIN') {
-    //     return { success: false, error: "Unauthorized" };
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || session.user.role !== 'SUPER_ADMIN') {
+        return { success: false, error: "Unauthorized" };
+    }
 
     try {
         const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -69,10 +69,10 @@ export async function createUser(data: any) {
 }
 
 export async function updateUser(id: string, data: any) {
-    // const session = await getServerSession(authOptions);
-    // if (!session || session.user.role !== 'SUPER_ADMIN') {
-    //     return { success: false, error: "Unauthorized" };
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || session.user.role !== 'SUPER_ADMIN') {
+        return { success: false, error: "Unauthorized" };
+    }
 
     try {
         const updateData: any = {
@@ -107,10 +107,10 @@ export async function updateUser(id: string, data: any) {
 }
 
 export async function deleteUser(id: string) {
-    // const session = await getServerSession(authOptions);
-    // if (!session || session.user.role !== 'SUPER_ADMIN') {
-    //     return { success: false, error: "Unauthorized" };
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || session.user.role !== 'SUPER_ADMIN') {
+        return { success: false, error: "Unauthorized" };
+    }
 
     try {
         await prisma.user.delete({

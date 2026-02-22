@@ -11,11 +11,11 @@ export default async function AdminProductsPage({
 }: {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-    // const session = await getServerSession(authOptions);
-    //
-    // if (!session || (session.user.role !== 'SUPER_ADMIN' && !session.user.canManageProducts)) {
-    //     redirect('/admin/dashboard');
-    // }
+    const session = await getServerSession(authOptions);
+
+    if (!session || (session.user.role !== 'SUPER_ADMIN' && !session.user.canManageProducts)) {
+        redirect('/admin/dashboard');
+    }
 
     const params = await searchParams;
     const page = Number(params.page) || 1;
@@ -26,22 +26,22 @@ export default async function AdminProductsPage({
     const showBestSellerOnly = params.bestSeller === "true";
 
     const [productsData, categories, stats] = await Promise.all([
-        getAdminProducts({ 
-            page, 
-            limit: 20, 
-            search, 
-            categoryId: category, 
-            stockStatus, 
-            isTrending: showTrendingOnly, 
-            isBestSeller: showBestSellerOnly 
+        getAdminProducts({
+            page,
+            limit: 20,
+            search,
+            categoryId: category,
+            stockStatus,
+            isTrending: showTrendingOnly,
+            isBestSeller: showBestSellerOnly
         }),
         getAdminCategoryOptions(),
         getAdminProductStats()
     ]);
 
     return (
-        <ProductsClient 
-            products={productsData.products} 
+        <ProductsClient
+            products={productsData.products}
             categories={categories}
             pagination={productsData.pagination}
             initialStats={stats}

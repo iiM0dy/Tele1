@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { 
-    MdDelete, 
-    MdCheckBox, 
-    MdCheckBoxOutlineBlank, 
-    MdSearch, 
-    MdAdd, 
-    MdCheck, 
-    MdImage, 
-    MdStar, 
-    MdStarBorder, 
+import {
+    MdDelete,
+    MdCheckBox,
+    MdCheckBoxOutlineBlank,
+    MdSearch,
+    MdAdd,
+    MdCheck,
+    MdImage,
+    MdStar,
+    MdStarBorder,
     MdEdit,
     MdSearchOff,
     MdSync,
@@ -73,7 +73,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
     const handleBulkDelete = async () => {
         if (selectedIds.size === 0) return;
         const ids = Array.from(selectedIds);
-        
+
         if (!confirm(t('admin.confirmBulkDeleteCategories').replace('{count}', ids.length.toString()))) {
             return;
         }
@@ -85,7 +85,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                 if (result.partial) {
                     toast(t('admin.bulkDeleteCategoriesPartial')
                         .replace('{count}', result.count?.toString() || '0')
-                        .replace('{names}', result.names || ''), 
+                        .replace('{names}', result.names || ''),
                         { icon: '⚠️', duration: 6000 }
                     );
                 } else {
@@ -120,7 +120,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                 let fixedName = c.name;
                 try {
                     fixedName = Buffer.from(c.name, 'binary').toString('utf8');
-                } catch (e) {}
+                } catch (e) { }
                 return { id: c.id, newName: fixedName };
             }).filter(item => item.newName !== categories.find(c => c.id === item.id)?.name);
 
@@ -198,78 +198,78 @@ export default function CategoriesClient({ categories }: { categories: Category[
                 <div className="max-w-[1200px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div className="">
-                            <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
+                            <h3 className="text-3xl font-black text-white tracking-tight">
                                 {t('admin.productCategories')}
                             </h3>
-                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 tracking-wider text-[11px] font-semibold">
                                 {t('admin.manageCategories')}
                             </p>
                         </div>
                         <div className="w-full md:w-auto flex flex-col md:flex-row flex-wrap gap-4 items-center justify-end">
                             {/* Group for buttons that should be side-by-side on mobile */}
-                        <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center w-full md:w-auto">
-                            {/* Fix Garbled Names Button */}
-                            <button
-                                onClick={handleFixGarbledNames}
-                                disabled={isFixing}
-                                className="flex items-center justify-center gap-2 px-6 py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all whitespace-nowrap w-full md:w-auto"
-                                title={t('admin.fixGarbledNames')}
-                                aria-label={t('admin.fixGarbledNames') || "Fix garbled names"}
-                            >
-                                {isFixing ? (
-                                    <MdSync className="animate-spin text-lg" />
-                                ) : (
-                                    <MdSync className="text-lg" />
-                                )}
-                                {t('admin.fixNames')}
-                            </button>
-
-                            {/* Delete Action */}
-                            {selectedIds.size > 0 && canDelete && (
+                            <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center w-full md:w-auto">
+                                {/* Fix Garbled Names Button */}
                                 <button
-                                    onClick={handleBulkDelete}
-                                    disabled={isSubmittingBulk}
-                                    className="flex items-center justify-center gap-2 px-6 py-3 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all disabled:opacity-50 whitespace-nowrap border border-red-500/20 w-full md:w-auto animate-in fade-in slide-in-from-top-2 duration-300"
-                                    aria-label={t('admin.deleteSelected') || "Delete selected categories"}
+                                    onClick={handleFixGarbledNames}
+                                    disabled={isFixing}
+                                    className="flex items-center justify-center gap-2 px-6 py-3 bg-white/2 border border-white/5 rounded-2xl text-[11px] font-semibold tracking-wider text-white hover:bg-white/5 transition-all whitespace-nowrap w-full md:w-auto"
+                                    title={t('admin.fixGarbledNames')}
+                                    aria-label={t('admin.fixGarbledNames') || "Fix garbled names"}
                                 >
-                                    {isSubmittingBulk ? (
+                                    {isFixing ? (
                                         <MdSync className="animate-spin text-lg" />
                                     ) : (
-                                        <MdDelete className="text-lg" />
+                                        <MdSync className="text-lg" />
                                     )}
-                                    {t('admin.deleteSelected')}
+                                    {t('admin.fixNames')}
                                 </button>
-                            )}
 
-                            {/* Select All Toggle & Info */}
-                            <div className="flex items-center justify-between md:justify-start gap-4 w-full md:w-auto">
-                                {filteredCategories.length > 0 && (
+                                {/* Delete Action */}
+                                {selectedIds.size > 0 && canDelete && (
                                     <button
-                                        onClick={toggleSelectAll}
-                                        className="flex items-center justify-center gap-2 px-6 py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all whitespace-nowrap flex-1 md:flex-none"
-                                        aria-label={selectedIds.size === filteredCategories.length ? (t('admin.deselectAll') || "Deselect all") : (t('admin.selectAll') || "Select all")}
+                                        onClick={handleBulkDelete}
+                                        disabled={isSubmittingBulk}
+                                        className="flex items-center justify-center gap-2 px-6 py-3 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white text-[11px] font-bold tracking-wider rounded-2xl transition-all disabled:opacity-50 whitespace-nowrap border border-red-500/20 w-full md:w-auto animate-in fade-in slide-in-from-top-2 duration-300"
+                                        aria-label={t('admin.deleteSelected') || "Delete selected categories"}
                                     >
-                                        {selectedIds.size === filteredCategories.length ? (
-                                            <MdCheckBox className="text-lg text-accent" />
+                                        {isSubmittingBulk ? (
+                                            <MdSync className="animate-spin text-lg" />
                                         ) : (
-                                            <MdCheckBoxOutlineBlank className="text-lg" />
+                                            <MdDelete className="text-lg" />
                                         )}
-                                        {selectedIds.size === filteredCategories.length ? t('admin.deselectAll') : t('admin.selectAll')}
+                                        {t('admin.deleteSelected')}
                                     </button>
                                 )}
 
-                                {selectedIds.size > 0 && (
-                                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] text-white/60 whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-300 ${dir === 'rtl' ? 'ml-2' : 'mr-2'}`}>
-                                        {selectedIds.size} {t('admin.selected')}
-                                    </span>
-                                )}
+                                {/* Select All Toggle & Info */}
+                                <div className="flex items-center justify-between md:justify-start gap-4 w-full md:w-auto">
+                                    {filteredCategories.length > 0 && (
+                                        <button
+                                            onClick={toggleSelectAll}
+                                            className="flex items-center justify-center gap-2 px-6 py-3 bg-white/2 border border-white/5 rounded-2xl text-[11px] font-semibold tracking-wider text-white hover:bg-white/5 transition-all whitespace-nowrap flex-1 md:flex-none"
+                                            aria-label={selectedIds.size === filteredCategories.length ? (t('admin.deselectAll') || "Deselect all") : (t('admin.selectAll') || "Select all")}
+                                        >
+                                            {selectedIds.size === filteredCategories.length ? (
+                                                <MdCheckBox className="text-lg text-accent" />
+                                            ) : (
+                                                <MdCheckBoxOutlineBlank className="text-lg" />
+                                            )}
+                                            {selectedIds.size === filteredCategories.length ? t('admin.deselectAll') : t('admin.selectAll')}
+                                        </button>
+                                    )}
+
+                                    {selectedIds.size > 0 && (
+                                        <span className={`text-[11px] font-semibold tracking-wider text-white/60 whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-300 ${dir === 'rtl' ? 'ml-2' : 'mr-2'}`}>
+                                            {selectedIds.size} {t('admin.selected')}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
-                        </div>
 
                             {/* Featured Count Indicator */}
                             <div className={`hidden md:flex flex-col items-end ${dir === 'rtl' ? 'ml-2' : 'mr-2'} whitespace-nowrap`}>
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t('admin.featured')}</span>
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">
+                                <span className="text-[11px] font-bold tracking-wider text-white/60">{t('admin.featured')}</span>
+                                <span className="text-[11px] font-bold tracking-wider text-accent">
                                     {categories.filter(c => c.isFeatured).length} / 8 {t('admin.active')}
                                 </span>
                             </div>
@@ -279,7 +279,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchCategories')}
-                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/60`}
+                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     aria-label="Search categories"
@@ -288,7 +288,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                             {canManage && (
                                 <button
                                     onClick={handleAdd}
-                                    className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                                    className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black tracking-wider text-[12px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
                                 >
                                     <MdAdd className="text-xl" />
                                     {t('admin.addCategory')}
@@ -302,7 +302,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                         onClose={() => setIsModalOpen(false)}
                         category={selectedCategory}
                     />
-                    
+
                     <SubCategoriesModal
                         isOpen={isSubCategoriesModalOpen}
                         onClose={() => setIsSubCategoriesModalOpen(false)}
@@ -311,9 +311,9 @@ export default function CategoriesClient({ categories }: { categories: Category[
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredCategories.map((category) => (
-                            <div 
-                                key={category.id} 
-                                className={`bg-white/[0.02] rounded-3xl border transition-all overflow-hidden group relative flex flex-col ${selectedIds.has(category.id) ? 'border-accent' : 'border-white/5 hover:border-white/10'}`}
+                            <div
+                                key={category.id}
+                                className={`bg-white/2 rounded-3xl border transition-all overflow-hidden group relative flex flex-col ${selectedIds.has(category.id) ? 'border-accent' : 'border-white/5 hover:border-white/10'}`}
                             >
                                 {/* Selection Checkbox */}
                                 <button
@@ -324,7 +324,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                     <MdCheck className="text-lg" />
                                 </button>
 
-                                <div className="aspect-[16/10] w-full overflow-hidden bg-white/[0.01] flex items-center justify-center border-b border-white/5 relative">
+                                <div className="aspect-16/10 w-full overflow-hidden bg-white/1 flex items-center justify-center border-b border-white/5 relative">
                                     {category.image ? (
                                         <Image
                                             src={category.image}
@@ -340,19 +340,19 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                 <div className="p-6 flex flex-col flex-1">
                                     <div className="flex items-start justify-between gap-4 mb-2">
                                         <div className="flex flex-col">
-                                            <h3 className="text-xs font-black text-white uppercase tracking-[0.2em]">{category.name}</h3>
+                                            <h3 className="text-[13px] font-black text-white tracking-tight">{category.name}</h3>
                                             {category.nameAr && (
                                                 <span className="text-[10px] text-white/60 mt-1 font-medium">{category.nameAr}</span>
                                             )}
                                         </div>
-                                        <span className="shrink-0 bg-white/[0.05] text-white/60 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-white/5">
+                                        <span className="shrink-0 bg-white/5 text-white/60 px-3 py-1 rounded-xl text-[10px] font-bold tracking-wider border border-white/5">
                                             {category._count.products}
                                         </span>
                                     </div>
-                                    <p className="text-[10px] text-white/60 line-clamp-2 mb-6 font-black uppercase tracking-[0.2em] leading-relaxed">
+                                    <p className="text-[11px] text-white/60 line-clamp-2 mb-6 font-semibold tracking-wider leading-relaxed">
                                         {category.description || t('admin.noDescription')}
                                     </p>
-                                    
+
                                     <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/5">
                                         <div className="flex items-center gap-1">
                                             {canManage && (
@@ -371,7 +371,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                                 </button>
                                             )}
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-2">
                                             {canManage && (
                                                 <button
@@ -414,15 +414,15 @@ export default function CategoriesClient({ categories }: { categories: Category[
                     </div>
 
                     {filteredCategories.length === 0 && (
-                        <div className="text-center py-32 bg-white/[0.01] rounded-[2rem] border-2 border-dashed border-white/5">
+                        <div className="text-center py-32 bg-white/1 rounded-4xl border-2 border-dashed border-white/5">
                             <MdSearchOff className="text-6xl text-white/20 mb-6 mx-auto" />
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
+                            <p className="text-[11px] font-semibold tracking-wider text-white/20">
                                 {searchQuery ? t('admin.noCategoriesFound') : t('admin.noCategoriesCreated')}
                             </p>
                             {!searchQuery && (
                                 <button
                                     onClick={handleAdd}
-                                    className="mt-6 text-accent font-black uppercase tracking-[0.2em] text-[10px] hover:underline"
+                                    className="mt-6 text-accent font-black text-[10px] hover:underline"
                                 >
                                     {t('admin.createFirstCategory')}
                                 </button>

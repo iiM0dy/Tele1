@@ -4,12 +4,12 @@ import { NextResponse } from "next/server"
 export default withAuth(
   function middleware(req) {
     const { pathname } = req.nextUrl
-    
+
     // Redirect /admin to /admin/dashboard
     if (pathname === '/admin' || pathname === '/admin/') {
       return NextResponse.redirect(new URL('/admin/dashboard', req.url))
     }
-    
+
     return NextResponse.next()
   },
   {
@@ -22,22 +22,21 @@ export default withAuth(
           return true
         }
 
-        // Protect admin routes
+        // Protect ALL other admin routes
         if (pathname.startsWith('/admin')) {
-            return true;
-            // Must be logged in
-            // if (!token) return false;
-            
-            // Must have admin role
-            // const role = (token as any).role as string;
-            // return role === 'ADMIN' || role === 'SUPER_ADMIN';
+          // Must be logged in
+          if (!token) return false;
+
+          // Must have admin role
+          const role = token.role as string;
+          return role === 'ADMIN' || role === 'SUPER_ADMIN';
         }
 
         return true
       },
     },
     pages: {
-        signIn: '/admin/login',
+      signIn: '/admin/login',
     }
   }
 )

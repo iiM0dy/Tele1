@@ -107,7 +107,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        
+
         if (name === "categoryId") {
             setFormData(prev => ({ ...prev, subCategoryId: "" }));
             fetchSubCategories(value);
@@ -176,17 +176,17 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
             <div className="relative bg-[#202126] w-full max-w-3xl rounded-3xl shadow-2xl border border-white/5 overflow-hidden flex flex-col max-h-[90vh]">
 
                 {/* Header */}
-                <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+                <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
                     <div>
-                        <h3 className="text-2xl font-black text-white tracking-tight uppercase">
+                        <h3 className="text-2xl font-black text-white tracking-tight">
                             {product ? t("admin.addProductModal.titleEdit") : t("admin.addProductModal.titleAdd")}
                         </h3>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
+                        <p className="text-[11px] font-semibold tracking-wider text-white/40">
                             {product ? t("admin.addProductModal.subtitleEdit") : t("admin.addProductModal.subtitleAdd")}
                         </p>
                     </div>
@@ -204,17 +204,17 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                     {/* Images Section */}
                     <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.productImages")}</label>
+                        <label className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.productImages")}</label>
 
                         {/* Image Gallery */}
                         {formData.images && (
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                                 {formData.images.split(',').filter(Boolean).map((url, index) => (
-                                    <div key={index} className="relative aspect-square rounded-2xl border border-white/5 overflow-hidden group bg-white/[0.02]">
+                                    <div key={index} className="relative aspect-square rounded-2xl border border-white/5 overflow-hidden group bg-white/2">
                                         <div className="relative w-full h-full">
-                                            <Image 
-                                                src={url} 
-                                                alt={`${t("admin.addProductModal.imagePreviewAlt")} ${index}`} 
+                                            <Image
+                                                src={url}
+                                                alt={`${t("admin.addProductModal.imagePreviewAlt")} ${index}`}
                                                 fill
                                                 className="object-cover"
                                                 sizes="(max-width: 640px) 50vw, 25vw"
@@ -237,7 +237,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                             {/* Image Link Input */}
                             <div className="flex gap-2">
                                 <input
-                                    className="flex-1 h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder-white/40 outline-none"
+                                    className="flex-1 h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
                                     placeholder={t("admin.addProductModal.pasteImageUrlPlaceholder")}
                                     type="text"
                                     value={imageLink}
@@ -247,7 +247,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                 <button
                                     type="button"
                                     onClick={addImageLink}
-                                    className="px-6 h-12 rounded-2xl bg-accent text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-accent/90 transition-all"
+                                    className="px-6 h-12 rounded-2xl bg-accent text-white font-semibold text-[11px] tracking-wider hover:bg-accent/90 transition-all"
                                 >
                                     {t("admin.addProductModal.addLink")}
                                 </button>
@@ -258,12 +258,12 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                     {/* Product Basic Info */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="md:col-span-2 space-y-2">
-                            <label htmlFor="productName" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 flex items-center gap-1">
+                            <label htmlFor="productName" className="text-[11px] font-semibold tracking-wider text-white/40 flex items-center gap-1">
                                 {t("admin.addProductModal.productName")} <span className="text-accent">*</span>
                             </label>
                             <input
                                 id="productName"
-                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder-white/40 outline-none"
+                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
                                 placeholder={t("admin.addProductModal.productNamePlaceholder")}
                                 type="text"
                                 required
@@ -273,10 +273,10 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         </div>
 
                         <div className="md:col-span-2 space-y-2">
-                            <label htmlFor="productDescription" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.description")}</label>
+                            <label htmlFor="productDescription" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.description")}</label>
                             <textarea
                                 id="productDescription"
-                                className="w-full rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder-white/40 outline-none min-h-[120px]"
+                                className="w-full rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 py-3 text-[13px] font-medium text-white placeholder-white/40 outline-none min-h-[120px]"
                                 placeholder={t("admin.addProductModal.descriptionPlaceholder")}
                                 rows={4}
                                 value={formData.description}
@@ -285,11 +285,11 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="productCategory" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.category")} <span className="text-accent">*</span></label>
+                            <label htmlFor="productCategory" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.category")} <span className="text-accent">*</span></label>
                             <div className="relative">
                                 <select
                                     id="productCategory"
-                                    className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[10px] font-black uppercase tracking-[0.2em] text-white appearance-none outline-none cursor-pointer"
+                                    className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white appearance-none outline-none cursor-pointer"
                                     required
                                     value={formData.categoryId}
                                     onChange={handleChange}
@@ -306,11 +306,11 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                         {subCategories.length > 0 && (
                             <div className="space-y-2">
-                                <label htmlFor="productSubCategory" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.subCategory") || "Subcategory"}</label>
+                                <label htmlFor="productSubCategory" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.subCategory") || "Subcategory"}</label>
                                 <div className="relative">
                                     <select
                                         id="productSubCategory"
-                                        className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[10px] font-black uppercase tracking-[0.2em] text-white appearance-none outline-none cursor-pointer"
+                                        className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white appearance-none outline-none cursor-pointer"
                                         value={formData.subCategoryId}
                                         onChange={handleChange}
                                         name="subCategoryId"
@@ -326,12 +326,12 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         )}
 
                         <div className="space-y-2">
-                            <label htmlFor="productPrice" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.price")} <span className="text-accent">*</span></label>
+                            <label htmlFor="productPrice" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.price")} <span className="text-accent">*</span></label>
                             <div className="relative">
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-accent font-black text-xs">$</span>
                                 <input
                                     id="productPrice"
-                                    className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all pl-8 pr-4 text-xs font-black text-white outline-none"
+                                    className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all pl-8 pr-4 text-xs font-black text-white outline-none"
                                     placeholder={t("admin.addProductModal.pricePlaceholder")}
                                     step="0.01"
                                     type="number"
@@ -344,14 +344,14 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                         <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-3xl bg-accent/5 border border-white/5">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.discountType")}</label>
-                                <div className="flex bg-white/[0.02] p-1 rounded-2xl border border-white/5">
+                                <label className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.discountType")}</label>
+                                <div className="flex bg-white/2 p-1 rounded-2xl border border-white/5">
                                     {(["NONE", "PERCENTAGE", "FIXED"] as const).map((type) => (
                                         <button
                                             key={type}
                                             type="button"
                                             onClick={() => setFormData({ ...formData, discountType: type, discountValue: type === "NONE" ? "" : formData.discountValue })}
-                                            className={`flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all ${formData.discountType === type
+                                            className={`flex-1 py-2 text-[11px] font-semibold tracking-wider rounded-xl transition-all ${formData.discountType === type
                                                 ? "bg-accent text-white"
                                                 : "text-white/40 hover:bg-white/5"
                                                 }`}
@@ -366,7 +366,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                             {formData.discountType !== "NONE" && (
                                 <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
-                                    <label htmlFor="discountValue" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
+                                    <label htmlFor="discountValue" className="text-[11px] font-semibold tracking-wider text-white/40">
                                         {formData.discountType === "PERCENTAGE" ? t("admin.addProductModal.percentageDiscount") : t("admin.addProductModal.discountPrice")}
                                     </label>
                                     <div className="relative">
@@ -375,7 +375,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                         </span>
                                         <input
                                             id="discountValue"
-                                            className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all pl-8 pr-4 text-xs font-black text-white outline-none placeholder:text-white/40"
+                                            className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all pl-8 pr-4 text-xs font-black text-white outline-none placeholder:text-white/40"
                                             placeholder={formData.discountType === "PERCENTAGE" ? t("admin.addProductModal.percentagePlaceholder") : t("admin.addProductModal.discountPricePlaceholder")}
                                             step="0.01"
                                             type="number"
@@ -385,7 +385,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                         />
                                     </div>
                                     {formData.discountType === "PERCENTAGE" && formData.price && formData.discountValue && (
-                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mt-1">
+                                        <p className="text-[11px] font-semibold tracking-wider text-accent mt-1">
                                             {t("admin.addProductModal.discountPrice")}: ${(parseFloat(formData.price) - (parseFloat(formData.price) * parseFloat(formData.discountValue) / 100)).toFixed(2)}
                                         </p>
                                     )}
@@ -394,10 +394,10 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="stockQuantity" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.stockQuantity")}</label>
+                            <label htmlFor="stockQuantity" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.stockQuantity")}</label>
                             <input
                                 id="stockQuantity"
-                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder-white/40 outline-none"
+                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
                                 placeholder={t("admin.addProductModal.stockPlaceholder")}
                                 type="number"
                                 required
@@ -407,10 +407,10 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="skuNumber" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t("admin.addProductModal.skuNumber")}</label>
+                            <label htmlFor="skuNumber" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.skuNumber")}</label>
                             <input
                                 id="skuNumber"
-                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/[0.02] focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder-white/40 outline-none"
+                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
                                 placeholder={t("admin.addProductModal.skuPlaceholder")}
                                 type="text"
                                 value={formData.sku}
@@ -421,18 +421,18 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                 </form>
 
                 {/* Footer */}
-                <div className="px-8 py-6 bg-white/[0.01] border-t border-white/5 flex items-center justify-end gap-4">
+                <div className="px-8 py-6 bg-white/1 border-t border-white/5 flex items-center justify-end gap-4">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-6 h-12 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white/60 hover:text-white hover:bg-white/5 border border-transparent transition-all"
+                        className="px-6 h-12 rounded-2xl text-[11px] font-semibold tracking-wider text-white/40 hover:text-white hover:bg-white/5 border border-transparent transition-all"
                     >
                         {t("admin.addProductModal.cancel")}
                     </button>
                     <button
                         onClick={handleSubmit}
                         disabled={isLoading}
-                        className="bg-accent hover:bg-accent/90 disabled:opacity-50 text-white h-12 px-8 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                        className="bg-accent hover:bg-accent/90 disabled:opacity-50 text-white h-12 px-8 rounded-2xl font-semibold text-[11px] tracking-wider flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                     >
                         {isLoading ? (
                             <MdSync className="animate-spin text-[20px]" />

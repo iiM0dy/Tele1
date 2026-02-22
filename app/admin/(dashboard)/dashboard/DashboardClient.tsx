@@ -57,14 +57,14 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                         {/* Revenue Card */}
-                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
+                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/2 border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
                             <div className="flex justify-between items-start">
                                 <div className="p-3 bg-accent/10 rounded-xl text-accent">
                                     <MdAttachMoney className="text-[24px]" />
                                 </div>
                             </div>
                             <div>
-                                <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-white/60 text-[11px] font-semibold tracking-wider">
                                     {t('admin.totalRevenue')}
                                 </p>
                                 <h3 className="text-white text-2xl font-black mt-1 tracking-tight">
@@ -74,14 +74,14 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                         </div>
 
                         {/* Orders Card */}
-                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
+                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/2 border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
                             <div className="flex justify-between items-start">
                                 <div className="p-3 bg-accent/10 rounded-xl text-accent">
                                     <MdShoppingBag className="text-[24px]" />
                                 </div>
                             </div>
                             <div>
-                                <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-white/60 text-[11px] font-semibold tracking-wider">
                                     {t('admin.totalOrders')}
                                 </p>
                                 <h3 className="text-white text-2xl font-black mt-1 tracking-tight">
@@ -91,14 +91,14 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                         </div>
 
                         {/* Products Card */}
-                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
+                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/2 border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
                             <div className="flex justify-between items-start">
                                 <div className="p-3 bg-accent/10 rounded-xl text-accent">
                                     <MdCheckroom className="text-[24px]" />
                                 </div>
                             </div>
                             <div>
-                                <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-white/60 text-[11px] font-semibold tracking-wider">
                                     {t('admin.totalCategories')}
                                 </p>
                                 <h3 className="text-white text-2xl font-black mt-1 tracking-tight">
@@ -108,14 +108,14 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                         </div>
 
                         {/* Categories Card */}
-                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/[0.02] border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
+                        <div className="flex flex-col gap-4 rounded-2xl p-6 bg-white/2 border border-white/5 hover:border-accent/30 transition-all duration-300 min-h-[140px]">
                             <div className="flex justify-between items-start">
                                 <div className="p-3 bg-accent/10 rounded-xl text-accent">
                                     <MdCategory className="text-[24px]" />
                                 </div>
                             </div>
                             <div>
-                                <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-white/60 text-[11px] font-semibold tracking-wider">
                                     {t('admin.categories')}
                                 </p>
                                 <h3 className="text-white text-2xl font-black mt-1 tracking-tight">
@@ -128,12 +128,12 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                     {/* Recent Orders Section */}
                     <div className="flex flex-col gap-6">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-white text-[11px] font-black uppercase tracking-[0.3em]">
+                            <h3 className="text-white text-[11px] font-semibold tracking-wider">
                                 {t('admin.recentOrders')}
                             </h3>
                             <Link
                                 href="/admin/orders"
-                                className="text-accent hover:text-white text-[10px] font-black transition-colors uppercase tracking-[0.2em]"
+                                className="text-accent hover:text-white text-[11px] font-semibold transition-colors tracking-wider"
                             >
                                 {t('admin.viewAll')}
                             </Link>
@@ -148,27 +148,27 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                             order={selectedOrder as any}
                         />
 
-                        <div className="rounded-3xl border border-white/5 bg-white/[0.01] overflow-hidden">
+                        <div className="rounded-3xl border border-white/5 bg-white/1 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse min-w-[640px]">
                                     <thead>
-                                        <tr className="border-b border-white/5 bg-white/[0.02]">
-                                            <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                                        <tr className="border-b border-white/5 bg-white/2">
+                                            <th className={`p-5 text-[10px] font-semibold tracking-wider text-white/40 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                                 {t('admin.orderId')}
                                             </th>
-                                            <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                                            <th className={`p-5 text-[10px] font-semibold tracking-wider text-white/40 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                                 {t('admin.customer')}
                                             </th>
-                                            <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                                            <th className={`p-5 text-[10px] font-semibold tracking-wider text-white/40 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                                 {t('admin.product')}
                                             </th>
-                                            <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                                            <th className={`p-5 text-[10px] font-semibold tracking-wider text-white/40 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                                 {t('admin.date')}
                                             </th>
-                                            <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                                            <th className={`p-5 text-[10px] font-semibold tracking-wider text-white/40 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                                 {t('admin.amount')}
                                             </th>
-                                            <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                                            <th className={`p-5 text-[10px] font-semibold tracking-wider text-white/40 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                                 {t('admin.status')}
                                             </th>
                                             <th className={`p-5 text-[10px] font-black uppercase tracking-widest text-white/60`}></th>
@@ -179,7 +179,7 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                                             stats.recentOrders.map((order) => (
                                                 <tr
                                                     key={order.id}
-                                                    className="hover:bg-white/[0.02] transition-colors"
+                                                    className="group hover:bg-white/2 transition-colors"
                                                 >
                                                     <td className="p-5 text-[12px] font-black text-white">
                                                         #{order.id.slice(-6).toUpperCase()}

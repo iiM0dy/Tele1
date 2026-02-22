@@ -14,13 +14,13 @@ interface AdminUser {
     updatedAt: string;
 }
 
-export default function SettingsClient({ 
+export default function SettingsClient({
     initialUser
-}: { 
+}: {
     initialUser: AdminUser | null
 }) {
     const { t } = useLanguage();
-    
+
     // Account Settings State
     const [currentPassword, setCurrentPassword] = useState("");
     const [newUsername, setNewUsername] = useState("");
@@ -35,55 +35,55 @@ export default function SettingsClient({
     }, [initialUser]);
 
     const handleAccountSubmit = async (e: React.FormEvent) => {
-         e.preventDefault();
+        e.preventDefault();
 
-         if (!currentPassword) {
-             toast.error(t('admin.currentPasswordRequired'));
-             return;
-         }
+        if (!currentPassword) {
+            toast.error(t('admin.currentPasswordRequired'));
+            return;
+        }
 
-         if (newPassword && newPassword !== confirmPassword) {
-             toast.error(t('admin.passwordsDoNotMatch'));
-             return;
-         }
+        if (newPassword && newPassword !== confirmPassword) {
+            toast.error(t('admin.passwordsDoNotMatch'));
+            return;
+        }
 
-         if (newPassword && newPassword.length < 6) {
-             toast.error(t('admin.passwordTooShort'));
-             return;
-         }
+        if (newPassword && newPassword.length < 6) {
+            toast.error(t('admin.passwordTooShort'));
+            return;
+        }
 
-         setIsSubmitting(true);
+        setIsSubmitting(true);
 
-         try {
-             const result = await updateAdminCredentials({
-                 currentPassword,
-                 newUsername: newUsername !== initialUser?.username ? newUsername : undefined,
-                 newPassword: newPassword || undefined,
-             });
+        try {
+            const result = await updateAdminCredentials({
+                currentPassword,
+                newUsername: newUsername !== initialUser?.username ? newUsername : undefined,
+                newPassword: newPassword || undefined,
+            });
 
-             if (result.success) {
-                 toast.success(result.message || t('admin.settingsUpdated'));
-                 setCurrentPassword("");
-                 setNewPassword("");
-                 setConfirmPassword("");
+            if (result.success) {
+                toast.success(result.message || t('admin.settingsUpdated'));
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
 
-                 // If password was changed, sign out
-                 if (newPassword) {
-                     toast.success(t('admin.passwordChangedLogout'));
-                     setTimeout(() => {
-                         signOut({ callbackUrl: "/admin/login" });
-                     }, 2000);
-                 }
-             } else {
-                 toast.error(result.error || t('admin.failedToUpdate'));
-             }
-         } catch (error) {
-             console.error("Error updating settings:", error);
-             toast.error(t('admin.failedToUpdate'));
-         } finally {
-             setIsSubmitting(false);
-         }
-     };
+                // If password was changed, sign out
+                if (newPassword) {
+                    toast.success(t('admin.passwordChangedLogout'));
+                    setTimeout(() => {
+                        signOut({ callbackUrl: "/admin/login" });
+                    }, 2000);
+                }
+            } else {
+                toast.error(result.error || t('admin.failedToUpdate'));
+            }
+        } catch (error) {
+            console.error("Error updating settings:", error);
+            toast.error(t('admin.failedToUpdate'));
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     if (!initialUser) {
         return (
@@ -101,12 +101,12 @@ export default function SettingsClient({
         <div className="flex-1 flex flex-col h-screen overflow-hidden">
             <div className="flex-1 overflow-y-auto p-6 sm:p-10 scrollbar-hide">
                 <div className="max-w-2xl mx-auto">
-                    <div className="bg-white/[0.01] rounded-[2.5rem] border border-white/5 p-8 sm:p-10 shadow-2xl">
+                    <div className="bg-white/1 rounded-[2.5rem] border border-white/5 p-8 sm:p-10 shadow-2xl">
                         <div className="mb-10">
-                            <h2 className="text-3xl font-black text-white tracking-[0.2em] uppercase mb-2">
+                            <h2 className="text-3xl font-black text-white tracking-tight leading-tight mb-2">
                                 {t('admin.settings')}
                             </h2>
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">
                                 {t('admin.adminAccountSettings')}
                             </p>
                         </div>
@@ -114,7 +114,7 @@ export default function SettingsClient({
                         <form onSubmit={handleAccountSubmit} className="space-y-10">
                             {/* Current Password */}
                             <div className="space-y-4">
-                                <label htmlFor="currentPassword" className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ml-1">
+                                <label htmlFor="currentPassword" className="text-[11px] font-semibold text-white/60 tracking-wider ml-1">
                                     {t('admin.currentPassword')} *
                                 </label>
                                 <input
@@ -124,21 +124,21 @@ export default function SettingsClient({
                                     onChange={(e) => setCurrentPassword(e.target.value)}
                                     placeholder={t('admin.enterCurrentPassword')}
                                     required
-                                    className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/50 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/40"
+                                    className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/50 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                 />
-                                <p className="text-[9px] text-white/60 font-black uppercase tracking-[0.2em] ml-1">
+                                <p className="text-[10px] text-white/40 font-semibold tracking-wider ml-1">
                                     {t('admin.requiredToVerify')}
                                 </p>
                             </div>
 
                             <div className="border-t border-white/5 pt-10">
-                                <h3 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-8">
+                                <h3 className="text-[11px] font-semibold text-white/40 tracking-wider mb-8">
                                     {t('admin.changeCredentials')}
                                 </h3>
 
                                 {/* New Username */}
                                 <div className="space-y-4 mb-8">
-                                    <label htmlFor="newUsername" className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ml-1">
+                                    <label htmlFor="newUsername" className="text-[11px] font-semibold text-white/60 tracking-wider ml-1">
                                         {t('admin.username')}
                                     </label>
                                     <input
@@ -148,13 +148,13 @@ export default function SettingsClient({
                                         onChange={(e) => setNewUsername(e.target.value)}
                                         placeholder={t('admin.enterNewUsername')}
                                         aria-label={t('admin.username') || "New username"}
-                                        className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/50 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/40"
+                                        className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/50 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                     />
                                 </div>
 
                                 {/* New Password */}
                                 <div className="space-y-4 mb-8">
-                                    <label htmlFor="newPassword" className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ml-1">
+                                    <label htmlFor="newPassword" className="text-[11px] font-semibold text-white/60 tracking-wider ml-1">
                                         {t('admin.newPassword')}
                                     </label>
                                     <input
@@ -164,9 +164,9 @@ export default function SettingsClient({
                                         onChange={(e) => setNewPassword(e.target.value)}
                                         placeholder={t('admin.leaveBlank')}
                                         aria-label={t('admin.newPassword') || "New password"}
-                                        className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/50 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/40"
+                                        className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/50 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                     />
-                                    <p className="text-[9px] text-white/60 font-black uppercase tracking-[0.2em] ml-1">
+                                    <p className="text-[10px] text-white/40 font-semibold tracking-wider ml-1">
                                         {t('admin.minChars')}
                                     </p>
                                 </div>
@@ -174,7 +174,7 @@ export default function SettingsClient({
                                 {/* Confirm Password */}
                                 {newPassword && (
                                     <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                                        <label htmlFor="confirmPassword" className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ml-1">
+                                        <label htmlFor="confirmPassword" className="text-[11px] font-semibold text-white/60 tracking-wider ml-1">
                                             {t('admin.confirmNewPassword')}
                                         </label>
                                         <input
@@ -183,7 +183,7 @@ export default function SettingsClient({
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             placeholder={t('admin.reEnterNewPassword')}
-                                            className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/50 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/40"
+                                            className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/50 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                         />
                                     </div>
                                 )}
@@ -212,10 +212,10 @@ export default function SettingsClient({
                                     <div className="flex gap-4">
                                         <MdWarning className="text-accent text-2xl shrink-0" />
                                         <div>
-                                            <p className="text-[10px] font-black text-white uppercase tracking-[0.2em]">
+                                            <p className="text-[11px] font-semibold text-white tracking-wider">
                                                 {t('admin.passwordChangeNotice')}
                                             </p>
-                                            <p className="text-[9px] text-white/60 mt-1 uppercase tracking-[0.2em] font-black">
+                                            <p className="text-[10px] text-white/40 mt-1 tracking-wider font-semibold">
                                                 {t('admin.logoutNotice')}
                                             </p>
                                         </div>

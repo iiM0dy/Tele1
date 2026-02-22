@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { 
-    MdDelete, 
-    MdSearch, 
-    MdAdd, 
-    MdImage, 
+import {
+    MdDelete,
+    MdSearch,
+    MdAdd,
+    MdImage,
     MdEdit,
     MdStar,
     MdStarOutline,
@@ -34,12 +34,12 @@ interface Product {
     Name: string;
 }
 
-export default function ReviewsClient({ 
-    reviews: initialReviews, 
+export default function ReviewsClient({
+    reviews: initialReviews,
     products,
-    pagination 
-}: { 
-    reviews: Review[], 
+    pagination
+}: {
+    reviews: Review[],
     products: Product[],
     pagination: { total: number, pages: number, page: number, limit: number }
 }) {
@@ -108,10 +108,10 @@ export default function ReviewsClient({
                 <div className="max-w-[1200px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div className="">
-                            <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
+                            <h3 className="text-3xl font-black text-white tracking-tight leading-tight">
                                 {t('admin.reviews')}
                             </h3>
-                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 tracking-wider text-[11px] font-semibold">
                                 {t('admin.manageReviews')}
                             </p>
                         </div>
@@ -122,7 +122,7 @@ export default function ReviewsClient({
                                     type="text"
                                     placeholder={t('admin.searchPlaceholder')}
                                     aria-label={t('admin.searchPlaceholder') || "Search reviews"}
-                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/60`}
+                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[13px] font-medium tracking-normal focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/60`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -130,7 +130,7 @@ export default function ReviewsClient({
                             {canManage && (
                                 <button
                                     onClick={handleAdd}
-                                    className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                                    className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
                                 >
                                     <MdAdd className="text-xl" />
                                     {t('admin.addReview')}
@@ -149,20 +149,20 @@ export default function ReviewsClient({
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredReviews.length > 0 ? (
                             filteredReviews.map((review) => (
-                                <div 
-                                    key={review.id} 
-                                    className="bg-white/[0.02] rounded-3xl border border-white/5 transition-all overflow-hidden group relative flex flex-col hover:border-white/10"
+                                <div
+                                    key={review.id}
+                                    className="bg-white/2 rounded-3xl border border-white/5 transition-all overflow-hidden group relative flex flex-col hover:border-white/10"
                                 >
                                     <div className="p-6 flex flex-col h-full">
                                         <div className="flex items-start justify-between mb-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full bg-white/5 border border-white/5 overflow-hidden flex items-center justify-center shrink-0 relative">
                                                     {review.image ? (
-                                                        <Image 
-                                                            src={review.image} 
-                                                            alt={review.name} 
+                                                        <Image
+                                                            src={review.image}
+                                                            alt={review.name}
                                                             fill
-                                                            className="object-cover" 
+                                                            className="object-cover"
                                                             sizes="40px"
                                                         />
                                                     ) : (
@@ -170,7 +170,7 @@ export default function ReviewsClient({
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col min-w-0">
-                                                    <span className="text-[10px] font-black text-white uppercase tracking-[0.1em] truncate">
+                                                    <span className="text-[10px] font-black text-white truncate">
                                                         {review.name}
                                                     </span>
                                                     {renderStars(review.rating)}
@@ -211,14 +211,14 @@ export default function ReviewsClient({
 
                                         <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
                                             <div className="flex flex-col">
-                                                <span className="text-[8px] font-black text-white/60 uppercase tracking-[0.1em] mb-1">
+                                                <span className="text-[8px] font-black text-white/60 uppercase tracking-widest mb-1">
                                                     {t('admin.product')}
                                                 </span>
-                                                <span className="text-[9px] font-black text-accent uppercase tracking-[0.1em] truncate max-w-[150px]">
+                                                <span className="text-[9px] font-black text-accent uppercase tracking-widest truncate max-w-[150px]">
                                                     {review.productName || t('admin.none')}
                                                 </span>
                                             </div>
-                                            <span className="text-[8px] font-black text-white/60 uppercase tracking-[0.1em]">
+                                            <span className="text-[8px] font-black text-white/60 uppercase tracking-widest">
                                                 {new Date(review.createdAt).toLocaleDateString()}
                                             </span>
                                         </div>
@@ -226,9 +226,9 @@ export default function ReviewsClient({
                                 </div>
                             ))
                         ) : (
-                            <div className="col-span-full py-20 flex flex-col items-center justify-center text-white/20 bg-white/[0.01] rounded-[40px] border border-dashed border-white/5">
+                            <div className="col-span-full py-20 flex flex-col items-center justify-center text-white/20 bg-white/1 rounded-[40px] border border-dashed border-white/5">
                                 <MdSearch className="text-6xl mb-4 opacity-20" />
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-[11px] font-semibold tracking-wider">
                                     {t('admin.noReviewsFound')}
                                 </p>
                             </div>

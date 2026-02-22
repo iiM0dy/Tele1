@@ -63,7 +63,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const setLanguage = useCallback((lang: Language) => {
         try {
             localStorage.setItem('language', lang);
-            document.cookie = `language=${lang}; path=/; max-age=31536000`;
+            document.cookie = `language=${lang}; path=/; max-age=31536000; samesite=lax`;
         } catch (e) {
             console.warn('Could not persist language immediately', e);
         }
@@ -75,7 +75,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     // Translation function with fallback
     const t = useCallback((key: string): any => {
-        if (!translations) return key;
+        if (!translations) return ''; // Return empty string instead of key to prevent flash
 
         const keys = key.split('.');
         let result: TranslationValue = translations;
@@ -93,10 +93,21 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     const dir = language === 'ar' ? 'rtl' : 'ltr';
 
+    // Prevent rendering children until translations are loaded to stop the "flash of keys"
+    const isLoading = !mounted || !translations;
+
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t, dir, isLoaded: !!translations }}>
-            <div key={language} dir={dir}>
-                {children}
+        <LanguageContext.Provider value={{ language, setLanguage, t, dir, isLoaded: !isLoading }}>
+            <div key={language} dir={dir} lang={language}>
+                {isLoading ? (
+                    <div className="fixed inset-0 z-9999 bg-[#202126] flex items-center justify-center transition-opacity duration-300">
+                        <div className="w-10 h-10 border-4 border-accent/20 border-t-accent rounded-full animate-spin"></div>
+                    </div>
+                ) : (
+                    <div className="animate-in fade-in duration-500">
+                        {children}
+                    </div>
+                )}
             </div>
         </LanguageContext.Provider>
     );

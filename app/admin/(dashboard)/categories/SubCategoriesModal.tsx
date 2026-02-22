@@ -31,7 +31,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
     const { t, dir } = useLanguage();
     const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    
+
     // Form State
     const [isEditing, setIsEditing] = useState<string | null>(null); // ID of subcategory being edited
     const [name, setName] = useState("");
@@ -76,7 +76,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
 
     const handleDelete = async (id: string) => {
         if (!confirm(t('admin.confirmDeleteSubCategory') || "Are you sure you want to delete this subcategory?")) return;
-        
+
         const result = await deleteSubCategory(id);
         if (result.success) {
             toast.success(t('admin.subCategoryDeleted') || "Subcategory deleted");
@@ -119,19 +119,19 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-md"
                 onClick={onClose}
             />
 
-            <div className="relative w-full max-w-4xl bg-[#202126] rounded-[2rem] shadow-2xl overflow-hidden border border-white/5 flex flex-col max-h-[90vh]">
-                <div className="p-8 pt-20 md:pt-8 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+            <div className="relative w-full max-w-5xl bg-[#202126] rounded-4xl shadow-2xl overflow-hidden border border-white/5 flex flex-col max-h-[90vh]">
+                <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
                     <div>
-                        <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">
+                        <h2 className="text-2xl font-black text-white tracking-tight">
                             {t('admin.manageSubCategories') || "Manage Subcategories"}
                         </h2>
-                        <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.2em] mt-1">
+                        <p className="text-white/40 text-[11px] font-semibold tracking-wider mt-1">
                             {category?.name}
                         </p>
                     </div>
@@ -146,13 +146,13 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
 
                 <div className="flex flex-1 overflow-y-auto md:overflow-hidden flex-col md:flex-row">
                     {/* Left: Form */}
-                    <div className="w-full md:w-1/3 p-8 border-r border-white/5 md:overflow-y-auto shrink-0">
-                        <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-6">
+                    <div className="w-full md:w-80 p-8 border-r border-white/5 md:overflow-y-auto shrink-0">
+                        <h3 className="text-[11px] font-semibold text-white/40 tracking-wider mb-6">
                             {isEditing ? (t('admin.editSubCategory') || "Edit Subcategory") : (t('admin.addNewSubCategory') || "Add New Subcategory")}
                         </h3>
                         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                             <div className="flex flex-col gap-3">
-                                <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                                <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                     {t('admin.name') || "Name"}
                                 </label>
                                 <input
@@ -162,12 +162,12 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                     placeholder={t('admin.subCategoryName') || "Subcategory Name"}
                                     required
                                     aria-label={t('admin.subCategoryName') || "Subcategory Name"}
-                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
+                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                                 />
                             </div>
 
                             <div className="flex flex-col gap-3">
-                                <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                                <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                     {t('admin.imageLink') || "Image Link"}
                                 </label>
                                 <div className="relative">
@@ -178,7 +178,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                         placeholder="https://..."
                                         required
                                         aria-label={t('admin.imageLink') || "Image Link"}
-                                        className={`w-full ${dir === 'rtl' ? 'pl-12' : 'pr-12'} px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40`}
+                                        className={`w-full ${dir === 'rtl' ? 'pl-12' : 'pr-12'} px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40`}
                                     />
                                     <div className={`absolute top-1/2 -translate-y-1/2 ${dir === 'rtl' ? 'left-4' : 'right-4'} text-white/20 pointer-events-none`}>
                                         <MdImage className="text-xl" />
@@ -187,7 +187,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                             </div>
 
                             <div className="flex flex-col gap-3">
-                                <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                                <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                     {t('admin.description') || "Description"}
                                 </label>
                                 <textarea
@@ -196,7 +196,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                     placeholder={t('admin.describeSubCategory') || "Describe the subcategory..."}
                                     rows={3}
                                     aria-label={t('admin.description') || "Description"}
-                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
+                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
                                 />
                             </div>
 
@@ -213,7 +213,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="flex-1 bg-accent text-white py-3 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                                    className="flex-1 bg-accent text-white py-3.5 rounded-2xl font-black uppercase tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                                 >
                                     {isSubmitting ? (
                                         <span className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />
@@ -229,8 +229,8 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                     </div>
 
                     {/* Right: List */}
-                    <div className="w-full md:w-2/3 p-8 md:overflow-y-auto bg-black/20 shrink-0">
-                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex-1 p-8 md:overflow-y-auto bg-black/20">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {isLoading ? (
                                 <div className="col-span-full flex justify-center py-10">
                                     <span className="animate-spin h-8 w-8 border-2 border-white/10 border-t-accent rounded-full" />
@@ -244,8 +244,8 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                 </div>
                             ) : (
                                 subCategories.map((sub) => (
-                                    <div key={sub.id} className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex gap-4 group hover:border-accent/30 transition-all">
-                                        <div className="w-16 h-16 rounded-xl bg-white/5 relative overflow-hidden flex-shrink-0">
+                                    <div key={sub.id} className="bg-white/2 border border-white/5 rounded-2xl p-4 flex gap-4 group hover:border-accent/30 transition-all">
+                                        <div className="w-16 h-16 rounded-xl bg-white/5 relative overflow-hidden shrink-0">
                                             {sub.image ? (
                                                 <Image
                                                     src={sub.image}
@@ -260,10 +260,10 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                             )}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h4 className="text-white text-xs font-black uppercase tracking-[0.1em] truncate">
+                                            <h4 className="text-white text-[13px] font-black tracking-tight truncate">
                                                 {sub.name}
                                             </h4>
-                                            <p className="text-white/60 text-[10px] mt-1 line-clamp-2">
+                                            <p className="text-white/60 text-[11px] mt-1 line-clamp-2 leading-relaxed">
                                                 {sub.description}
                                             </p>
                                             <div className="flex items-center gap-3 mt-3">
@@ -282,7 +282,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                                     <MdDelete className="text-lg" />
                                                 </button>
                                                 <div className="flex-1" />
-                                                <span className="text-[9px] font-black uppercase tracking-wider text-white/60 bg-white/5 px-2 py-1 rounded-lg">
+                                                <span className="text-[10px] font-semibold tracking-wider text-white/40 bg-white/5 px-3 py-1.5 rounded-xl">
                                                     {sub._count?.products || 0} Products
                                                 </span>
                                             </div>
@@ -290,7 +290,7 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                     </div>
                                 ))
                             )}
-                         </div>
+                        </div>
                     </div>
                 </div>
             </div>

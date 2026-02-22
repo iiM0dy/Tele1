@@ -75,15 +75,15 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-md"
                 onClick={onClose}
             />
 
-            <div className="relative w-full max-w-md bg-[#202126] rounded-[2rem] shadow-2xl overflow-hidden border border-white/5">
-                <div className="p-8 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
-                    <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">
+            <div className="relative w-full max-w-md bg-[#202126] rounded-4xl shadow-2xl overflow-hidden border border-white/5">
+                <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
+                    <h2 className="text-2xl font-black text-white tracking-tight">
                         {category ? t('admin.editCategory') : t('admin.addNewCategory')}
                     </h2>
                     <button
@@ -97,7 +97,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
 
                 <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-6 overflow-y-auto max-h-[80vh]">
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.categoryName')}
                         </label>
                         <input
@@ -107,12 +107,12 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             placeholder={t('admin.categoryPlaceholder')}
                             required
                             aria-label={t('admin.categoryName') || "Category Name"}
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                         />
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.categoryNameAr') || "Category Name (Arabic)"}
                         </label>
                         <input
@@ -120,14 +120,14 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             value={nameAr}
                             onChange={(e) => setNameAr(e.target.value)}
                             placeholder={t('admin.categoryPlaceholderAr') || "أدخل اسم القسم بالعربية"}
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                             dir="rtl"
                             aria-label={t('admin.categoryNameAr') || "Category Name (Arabic)"}
                         />
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.imageUrl')}
                         </label>
                         <input
@@ -136,10 +136,10 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             onChange={(e) => setImage(e.target.value)}
                             placeholder="https://example.com/image.jpg"
                             aria-label={t('admin.imageUrl') || "Image URL"}
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                         />
                         {image && (
-                            <div className="mt-2 relative aspect-video w-full rounded-2xl overflow-hidden border border-white/5 bg-white/[0.01]">
+                            <div className="mt-2 relative aspect-video w-full rounded-2xl overflow-hidden border border-white/5 bg-white/5">
                                 <img
                                     src={image}
                                     alt={t('admin.preview')}
@@ -153,10 +153,10 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[11px] font-semibold text-white/60 ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.featuredOnHomepage')}
                         </label>
-                        <div className="flex items-center gap-4 bg-white/[0.02] p-4 rounded-2xl border border-white/5">
+                        <div className="flex items-center gap-4 bg-white/2 p-4 rounded-2xl border border-white/5">
                             <button
                                 type="button"
                                 onClick={() => setIsFeatured(!isFeatured)}
@@ -167,14 +167,14 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                     className={`${isFeatured ? (dir === 'rtl' ? '-translate-x-6' : 'translate-x-6') : (dir === 'rtl' ? '-translate-x-1' : 'translate-x-1')} inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm`}
                                 />
                             </button>
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                            <span className="text-[11px] font-bold tracking-wider text-white">
                                 {isFeatured ? t('admin.featured') : t('admin.standard')}
                             </span>
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.description')}
                         </label>
                         <textarea
@@ -183,7 +183,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             placeholder={t('admin.describeCategory')}
                             rows={3}
                             aria-label={t('admin.description') || "Description"}
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
                         />
                     </div>
 
@@ -191,14 +191,14 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-6 py-4 rounded-2xl border border-white/5 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all"
+                            className="flex-1 px-6 py-4 rounded-2xl border border-white/5 text-white/60 font-semibold text-[11px] tracking-wider hover:bg-white/5 transition-all"
                         >
                             {t('admin.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="flex-[2] bg-accent text-white py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                            className="flex-2 bg-accent text-white py-4 rounded-2xl font-black uppercase tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {isSubmitting ? (
                                 <>

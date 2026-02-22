@@ -24,7 +24,7 @@ export default function CategoryList({ categories }: { categories: Category[] })
         <section className="py-24 bg-[#F8FAFC]">
             <div className="w-full px-4 md:px-[48px]">
                 <div className="flex flex-col items-center mb-16 relative">
-                    <h2 
+                    <h2
                         className="text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center"
                     >
                         {t('common.shopByCategory') || "SHOP BY CATEGORY"}
@@ -36,20 +36,17 @@ export default function CategoryList({ categories }: { categories: Category[] })
                         <Link
                             key={category.id}
                             href={`/collections/${category.slug}`}
-                            className={`group relative overflow-hidden bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 ${
-                                index === 0 ? 'md:col-span-2 md:row-span-2 aspect-[4/5] md:aspect-auto' : 'aspect-[4/5]'
-                            }`}
+                            className={`group relative overflow-hidden bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 ${index === 0 ? 'md:col-span-2 md:row-span-2 aspect-4/5 md:aspect-auto' : 'aspect-4/5'
+                                }`}
                         >
-                            {category.image && (
-                                <Image
-                                    src={category.image}
-                                    alt={isAr && category.nameAr ? category.nameAr : category.name}
-                                    fill
-                                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                                    sizes={index === 0 ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 33vw"}
-                                />
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                            <Image
+                                src={category.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80"}
+                                alt={isAr && category.nameAr ? category.nameAr : category.name}
+                                fill
+                                className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                                sizes={index === 0 ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 33vw"}
+                            />
+                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                             <div className="absolute inset-0 flex flex-col items-center justify-end p-8 text-center">
                                 <h3 className="text-2xl md:text-3xl font-sans font-black text-white uppercase tracking-tighter mb-4 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                                     {isAr && category.nameAr ? category.nameAr : category.name}

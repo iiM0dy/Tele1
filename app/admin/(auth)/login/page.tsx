@@ -4,7 +4,6 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLanguage } from "@/app/context/LanguageContext";
-import LanguageToggle from "@/components/LanguageToggle";
 import { MdPerson, MdLock, MdArrowBack } from "react-icons/md";
 import Link from "next/link";
 
@@ -51,18 +50,18 @@ export default function AdminLoginPage() {
             className="bg-[#202126] min-h-screen flex items-center justify-center p-6 text-white font-sans"
             dir={dir}
         >
-            <div className="absolute top-8 left-8 z-20">
-                <Link 
-                    href="/" 
+            <div className={`absolute top-8 ${isRtl ? 'right-8' : 'left-8'} z-20`}>
+                <Link
+                    href="/"
                     className="flex items-center gap-2 text-white/30 hover:text-white transition-all group"
                 >
-                    <MdArrowBack className="text-lg" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Back to Store</span>
+                    <MdArrowBack className={`text-lg ${isRtl ? 'rotate-180' : ''}`} />
+                    <span className="text-[11px] font-semibold tracking-wider">{t('admin.backToStore') || 'Back to Store'}</span>
                 </Link>
             </div>
 
             <div className="w-full max-w-[440px] z-10">
-                <div className="bg-white/[0.02] rounded-3xl border border-white/5 p-10 md:p-12 shadow-2xl">
+                <div className="bg-white/2 rounded-3xl border border-white/5 p-10 md:p-12 shadow-2xl">
                     {/* Header */}
                     <div className="flex flex-col items-center mb-10 text-center">
                         <div className="mb-6">
@@ -70,8 +69,8 @@ export default function AdminLoginPage() {
                                 TELE1<span className="text-accent">.</span>
                             </span>
                         </div>
-                        <h1 className="text-white/60 text-[10px] font-black tracking-[0.3em] uppercase">
-                            Admin Login
+                        <h1 className="text-white/60 text-[11px] font-semibold tracking-wider">
+                            {t('admin.login.title') || 'Admin Access Portal'}
                         </h1>
                     </div>
 
@@ -86,7 +85,7 @@ export default function AdminLoginPage() {
                         {/* Username Field */}
                         <div className="space-y-2">
                             <label
-                                className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 block ml-1"
+                                className={`text-[11px] font-semibold tracking-wider text-white/20 block ${isRtl ? 'mr-1' : 'ml-1'}`}
                                 htmlFor="username"
                             >
                                 {t("admin.login.username")}
@@ -96,7 +95,7 @@ export default function AdminLoginPage() {
                                     <MdPerson className="text-[18px]" />
                                 </span>
                                 <input
-                                    className={`w-full ${inputPadding} py-4 bg-white/[0.01] border border-white/5 rounded-2xl focus:border-accent/30 text-white placeholder:text-white/5 transition-all outline-none text-sm font-medium`}
+                                    className={`w-full ${inputPadding} py-4 bg-white/1 border border-white/5 rounded-2xl focus:border-accent/30 text-white placeholder:text-white/5 transition-all outline-none text-sm font-medium`}
                                     id="username"
                                     placeholder={t("admin.login.usernamePlaceholder")}
                                     type="text"
@@ -110,7 +109,7 @@ export default function AdminLoginPage() {
                         {/* Password Field */}
                         <div className="space-y-2">
                             <label
-                                className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 block ml-1"
+                                className={`text-[11px] font-semibold tracking-wider text-white/20 block ${isRtl ? 'mr-1' : 'ml-1'}`}
                                 htmlFor="password"
                             >
                                 {t("admin.login.password")}
@@ -120,7 +119,7 @@ export default function AdminLoginPage() {
                                     <MdLock className="text-[18px]" />
                                 </span>
                                 <input
-                                    className={`w-full ${inputPadding} py-4 bg-white/[0.01] border border-white/5 rounded-2xl focus:border-accent/30 text-white placeholder:text-white/5 transition-all outline-none text-sm font-medium`}
+                                    className={`w-full ${inputPadding} py-4 bg-white/1 border border-white/5 rounded-2xl focus:border-accent/30 text-white placeholder:text-white/5 transition-all outline-none text-sm font-medium`}
                                     id="password"
                                     placeholder={t("admin.login.passwordPlaceholder")}
                                     type="password"
@@ -140,7 +139,7 @@ export default function AdminLoginPage() {
                                     checked={rememberMe}
                                     onChange={(e) => setRememberMe(e.target.checked)}
                                 />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-white/20 group-hover/check:text-white/40 transition-colors">
+                                <span className="text-[11px] font-semibold tracking-widest text-white/20 group-hover/check:text-white/40 transition-colors">
                                     {t("admin.login.rememberMe")}
                                 </span>
                             </label>
@@ -148,7 +147,7 @@ export default function AdminLoginPage() {
 
                         {/* Submit Button */}
                         <button
-                            className="w-full h-[56px] bg-accent hover:bg-black hover:text-white text-black font-black rounded-2xl transition-all transform active:scale-[0.98] mt-2 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-[11px]"
+                            className="w-full h-[56px] bg-accent hover:opacity-90 text-white font-black rounded-2xl transition-all transform active:scale-[0.98] mt-2 disabled:opacity-50 disabled:cursor-not-allowed tracking-wider text-[12px]"
                             type="submit"
                             disabled={loading}
                         >

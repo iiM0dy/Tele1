@@ -61,10 +61,10 @@ export default function UsersClient({ users }: { users: User[] }) {
                 <div className="max-w-[1200px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div className="">
-                            <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
+                            <h2 className="text-2xl font-black text-white tracking-tight">
                                 {t('admin.systemUsers')}
-                            </h3>
-                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            </h2>
+                            <p className="text-white/60 mt-2 tracking-wider text-[11px] font-semibold">
                                 {t('admin.manageSubAdmins')}
                             </p>
                         </div>
@@ -73,7 +73,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                 setSelectedUser(null);
                                 setIsModalOpen(true);
                             }}
-                            className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                            className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
                             aria-label={t('admin.addNewUser') || "Add new user"}
                         >
                             <MdPersonAdd className="text-xl" />
@@ -90,31 +90,31 @@ export default function UsersClient({ users }: { users: User[] }) {
                         user={selectedUser}
                     />
 
-                    <div className="bg-white/[0.02] rounded-[2.5rem] border border-white/5 overflow-hidden">
+                    <div className="bg-white/2 rounded-[2.5rem] border border-white/5 overflow-hidden">
                         <div className="overflow-x-auto scrollbar-hide">
                             <table className="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
-                                    <tr className="border-b border-white/5 bg-white/[0.01]">
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.username')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.role')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.permissionsSummary')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.createdAt')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
+                                    <tr className="border-b border-white/5 bg-white/1">
+                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.username')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.role')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.permissionsSummary')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.createdAt')}</th>
+                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
                                     {users.map((user) => (
-                                        <tr key={user.id} className="group hover:bg-white/[0.02] transition-colors">
+                                        <tr key={user.id} className="group hover:bg-white/2 transition-colors">
                                             <td className="p-6">
                                                 <div className="flex items-center gap-4">
                                                     <div className="size-10 bg-accent/10 rounded-full flex items-center justify-center text-accent font-black text-xs border border-accent/20">
                                                         {user.username.charAt(0).toUpperCase()}
                                                     </div>
-                                                    <p className="font-black text-white text-[10px] uppercase tracking-[0.2em]">{user.username}</p>
+                                                    <p className="font-semibold text-white text-[11px] tracking-wider">{user.username}</p>
                                                 </div>
                                             </td>
                                             <td className="p-6">
-                                                <span className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] border ${user.role === 'SUPER_ADMIN'
+                                                <span className={`px-3 py-1.5 rounded-xl text-[10px] font-semibold tracking-wider border ${user.role === 'SUPER_ADMIN'
                                                     ? 'bg-accent text-white border-accent'
                                                     : 'bg-accent/10 text-accent border-accent/20'
                                                     }`}>
@@ -124,18 +124,18 @@ export default function UsersClient({ users }: { users: User[] }) {
                                             <td className="p-6">
                                                 <div className="flex flex-wrap gap-2">
                                                     {user.role === 'SUPER_ADMIN' ? (
-                                                        <span className="text-[9px] font-black text-white/60 uppercase tracking-[0.2em]">{t('admin.unlimitedAccess')}</span>
+                                                        <span className="text-[10px] font-semibold text-white/60 tracking-wider">{t('admin.unlimitedAccess')}</span>
                                                     ) : (
                                                         <>
-                                                            {user.canManageProducts && <span className="text-[9px] font-black bg-white/[0.05] px-2.5 py-1 rounded-lg text-white/60 uppercase tracking-[0.2em] border border-white/5">{t('admin.products')}{!user.canDeleteProducts && " (No Delete)"}</span>}
-                                                            {user.canManageCategories && <span className="text-[9px] font-black bg-white/[0.05] px-2.5 py-1 rounded-lg text-white/60 uppercase tracking-[0.2em] border border-white/5">{t('admin.categories')}{!user.canDeleteCategories && " (No Delete)"}</span>}
-                                                            {user.canManageBanners && <span className="text-[9px] font-black bg-white/[0.05] px-2.5 py-1 rounded-lg text-white/60 uppercase tracking-[0.2em] border border-white/5">{t('admin.banners')}{!user.canDeleteBanners && " (No Delete)"}</span>}
-                                                            {user.canManageOrders && <span className="text-[9px] font-black bg-white/[0.05] px-2.5 py-1 rounded-lg text-white/60 uppercase tracking-[0.2em] border border-white/5">{t('admin.orders')}{!user.canDeleteOrders && " (No Delete)"}</span>}
+                                                            {user.canManageProducts && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.products')}{!user.canDeleteProducts && " (No Delete)"}</span>}
+                                                            {user.canManageCategories && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.categories')}{!user.canDeleteCategories && " (No Delete)"}</span>}
+                                                            {user.canManageBanners && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.banners')}{!user.canDeleteBanners && " (No Delete)"}</span>}
+                                                            {user.canManageOrders && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.orders')}{!user.canDeleteOrders && " (No Delete)"}</span>}
                                                         </>
                                                     )}
                                                 </div>
                                             </td>
-                                            <td className="p-6 text-[11px] font-black text-white/60 tracking-wider">
+                                            <td className="p-6 text-[11px] font-semibold text-white/60 tracking-wider">
                                                 {new Date(user.createdAt).toLocaleDateString()}
                                             </td>
                                             <td className="p-6">

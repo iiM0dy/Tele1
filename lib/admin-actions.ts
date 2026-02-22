@@ -186,7 +186,7 @@ export async function getAdminProductStats() {
             ]);
             return { total, outOfStock, lowStock, categories: categoriesCount, bestSellers, trending };
         } catch (retryError) {
-             return {
+            return {
                 total: 0,
                 outOfStock: 0,
                 lowStock: 0,
@@ -276,7 +276,7 @@ export async function getAdminProducts({
 } = {}) {
     try {
         const skip = (page - 1) * limit;
-        
+
         // Build where clause
         const where: any = {};
 
@@ -450,7 +450,7 @@ export async function getAdminCategories(page = 1, limit = 500) {
             }),
             prisma.category.count()
         ]);
-        
+
         return {
             categories: categories.map(category => ({
                 ...category,
@@ -559,7 +559,7 @@ export async function createProduct(data: ProductInput) {
 
     try {
         let slug = data.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        
+
         const existingWithSlug = await prisma.product.findUnique({
             where: { slug }
         });
@@ -629,7 +629,7 @@ export async function updateProduct(id: string, data: ProductInput & { isTrendin
 
     try {
         let slug = data.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        
+
         const slugConflict = await prisma.product.findFirst({
             where: {
                 slug: slug,
@@ -1150,7 +1150,7 @@ export async function getCategoriesForCleanup() {
 
 export async function bulkFixCategoryNames(mapping: { id: string, newName: string }[]) {
     try {
-        await Promise.all(mapping.map(item => 
+        await Promise.all(mapping.map(item =>
             prisma.category.update({
                 where: { id: item.id },
                 data: { name: item.newName }
@@ -1166,58 +1166,123 @@ export async function bulkFixCategoryNames(mapping: { id: string, newName: strin
 }
 
 export async function bulkCreateProducts(products: any[]) {
-    // const session = await getServerSession(authOptions);
-    // if (!session || (session.user.role !== 'SUPER_ADMIN' && !session.user.canManageProducts)) {
-    //     return { success: false, error: "Unauthorized" };
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user.role !== "SUPER_ADMIN" && !session.user.canManageProducts)) {
+        return { success: false, error: "Unauthorized" };
+    }
 
     try {
-        const categories = await prisma.category.findMany();
-        const categoryMap = new Map(categories.map(c => [c.name.toLowerCase(), c.id]));
+        const categories = await prisma.category.findMany({ include: { subCategories: true } });
+        const categoryMap = new Map(categories.map((c) => [c.name.toLowerCase(), c]));
 
-        const results = await Promise.all(products.map(async (p) => {
-            const categoryName = (p.Category || 'Uncategorized').toLowerCase();
-            let categoryId = categoryMap.get(categoryName);
+        const results = [];
+        for (const p of products) {
+            const categoryName = (p.Category || "Uncategorized").toString().trim();
+            const categoryNameLower = categoryName.toLowerCase();
+            let category = categoryMap.get(categoryNameLower);
 
-            if (!categoryId) {
-                const newCat = await prisma.category.create({
-                    data: { name: p.Category || 'Uncategorized' }
+            if (!category) {
+                category = await prisma.category.create({
+                    data: { name: categoryName },
+                    include: { subCategories: true },
                 });
-                categoryMap.set(categoryName, newCat.id);
-                categoryId = newCat.id;
+                categoryMap.set(categoryNameLower, category);
+            }
+
+            let subCategoryId: string | null = null;
+            if (p.SubCategory) {
+                const subCatName = p.SubCategory.toString().trim();
+                const subCatNameLower = subCatName.toLowerCase();
+                let subCat = category.subCategories.find((sc) => sc.name.toLowerCase() === subCatNameLower);
+
+                if (!subCat) {
+                    subCat = await prisma.subCategory.create({
+                        data: {
+                            name: subCatName,
+                            slug:
+                                subCatNameLower.replace(/ /g, "-") +
+                                "-" +
+                                Math.random().toString(36).substr(2, 5),
+                            categoryId: category.id,
+                            image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800",
+                        },
+                    });
+                    category.subCategories.push(subCat);
+                }
+                subCategoryId = subCat.id;
             }
 
             // Merge images
-            const mainImages = (p.Images || "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800").split(',').map((s: string) => s.trim()).filter(Boolean);
-            const s1 = p.supImage1 || p["Supplemental Image 1"];
-            const s2 = p.supImage2 || p["Supplemental Image 2"];
+            const imageStr = (
+                p.Images || "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800"
+            ).toString();
+            const mainImages = imageStr
+                .split(",")
+                .map((s: string) => s.trim())
+                .filter(Boolean);
+
+            const s1 = (p.supImage1 || p["Supplemental Image 1"])?.toString();
+            const s2 = (p.supImage2 || p["Supplemental Image 2"])?.toString();
             if (s1 && !mainImages.includes(s1)) mainImages.push(s1);
             if (s2 && !mainImages.includes(s2)) mainImages.push(s2);
 
-            return prisma.product.create({
+            const product = await prisma.product.create({
                 data: {
-                    Name: p.Name,
-                    slug: p.Name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + '-' + Math.random().toString(36).substr(2, 5),
-                    description: p.Description || "",
-                    Price: parseFloat(p.Price || "0"),
-                    Stock: parseInt(p.Stock || "0"),
-                    SKU: p.SKU || "",
-                    Images: mainImages.join(','),
-                    supImage1: null,
-                    supImage2: null,
-                    Category: categoryId,
-                    IsTrending: p["Is Trending"] === "Yes",
-                    BestSeller: p["Best Seller"] === "Yes"
-                }
+                    Name: p.Name?.toString() || "Unnamed Product",
+                    slug:
+                        (p.Name?.toString() || "unnamed")
+                            .toLowerCase()
+                            .replace(/ /g, "-")
+                            .replace(/[^\w-]+/g, "") +
+                        "-" +
+                        Math.random().toString(36).substr(2, 5),
+                    description: p.Description?.toString() || "",
+                    Price: typeof p.Price === 'number' ? p.Price : parseFloat(p.Price?.toString() || "0"),
+                    Stock: typeof p.Stock === 'number' ? p.Stock : parseInt(p.Stock?.toString() || "0"),
+                    SKU: p.SKU?.toString() || "",
+                    Images: mainImages.join(","),
+                    Category: category.id,
+                    subCategoryId: subCategoryId,
+                    IsTrending:
+                        p.IsTrending === true ||
+                        p.IsTrending === "Yes" ||
+                        p["Is Trending"] === "Yes" ||
+                        p["Trending"] === "Yes",
+                    BestSeller:
+                        p.BestSeller === true ||
+                        p.BestSeller === "Yes" ||
+                        p["Best Seller"] === "Yes" ||
+                        p["الأكثر مبيعاً"] === "Yes" ||
+                        p["الأكثر مبيعا"] === "Yes",
+                    discountPrice: p.DiscountPrice
+                        ? typeof p.DiscountPrice === "number"
+                            ? p.DiscountPrice
+                            : parseFloat(p.DiscountPrice.toString())
+                        : p.DiscountType === "PERCENTAGE" && p.DiscountValue && p.Price
+                            ? parseFloat(p.Price.toString()) -
+                            (parseFloat(p.Price.toString()) * parseFloat(p.DiscountValue.toString())) /
+                            100
+                            : p.DiscountType === "FIXED" && p.DiscountValue
+                                ? parseFloat(p.DiscountValue.toString())
+                                : null,
+                    discountType: p.DiscountType?.toString() || null,
+                    discountValue: p.DiscountValue
+                        ? typeof p.DiscountValue === "number"
+                            ? p.DiscountValue
+                            : parseFloat(p.DiscountValue.toString())
+                        : null,
+                    badge: p.Badge?.toString() || null,
+                },
             });
-        }));
+            results.push(product);
+        }
 
-        revalidatePath('/admin/products');
-        revalidatePath('/');
+        revalidatePath("/admin/products");
+        revalidatePath("/");
         return { success: true, count: results.length };
     } catch (error) {
         console.error("Bulk import failed:", error);
-        return { success: false, error: "Failed to import products. Check CSV format." };
+        return { success: false, error: "Failed to import products. Check file format." };
     }
 }
 
@@ -1642,7 +1707,7 @@ export async function getSiteSettings() {
         const settings = await prisma.settings.findUnique({
             where: { id: "site-settings" }
         });
-        
+
         if (!settings) {
             return {
                 id: "site-settings",
@@ -1677,7 +1742,7 @@ export async function getSiteSettings() {
                 updatedAt: new Date(),
             };
         }
-        
+
         return settings;
     } catch (error) {
         console.error("Failed to fetch site settings:", error);
@@ -1736,9 +1801,9 @@ export async function updateSiteSettings(data: {
         return { success: true };
     } catch (error) {
         console.error("Failed to update site settings:", error);
-        return { 
-            success: false, 
-            error: error instanceof Error ? error.message : "Failed to update settings" 
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : "Failed to update settings"
         };
     }
 }
@@ -1878,8 +1943,8 @@ export async function bulkDeleteProducts(ids: string[]) {
 
         if (idsWithOrders.size > 0) {
             const names = productsWithOrders.map(p => p.Name).join(", ");
-            return { 
-                success: true, 
+            return {
+                success: true,
                 partial: true,
                 count: idsToDelete.length,
                 names
@@ -1925,8 +1990,8 @@ export async function bulkDeleteCategories(ids: string[]) {
 
         if (idsWithProducts.size > 0) {
             const names = categoriesWithProducts.map(c => c.name).join(", ");
-            return { 
-                success: true, 
+            return {
+                success: true,
                 partial: true,
                 count: idsToDelete.length,
                 names

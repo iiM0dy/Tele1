@@ -135,8 +135,8 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
         const isParentChecked = dependsOn ? (formData as any)[dependsOn] : true;
 
         return (
-            <label className={`flex items-center gap-3 p-3 rounded-2xl border transition-all cursor-pointer ${!isParentChecked ? 'opacity-40 cursor-not-allowed bg-white/[0.01] border-transparent' :
-                isChecked ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-white/[0.02] border-white/5 text-white/40'
+            <label className={`flex items-center gap-3 p-3 rounded-2xl border transition-all cursor-pointer ${!isParentChecked ? 'opacity-40 cursor-not-allowed bg-white/1 border-transparent' :
+                isChecked ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-white/2 border-white/5 text-white/40'
                 }`}>
                 <input
                     type="checkbox"
@@ -145,58 +145,58 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
                     onChange={(e) => handlePermissionChange(name, e.target.checked)}
                     className="rounded border-white/10 bg-white/5 text-accent focus:ring-accent size-4 cursor-pointer"
                 />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em]">{label}</span>
+                <span className="text-[11px] font-semibold tracking-wider">{label}</span>
             </label>
         );
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
-            <div className="relative w-full max-w-2xl bg-[#202126] rounded-[2.5rem] shadow-2xl border border-white/5 overflow-hidden animate-in zoom-in-95 duration-200">
-                <div className="p-8 max-h-[90vh] overflow-y-auto">
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h2 className="text-2xl font-black text-white uppercase tracking-[0.2em]">
-                                {user ? t('admin.editUserPermissions') : t('admin.addNewSubAdmin')}
-                            </h2>
-                            <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.2em] mt-1">
-                                {user ? t('admin.updatingAccess').replace('{username}', user.username) : t('admin.createAccount')}
-                            </p>
-                        </div>
-                        <button 
-                            onClick={onClose} 
-                            className="p-3 text-white/40 hover:text-white hover:bg-white/10 rounded-2xl transition-all"
-                        >
-                            <MdClose className="text-2xl" />
-                        </button>
+            <div className="relative bg-[#202126] w-full max-w-2xl rounded-4xl shadow-2xl border border-white/5 overflow-hidden flex flex-col max-h-[90vh]">
+                <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
+                    <div>
+                        <h2 className="text-2xl font-black text-white tracking-tight">
+                            {user ? t('admin.editUserPermissions') : t('admin.addNewSubAdmin')}
+                        </h2>
+                        <p className="text-white/40 text-[11px] font-semibold tracking-wider mt-1">
+                            {user ? t('admin.updatingAccess').replace('{username}', user.username) : t('admin.createAccount')}
+                        </p>
                     </div>
+                    <button
+                        onClick={onClose}
+                        className="p-3 text-white/40 hover:text-white hover:bg-white/10 rounded-2xl transition-all"
+                    >
+                        <MdClose className="text-2xl" />
+                    </button>
+                </div>
 
+                <div className="p-8 overflow-y-auto scrollbar-hide">
                     <form onSubmit={handleSubmit} className="space-y-8">
                         {/* Basic Info */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label htmlFor="username" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.username')}</label>
+                                <label htmlFor="username" className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.username')}</label>
                                 <input
                                     id="username"
                                     required
                                     type="text"
                                     value={formData.username}
                                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                                    className={`w-full px-4 py-3 bg-white/[0.02] border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder:text-white/40`}
+                                    className={`w-full px-4 py-3 bg-white/2 border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black text-white placeholder:text-white/40`}
                                     placeholder="e.g. jessica_editor"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label htmlFor="password" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                    {user ? t('admin.newPasswordOptional') : t('admin.password')}
+                                <label htmlFor="password" className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                                    {t('admin.password')} {user && `(${t('admin.leaveBlankToKeep')})`}
                                 </label>
                                 <input
                                     id="password"
                                     type="password"
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className={`w-full px-4 py-3 bg-white/[0.02] border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder:text-white/40`}
+                                    className={`w-full px-4 py-3 bg-white/2 border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black text-white placeholder:text-white/40`}
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -204,61 +204,61 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
 
                         {/* Role Selection */}
                         <div className="space-y-4">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.accountRole')}</label>
+                            <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.accountRole')}</label>
                             <div className="grid grid-cols-2 gap-4">
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, role: 'ADMIN' })}
-                                    className={`p-5 rounded-3xl border ${dir === 'rtl' ? 'text-right' : 'text-left'} transition-all ${formData.role === 'ADMIN' ? 'border-accent bg-accent/10' : 'border-white/5 bg-white/[0.02] hover:border-white/20'}`}
+                                    className={`p-5 rounded-3xl border ${dir === 'rtl' ? 'text-right' : 'text-left'} transition-all ${formData.role === 'ADMIN' ? 'border-accent bg-accent/10' : 'border-white/5 bg-white/2 hover:border-white/2'}`}
                                 >
-                                    <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${formData.role === 'ADMIN' ? 'text-accent' : 'text-white'}`}>{t('admin.subAdminDefault')}</p>
-                                    <p className="text-[9px] font-black text-white/30 mt-1 uppercase tracking-[0.2em]">{t('admin.limitedAccess')}</p>
+                                    <p className={`text-[11px] font-semibold tracking-wider ${formData.role === 'ADMIN' ? 'text-accent' : 'text-white'}`}>{t('admin.subAdminDefault')}</p>
+                                    <p className="text-[10px] font-semibold text-white/30 mt-1 tracking-wider">{t('admin.limitedAccess')}</p>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, role: 'SUPER_ADMIN' })}
-                                    className={`p-5 rounded-3xl border ${dir === 'rtl' ? 'text-right' : 'text-left'} transition-all ${formData.role === 'SUPER_ADMIN' ? 'border-accent bg-accent/10' : 'border-white/5 bg-white/[0.02] hover:border-white/20'}`}
+                                    className={`p-5 rounded-3xl border ${dir === 'rtl' ? 'text-right' : 'text-left'} transition-all ${formData.role === 'SUPER_ADMIN' ? 'border-accent bg-accent/10' : 'border-white/5 bg-white/2 hover:border-white/2'}`}
                                 >
-                                    <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${formData.role === 'SUPER_ADMIN' ? 'text-accent' : 'text-white'}`}>{t('admin.superAdminRole')}</p>
-                                    <p className="text-[9px] font-black text-white/30 mt-1 uppercase tracking-[0.2em]">{t('admin.fullAccess')}</p>
+                                    <p className={`text-[11px] font-semibold tracking-wider ${formData.role === 'SUPER_ADMIN' ? 'text-accent' : 'text-white'}`}>{t('admin.superAdminRole')}</p>
+                                    <p className="text-[10px] font-semibold text-white/30 mt-1 tracking-wider">{t('admin.fullAccess')}</p>
                                 </button>
                             </div>
                         </div>
 
                         {/* Granular Permissions */}
                         {formData.role !== 'SUPER_ADMIN' && (
-                            <div className="space-y-6 bg-white/[0.02] p-8 rounded-[2rem] border border-white/5">
+                            <div className="space-y-6 bg-white/2 p-8 rounded-4xl border border-white/5">
                                 <div>
-                                    <h3 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">{t('admin.permissionsChecklist')}</h3>
+                                    <h3 className="text-[11px] font-semibold text-white tracking-wider mb-6">{t('admin.permissionsChecklist')}</h3>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                         <div className="space-y-3">
-                                            <p className={`text-[9px] font-black text-white/30 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.products')}</p>
+                                            <p className={`text-[10px] font-semibold text-white/30 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.products')}</p>
                                             <PermissionCheckbox name="canManageProducts" label={t('admin.canCreateEdit').replace('{resource}', t('admin.products'))} />
                                             <PermissionCheckbox name="canDeleteProducts" label={t('admin.canDelete').replace('{resource}', t('admin.products'))} dependsOn="canManageProducts" />
                                         </div>
 
                                         <div className="space-y-3">
-                                            <p className={`text-[9px] font-black text-white/30 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.categories')}</p>
+                                            <p className={`text-[11px] font-semibold text-white/30 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.categories')}</p>
                                             <PermissionCheckbox name="canManageCategories" label={t('admin.canCreateEdit').replace('{resource}', t('admin.categories'))} />
                                             <PermissionCheckbox name="canDeleteCategories" label={t('admin.canDelete').replace('{resource}', t('admin.categories'))} dependsOn="canManageCategories" />
                                         </div>
 
                                         <div className="space-y-3">
-                                            <p className={`text-[9px] font-black text-white/30 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.banners')}</p>
-                                            <PermissionCheckbox name="canManageBanners" label={t('admin.canManage').replace('{resource}', t('admin.banners'))} />
+                                            <p className={`text-[11px] font-semibold text-white/30 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.banners')}</p>
+                                            <PermissionCheckbox name="canManageBanners" label={t('admin.canCreateEdit').replace('{resource}', t('admin.banners'))} />
                                             <PermissionCheckbox name="canDeleteBanners" label={t('admin.canDelete').replace('{resource}', t('admin.banners'))} dependsOn="canManageBanners" />
                                         </div>
 
                                         <div className="space-y-3">
-                                            <p className={`text-[9px] font-black text-white/30 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.orders')}</p>
-                                            <PermissionCheckbox name="canManageOrders" label={t('admin.canViewProcess').replace('{resource}', t('admin.orders'))} />
+                                            <p className={`text-[11px] font-semibold text-white/30 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.orders')}</p>
+                                            <PermissionCheckbox name="canManageOrders" label={t('admin.canCreateEdit').replace('{resource}', t('admin.orders'))} />
                                             <PermissionCheckbox name="canDeleteOrders" label={t('admin.canDelete').replace('{resource}', t('admin.orders'))} dependsOn="canManageOrders" />
                                         </div>
 
                                         <div className="space-y-3">
-                                            <p className={`text-[9px] font-black text-white/30 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.promoCodes')}</p>
-                                            <PermissionCheckbox name="canManagePromoCodes" label={t('admin.canManage').replace('{resource}', t('admin.promoCodes'))} />
+                                            <p className={`text-[11px] font-semibold text-white/30 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.promoCodes')}</p>
+                                            <PermissionCheckbox name="canManagePromoCodes" label={t('admin.canCreateEdit').replace('{resource}', t('admin.promoCodes'))} />
                                             <PermissionCheckbox name="canDeletePromoCodes" label={t('admin.canDelete').replace('{resource}', t('admin.promoCodes'))} dependsOn="canManagePromoCodes" />
                                         </div>
                                     </div>
@@ -266,24 +266,21 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
                             </div>
                         )}
 
-                        <div className="flex gap-4 pt-4">
+                        <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 px-8 py-5 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-white/10 transition-all"
+                                className="px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-all"
                             >
                                 {t('admin.cancel')}
                             </button>
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="flex-1 px-8 py-5 bg-accent text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="px-10 py-4 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-accent/80 transition-all flex items-center gap-2 shadow-xl shadow-accent/10 disabled:opacity-50"
                             >
-                                {isSubmitting ? (
-                                    <MdSync className="animate-spin text-lg" />
-                                ) : (
-                                    user ? t('admin.updateUser') : t('admin.createUser')
-                                )}
+                                {isSubmitting ? <MdSync className="text-lg animate-spin" /> : null}
+                                {user ? t('admin.update') : t('admin.create')}
                             </button>
                         </div>
                     </form>

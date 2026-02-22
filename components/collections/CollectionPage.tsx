@@ -12,8 +12,8 @@ import FilterDrawer from './FilterDrawer';
 import ProductCardSkeleton from './ProductCardSkeleton';
 
 const ProductCard = dynamic(() => import('./ProductCard'), {
-  loading: () => <ProductCardSkeleton />,
-  ssr: true
+    loading: () => <ProductCardSkeleton />,
+    ssr: true
 });
 
 export interface Product {
@@ -76,7 +76,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                             <Link href={`/collections/${categorySlug}/${sub.slug}`} key={sub.id} className="group block">
                                 <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4">
                                     <Image
-                                        src={sub.image || '/placeholder.png'}
+                                        src={sub.image || 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80'}
                                         alt={sub.name}
                                         fill
                                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -145,7 +145,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                         <div className="flex items-center gap-4">
                             {/* Mobile Layout Switcher */}
                             <div className="collection-toolbar__layout-switch-list md:hidden flex items-center gap-2">
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setLayout('large')}
                                     className={`collection-toolbar__button p-1 transition-colors ${layout === 'large' ? 'is-active text-primary' : 'text-zinc-300'}`}
@@ -155,7 +155,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                         <path fill="currentColor" d="M0 0h18v18H0z" />
                                     </svg>
                                 </button>
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setLayout('medium')}
                                     className={`collection-toolbar__button p-1 transition-colors ${layout === 'medium' ? 'is-active text-primary' : 'text-zinc-300'}`}
@@ -169,7 +169,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
 
                             {/* Desktop Layout Switcher */}
                             <div className="collection-toolbar__layout-switch-list hidden md:flex items-center gap-2">
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setLayout('large')}
                                     className={`collection-toolbar__button p-1 transition-colors ${layout === 'large' ? 'is-active text-black' : 'text-zinc-300'}`}
@@ -179,7 +179,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                         <path fill="currentColor" d="M0 0h8v8H0zM0 10h8v8H0zM10 0h8v8h-8zM10 10h8v8h-8z" />
                                     </svg>
                                 </button>
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setLayout('medium')}
                                     className={`collection-toolbar__button p-1 transition-colors ${layout === 'medium' ? 'is-active text-black' : 'text-zinc-300'}`}
@@ -189,7 +189,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                         <path fill="currentColor" d="M0 0h4v4H0zM0 7h4v4H0zM0 14h4v4H0zM7 0h4v4H7zM7 7h4v4H7zM7 14h4v4H7zM14 0h4v4h-4zM14 7h4v4h-4zM14 14h4v4h-4z" />
                                     </svg>
                                 </button>
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setLayout('compact')}
                                     className={`collection-toolbar__button p-1 transition-colors ${layout === 'compact' ? 'is-active text-primary' : 'text-zinc-300'}`}
@@ -203,9 +203,9 @@ export default function CollectionPage({ products, collectionName, collectionNam
                         </div>
 
                         {/* Filter & Sort (Moved to Right) */}
-                        <div className="flex items-center divide-x divide-zinc-100 flex-grow md:flex-grow-0 justify-end">
+                        <div className="flex items-center divide-x divide-zinc-100 grow md:grow-0 justify-end">
                             <div className="collection-toolbar__button-container relative flex-1 md:flex-none pr-8">
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setIsSortOpen(!isSortOpen)}
                                     className="flex items-center justify-center md:justify-start gap-2 text-[11px] font-bold uppercase tracking-widest hover:text-zinc-500 transition-colors w-full collection-toolbar__button heading text-xxs"
@@ -251,8 +251,8 @@ export default function CollectionPage({ products, collectionName, collectionNam
                             </div>
 
                             <div className="collection-toolbar__button-container flex-1 md:flex-none pl-8">
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={() => setIsFilterOpen(true)}
                                     className="text-[11px] font-bold uppercase tracking-widest hover:text-zinc-500 transition-colors w-full text-center md:text-left collection-toolbar__button heading text-xxs"
                                 >
@@ -264,22 +264,22 @@ export default function CollectionPage({ products, collectionName, collectionNam
                 </div>
             </div>
 
-            <FilterDrawer 
-                isOpen={isFilterOpen} 
-                onClose={() => setIsFilterOpen(false)} 
-                onApply={(newFilters) => setFilters(newFilters)} 
+            <FilterDrawer
+                isOpen={isFilterOpen}
+                onClose={() => setIsFilterOpen(false)}
+                onApply={(newFilters) => setFilters(newFilters)}
             />
 
             {/* Product Grid */}
-            <div className="flex-grow pt-16 pb-24">
+            <div className="grow pt-16 pb-24">
                 <div className="container mx-auto px-4 md:px-6">
                     {processedProducts.length > 0 ? (
                         <>
                             <div className={`grid ${getGridCols()} gap-x-4 gap-y-12 md:gap-x-6 md:gap-y-16`}>
                                 {processedProducts.map((product, index) => (
-                                    <ProductCard 
-                                        key={product.id} 
-                                        product={product} 
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
                                         hideInfo={layout === 'compact'}
                                         index={index}
                                         layout={layout}
@@ -292,7 +292,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                 <div className="mt-24 flex justify-center">
                                     <nav className="pagination flex items-center gap-4" role="navigation" aria-label="Pagination navigation">
                                         {currentPage > 1 ? (
-                                            <Link 
+                                            <Link
                                                 href={`/collections/${categorySlug || 'all'}?page=${currentPage - 1}`}
                                                 className="pagination__link h6 flex items-center justify-center w-10 h-10 border border-zinc-100 hover:bg-zinc-50 transition-colors"
                                                 aria-label="Go to previous page"
@@ -305,15 +305,15 @@ export default function CollectionPage({ products, collectionName, collectionNam
 
                                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                                             page === currentPage ? (
-                                                <span 
+                                                <span
                                                     key={page}
-                                                    className="pagination__link pagination__link--disabled h6 flex items-center justify-center w-10 h-10 bg-accent text-white font-bold text-[11px] uppercase tracking-widest rounded-lg" 
+                                                    className="pagination__link pagination__link--disabled h6 flex items-center justify-center w-10 h-10 bg-accent text-white font-bold text-[11px] uppercase tracking-widest rounded-lg"
                                                     aria-current="page"
                                                 >
                                                     {page}
                                                 </span>
                                             ) : (
-                                                <Link 
+                                                <Link
                                                     key={page}
                                                     href={`/collections/${categorySlug || 'all'}?page=${page}`}
                                                     className="pagination__link h6 flex items-center justify-center w-10 h-10 border border-zinc-100 hover:bg-accent/5 transition-colors text-[11px] font-bold uppercase tracking-widest text-zinc-400 hover:text-accent rounded-lg"
@@ -325,7 +325,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                         ))}
 
                                         {currentPage < totalPages ? (
-                                            <Link 
+                                            <Link
                                                 href={`/collections/${categorySlug || 'all'}?page=${currentPage + 1}`}
                                                 className="pagination__link h6 flex items-center justify-center w-10 h-10 border border-zinc-100 hover:bg-accent/5 transition-colors rounded-lg"
                                                 aria-label={`Go to page ${currentPage + 1}`}

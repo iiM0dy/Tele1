@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { 
-    MdDashboard, 
-    MdShoppingBag, 
-    MdCategory, 
-    MdViewCarousel, 
-    MdInventory2, 
-    MdLocalOffer, 
-    MdEditNote, 
-    MdGroup, 
+import {
+    MdDashboard,
+    MdShoppingBag,
+    MdCategory,
+    MdViewCarousel,
+    MdInventory2,
+    MdLocalOffer,
+    MdEditNote,
+    MdGroup,
     MdSettings,
     MdClose,
     MdLogout,
@@ -71,7 +71,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                                 <h1 className="text-white text-2xl font-black tracking-tighter leading-tight">
                                     TELE1<span className="text-accent">.</span>
                                 </h1>
-                                <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-white/60 text-[11px] font-semibold tracking-wider">
                                     {t('admin.adminPanel')}
                                 </p>
                             </div>
@@ -104,14 +104,14 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                                         onClick={onClose}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
                                             ? "bg-accent text-white"
-                                            : "text-white/60 hover:bg-white/[0.03] hover:text-white"
+                                            : "text-white/60 hover:bg-white/3 hover:text-white"
                                             } group`}
                                     >
                                         <item.icon
                                             className={`text-xl ${isActive ? "text-white" : "text-white/40 group-hover:text-accent transition-colors"}`}
                                         />
                                         <p
-                                            className={`text-[11px] uppercase tracking-[0.15em] leading-normal ${isActive ? "font-black" : "font-bold"
+                                            className={`text-[11px] leading-normal ${isActive ? "font-black" : "font-bold"
                                                 }`}
                                         >
                                             {item.label}
@@ -125,7 +125,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                     {/* Bottom Actions */}
                     <div className="flex flex-col gap-3 pt-6 border-t border-white/5">
                         <div className="flex items-center justify-between px-4 py-2">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
+                            <p className="text-[11px] font-semibold tracking-wider text-white/60">
                                 {t('language.switchTo')}
                             </p>
                             <LanguageToggle />
@@ -133,13 +133,13 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
                         <button
                             onClick={handleSignOut}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all group"
+                            className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
                         >
-                            <MdLogout className={`text-xl group-hover:text-red-400 transition-colors ${dir === 'rtl' ? 'rotate-180' : ''}`} />
-                            <p className="text-[11px] font-black uppercase tracking-[0.15em] leading-normal">{t('admin.signOut')}</p>
+                            <MdLogout className={`text-xl ${dir === 'rtl' ? 'rotate-180' : ''}`} />
+                            <p>{t('admin.signOut')}</p>
                         </button>
 
-                        <div className="flex items-center gap-4 px-4 py-4 bg-white/[0.02] rounded-2xl border border-white/5">
+                        <div className="flex items-center gap-4 px-4 py-4 bg-white/2 rounded-2xl border border-white/5">
                             <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 text-white/40">
                                 <MdPerson className="text-xl" />
                             </div>
@@ -147,7 +147,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                                 <p className="text-white text-[12px] font-black uppercase tracking-wider leading-tight">
                                     {session?.user?.name || "Admin"}
                                 </p>
-                                <p className="text-white/60 text-[9px] uppercase tracking-widest font-black">
+                                <p className="text-white/60 mt-2 tracking-wider text-[11px] font-semibold">
                                     {isSuperAdmin ? t('admin.superAdmin') : t('admin.editor')}
                                 </p>
                             </div>
