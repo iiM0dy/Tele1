@@ -664,7 +664,7 @@ export default function ProductsClient({
                                     <select
                                         className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
                                         value={selectedStockStatus}
-                                        onChange={(e) => setSelectedStockStatus(e.target.value)}
+                                        onChange={(e) => updateUrl({ stock: e.target.value })}
                                     >
                                         <option value="all" className="bg-[#0F172A]">{t('admin.stockStatus')}</option>
                                         <option value="inStock" className="bg-[#0F172A]">{t('admin.inStock')}</option>
@@ -678,7 +678,7 @@ export default function ProductsClient({
 
                                 {/* Trending Filter Toggle */}
                                 <button
-                                    onClick={() => setShowTrendingOnly(!showTrendingOnly)}
+                                    onClick={() => updateUrl({ trending: !showTrendingOnly ? 'true' : null })}
                                     className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${showTrendingOnly
                                         ? 'bg-accent text-white'
                                         : 'bg-white/[0.02] border border-white/5 text-white hover:border-accent/30 hover:text-accent'
