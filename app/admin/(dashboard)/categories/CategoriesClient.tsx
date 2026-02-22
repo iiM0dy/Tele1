@@ -270,7 +270,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                             <div className={`hidden md:flex flex-col items-end ${dir === 'rtl' ? 'ml-2' : 'mr-2'} whitespace-nowrap`}>
                                 <span className="text-[11px] font-bold tracking-wider text-white/60">{t('admin.featured')}</span>
                                 <span className="text-[11px] font-bold tracking-wider text-accent">
-                                    {categories.filter(c => c.isFeatured).length} / 8 {t('admin.active')}
+                                    {categories.filter(c => c.isFeatured).length} {t('admin.active')}
                                 </span>
                             </div>
 
@@ -279,7 +279,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchCategories')}
-                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
+                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-5' : 'pl-12 pr-5'} py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     aria-label="Search categories"

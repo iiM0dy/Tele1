@@ -378,6 +378,13 @@ export async function getAdminProducts({
                         }
                     },
                     subCategoryId: true,
+                    typeId: true,
+                    type: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    },
                     color: true,
                     model: true
                 },
@@ -420,6 +427,11 @@ export async function getAdminProducts({
                 subCategory: product.subCategory ? {
                     id: product.subCategory.id,
                     name: product.subCategory.name
+                } : null,
+                typeId: product.typeId,
+                type: product.type ? {
+                    id: product.type.id,
+                    name: product.type.name
                 } : null,
                 color: product.color,
                 model: product.model
@@ -624,6 +636,8 @@ export async function createProduct(data: ProductInput) {
                 discountValue: product.discountValue ? Number(product.discountValue) : null,
                 stock: Number((product as any).quantity || (product as any).Stock),
                 categoryId: product.Category,
+                subCategoryId: product.subCategoryId,
+                typeId: product.typeId,
                 badge: product.badge,
                 color: product.color,
                 model: product.model,
@@ -664,6 +678,7 @@ export async function updateProduct(id: string, data: ProductInput & { isTrendin
                 SKU: data.sku,
                 Category: data.categoryId,
                 subCategoryId: data.subCategoryId || null,
+                typeId: data.typeId || null,
                 Price: parseFloat(data.price as string),
                 quantity: parseInt(data.stock as string),
                 Status: data.status,
@@ -700,6 +715,8 @@ export async function updateProduct(id: string, data: ProductInput & { isTrendin
                 discountValue: product.discountValue ? Number(product.discountValue) : null,
                 stock: Number((product as any).quantity || (product as any).Stock),
                 categoryId: product.Category,
+                subCategoryId: product.subCategoryId,
+                typeId: product.typeId,
                 badge: product.badge,
                 color: product.color,
                 model: product.model,

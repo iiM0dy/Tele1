@@ -133,11 +133,11 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
             <div className="relative w-full max-w-5xl bg-[#202126] rounded-4xl shadow-2xl overflow-hidden border border-white/5 flex flex-col max-h-[90vh]">
                 <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
                     <div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                            {category?.name} - Brands
+                        <h3 className="text-xl font-bold text-white">
+                            {category?.name} - {t('admin.brands')}
                         </h3>
-                        <p className="text-sm text-gray-500">
-                            Manage brands for this category
+                        <p className="text-sm text-white/60">
+                            {t('admin.manageBrands')}
                         </p>
                     </div>
                     <button
@@ -151,63 +151,58 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
 
                 <div className="flex flex-1 overflow-y-auto md:overflow-hidden flex-col md:flex-row">
                     {/* Left: Form */}
-                    <div className="w-full md:w-80 p-8 border-r border-white/5 md:overflow-y-auto shrink-0">
-                        <h3 className="text-[11px] font-semibold text-white/40 tracking-wider mb-6">
-                            {isEditing ? (t('admin.editBrand') || "Edit Brand") : (t('admin.addNewBrand') || "Add New Brand")}
+                    <div className="w-full md:w-80 p-8 border-r border-white/5 md:overflow-y-auto shrink-0 bg-white/2">
+                        <h3 className="text-[11px] font-semibold text-white/40 tracking-wider mb-6 uppercase">
+                            {isEditing ? t('admin.editBrand') : t('admin.addNewBrand')}
                         </h3>
-                        <div className="bg-gray-50 p-6 border-b border-gray-100">
+                        <div className="space-y-6">
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Brand Name</label>
+                                        <label className="block text-[11px] font-bold text-white/40 uppercase tracking-wider mb-2">{t('admin.brandName')}</label>
                                         <input
                                             type="text"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                            className="w-full h-10 px-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                            className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all placeholder:text-white/20"
                                             placeholder="e.g. Nike, Dior..."
                                             required
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                                        <label className="block text-[11px] font-bold text-white/40 uppercase tracking-wider mb-2">{t('admin.imageUrl')}</label>
                                         <input
                                             type="text"
                                             value={image}
                                             onChange={(e) => setImage(e.target.value)}
-                                            className="w-full h-10 px-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                            className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all placeholder:text-white/20"
                                             placeholder="Paste image link"
                                             required
                                         />
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
-                                    <textarea
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all min-h-[80px]"
-                                        placeholder="Brief description of the brand"
-                                    />
-                                </div>
-                                <div className="flex justify-end gap-3">
+                                <div className="flex flex-col gap-3 pt-4">
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="w-full h-12 rounded-xl bg-accent text-white font-black uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 shadow-lg shadow-accent/20"
+                                    >
+                                        {isSubmitting ? (
+                                            <span className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />
+                                        ) : (
+                                            isEditing ? <MdEdit size={18} /> : <MdAdd size={20} />
+                                        )}
+                                        {isEditing ? t('admin.update') : t('admin.add')}
+                                    </button>
                                     {isEditing && (
                                         <button
                                             type="button"
                                             onClick={resetForm}
-                                            className="px-4 h-10 rounded-lg text-gray-600 hover:bg-gray-100 font-medium transition-all"
+                                            className="w-full h-12 rounded-xl bg-white/5 text-white/60 font-bold uppercase tracking-wider text-[10px] hover:bg-white/10 transition-all"
                                         >
-                                            Cancel
+                                            {t('admin.cancel')}
                                         </button>
                                     )}
-                                    <button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        className="px-6 h-10 rounded-lg bg-accent text-white font-bold flex items-center gap-2 hover:opacity-90 transition-all disabled:opacity-50"
-                                    >
-                                        {isSubmitting ? <span className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" /> : (isEditing ? <MdEdit /> : <MdAdd />)}
-                                        {isEditing ? "Update Brand" : "Add Brand"}
-                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -215,65 +210,75 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
 
                     {/* Right: List */}
                     <div className="flex-1 p-8 md:overflow-y-auto bg-black/20">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between mb-8">
+                            <h3 className="text-[11px] font-bold text-white/40 tracking-[0.2em] uppercase">
+                                {t('admin.showingEntries')
+                                    .replace('{start}', '1')
+                                    .replace('{end}', brands.length.toString())
+                                    .replace('{total}', brands.length.toString())}
+                            </h3>
+                        </div>
+
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                             {isLoading ? (
-                                <div className="col-span-full flex justify-center py-10">
-                                    <span className="animate-spin h-8 w-8 border-2 border-white/10 border-t-accent rounded-full" />
+                                <div className="col-span-full flex flex-col items-center justify-center py-20">
+                                    <span className="animate-spin h-10 w-10 border-2 border-white/10 border-t-accent rounded-full mb-4" />
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-white/20">Loading Brands...</p>
                                 </div>
                             ) : brands.length === 0 ? (
-                                <div className="col-span-full flex flex-col items-center justify-center py-10 text-white/60">
-                                    <MdSearchOff className="text-4xl mb-2" />
-                                    <p className="text-[10px] font-black uppercase tracking-[0.2em]">
-                                        {t('admin.noBrands') || "No brands found"}
+                                <div className="col-span-full flex flex-col items-center justify-center py-20 text-white/20 border-2 border-dashed border-white/5 rounded-3xl">
+                                    <MdSearchOff className="text-5xl mb-4" />
+                                    <p className="text-xs font-black uppercase tracking-[0.2em]">
+                                        {t('admin.noBrands')}
                                     </p>
                                 </div>
                             ) : (
                                 brands.map((brand) => (
-                                    <div key={brand.id} className="bg-white/2 border border-white/5 rounded-2xl p-4 flex gap-4 group hover:border-accent/30 transition-all">
-                                        <div className="w-16 h-16 rounded-xl bg-white/5 relative overflow-hidden shrink-0">
+                                    <div key={brand.id} className="bg-white/3 border border-white/5 rounded-3xl p-5 flex gap-5 group hover:border-accent/30 hover:bg-white/5 transition-all duration-300">
+                                        <div className="w-20 h-20 rounded-2xl bg-white/5 relative overflow-hidden shrink-0 shadow-2xl">
                                             <Image
                                                 src={brand.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"}
                                                 alt={brand.name}
                                                 fill
-                                                className="object-cover"
+                                                className="object-cover group-hover:scale-110 transition-transform duration-500"
                                             />
                                         </div>
-                                        <div className="flex-1 min-w-0">
-                                            <h4 className="text-white text-[13px] font-black tracking-tight truncate">
-                                                {brand.name}
-                                            </h4>
-                                            <p className="text-white/60 text-[11px] mt-1 line-clamp-2 leading-relaxed">
-                                                {brand.description}
-                                            </p>
-                                            <div className="flex items-center gap-2">
+                                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                            <div className="mb-3">
+                                                <div className="flex items-start justify-between gap-2">
+                                                    <h4 className="text-white text-base font-black tracking-tight truncate">
+                                                        {brand.name}
+                                                    </h4>
+                                                    <span className="text-[9px] font-black tracking-widest text-white/30 bg-white/5 px-2.5 py-1 rounded-lg shrink-0 uppercase">
+                                                        {brand._count?.products || 0} {t('admin.products')}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2 pt-3 border-t border-white/5">
                                                 <button
                                                     onClick={() => {
                                                         setSelectedBrandForTypes(brand);
                                                         setIsTypesModalOpen(true);
                                                     }}
-                                                    className="p-2 text-accent hover:bg-accent/10 rounded-lg transition-all flex items-center gap-1 text-xs font-bold"
-                                                    title="Manage Types"
+                                                    className="h-8 px-4 rounded-lg bg-accent/10 text-accent hover:bg-accent hover:text-white transition-all text-[10px] font-black uppercase tracking-wider"
                                                 >
                                                     Types
                                                 </button>
+                                                <div className="flex-1" />
                                                 <button
                                                     onClick={() => handleEdit(brand)}
-                                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                                    className="p-2 text-white/40 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all"
                                                     title="Edit"
                                                 >
-                                                    <MdEdit size={20} />
+                                                    <MdEdit size={18} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(brand.id)}
-                                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                                    className="p-2 text-white/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
                                                     title="Delete"
                                                 >
-                                                    <MdDelete size={20} />
+                                                    <MdDelete size={18} />
                                                 </button>
-                                                <div className="flex-1" />
-                                                <span className="text-[10px] font-semibold tracking-wider text-white/40 bg-white/5 px-3 py-1.5 rounded-xl">
-                                                    {brand._count?.products || 0} Products
-                                                </span>
                                             </div>
                                         </div>
                                     </div>

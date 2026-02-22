@@ -24,6 +24,7 @@ export async function createType(data: TypeInput) {
             data: {
                 name: data.name,
                 slug,
+                image: data.image,
                 subCategoryId: data.subCategoryId,
             },
         });
@@ -40,6 +41,7 @@ export async function updateType(id: string, data: Partial<TypeInput>) {
     try {
         const updateData: any = {
             subCategoryId: data.subCategoryId,
+            image: data.image,
         };
 
         if (data.name) {

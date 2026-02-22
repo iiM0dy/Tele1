@@ -731,7 +731,7 @@ export default function ProductsClient({
                                     <MdSearch className="text-accent text-[20px]" />
                                 </span>
                                 <input
-                                    className={`block w-full ${dir === 'rtl' ? 'pr-10 pl-3' : 'pl-10 pr-3'} py-3 border border-white/5 rounded-2xl bg-white/2 text-[13px] font-medium tracking-normal text-white placeholder-white/20 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all outline-none`}
+                                    className={`block w-full ${dir === 'rtl' ? 'pr-12 pl-3' : 'pl-12 pr-3'} py-3 border border-white/5 rounded-2xl bg-white/2 text-[13px] font-medium tracking-normal text-white placeholder-white/20 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all outline-none`}
                                     placeholder={t('admin.searchPlaceholder')}
                                     type="text"
                                     value={searchQuery}

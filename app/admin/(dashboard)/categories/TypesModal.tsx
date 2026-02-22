@@ -18,6 +18,7 @@ interface Type {
     id: string;
     name: string;
     slug: string;
+    image?: string | null;
     _count?: {
         products: number;
     };
@@ -27,6 +28,7 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
     const [types, setTypes] = useState<Type[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState("");
+    const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -53,11 +55,13 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
 
     const resetForm = () => {
         setName("");
+        setImage("");
         setIsEditing(null);
     };
 
     const handleEdit = (type: Type) => {
         setName(type.name);
+        setImage(type.image || "");
         setIsEditing(type.id);
     };
 
@@ -77,7 +81,7 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
         if (!brand || !name) return;
         setIsSubmitting(true);
         try {
-            const data = { name, subCategoryId: brand.id };
+            const data = { name, image, subCategoryId: brand.id };
             const result = isEditing
                 ? await updateType(isEditing, data)
                 : await createType(data);
@@ -117,32 +121,43 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
                 <div className="p-6 overflow-y-auto space-y-6">
                     <form onSubmit={handleSubmit} className="bg-white/2 p-4 rounded-2xl border border-white/5 space-y-4">
                         <div className="flex flex-col gap-2">
-                            <label className="text-[11px] font-semibold text-white/40 tracking-wider">Type Name</label>
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder="e.g. Parfume, Lotion..."
-                                    required
-                                    className="flex-1 h-12 px-4 rounded-xl border border-white/5 bg-white/2 text-white text-sm outline-none focus:border-accent/30"
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="px-6 h-12 rounded-xl bg-accent text-white font-bold text-sm flex items-center gap-2 hover:opacity-90 disabled:opacity-50"
-                                >
-                                    {isEditing ? "Update" : "Add"}
-                                </button>
-                                {isEditing && (
+                            <label className="text-[11px] font-semibold text-white/40 tracking-wider">Type Name & Image URL</label>
+                            <div className="flex flex-col gap-3">
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="e.g. Parfume, Lotion..."
+                                        required
+                                        className="flex-1 h-12 px-4 rounded-xl border border-white/5 bg-white/2 text-white text-sm outline-none focus:border-accent/30"
+                                    />
+                                </div>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={image}
+                                        onChange={(e) => setImage(e.target.value)}
+                                        placeholder="Image URL (optional)"
+                                        className="flex-1 h-12 px-4 rounded-xl border border-white/5 bg-white/2 text-white text-sm outline-none focus:border-accent/30"
+                                    />
                                     <button
-                                        type="button"
-                                        onClick={resetForm}
-                                        className="px-4 h-12 rounded-xl bg-white/5 text-white/60 text-sm font-bold"
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="px-6 h-12 rounded-xl bg-accent text-white font-bold text-sm flex items-center gap-2 hover:opacity-90 disabled:opacity-50"
                                     >
-                                        Cancel
+                                        {isEditing ? "Update" : "Add"}
                                     </button>
-                                )}
+                                    {isEditing && (
+                                        <button
+                                            type="button"
+                                            onClick={resetForm}
+                                            className="px-4 h-12 rounded-xl bg-white/5 text-white/60 text-sm font-bold"
+                                        >
+                                            Cancel
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -160,11 +175,22 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
                         ) : (
                             types.map((type) => (
                                 <div key={type.id} className="flex items-center justify-between p-4 bg-white/2 border border-white/5 rounded-2xl group hover:border-accent/20 transition-all">
-                                    <div>
-                                        <h4 className="text-white font-bold text-sm uppercase tracking-tight">{type.name}</h4>
-                                        <p className="text-[10px] text-white/40 font-bold uppercase mt-1">
-                                            {type._count?.products || 0} Products
-                                        </p>
+                                    <div className="flex items-center gap-4">
+                                        {type.image ? (
+                                            <div className="size-12 rounded-xl overflow-hidden border border-white/5 bg-white/5">
+                                                <img src={type.image} alt={type.name} className="w-full h-full object-cover" />
+                                            </div>
+                                        ) : (
+                                            <div className="size-12 rounded-xl border border-dashed border-white/10 bg-white/1 flex items-center justify-center text-white/20">
+                                                <MdAdd size={20} />
+                                            </div>
+                                        )}
+                                        <div>
+                                            <h4 className="text-white font-bold text-sm uppercase tracking-tight">{type.name}</h4>
+                                            <p className="text-[10px] text-white/40 font-bold uppercase mt-1">
+                                                {type._count?.products || 0} Products
+                                            </p>
+                                        </div>
                                     </div>
                                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
                                         <button onClick={() => handleEdit(type)} className="p-2 text-white/60 hover:text-accent">
