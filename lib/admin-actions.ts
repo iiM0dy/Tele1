@@ -1204,7 +1204,7 @@ export async function bulkCreateProducts(products: any[]) {
                                 "-" +
                                 Math.random().toString(36).substr(2, 5),
                             categoryId: category.id,
-                            image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800",
+                            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800",
                         },
                     });
                     category.subCategories.push(subCat);
@@ -1214,7 +1214,7 @@ export async function bulkCreateProducts(products: any[]) {
 
             // Merge images
             const imageStr = (
-                p.Images || "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800"
+                p.Images || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"
             ).toString();
             const mainImages = imageStr
                 .split(",")

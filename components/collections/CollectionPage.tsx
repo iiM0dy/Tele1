@@ -76,7 +76,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                             <Link href={`/collections/${categorySlug}/${sub.slug}`} key={sub.id} className="group block">
                                 <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4">
                                     <Image
-                                        src={sub.image || 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80'}
+                                        src={sub.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80'}
                                         alt={sub.name}
                                         fill
                                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
