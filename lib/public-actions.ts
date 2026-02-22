@@ -8,7 +8,7 @@ export async function getBanners() {
             where: { isActive: true },
             orderBy: { createdAt: 'desc' }
         });
-        
+
         return banners.map(banner => ({
             ...banner,
             image: formatImagePath(banner.image) || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800',
@@ -26,7 +26,7 @@ export async function getAllCategories() {
         const categories = await prisma.category.findMany({
             orderBy: { name: 'asc' }
         });
-        
+
         return categories.map(cat => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
             return {
@@ -51,7 +51,7 @@ export async function getFeaturedCategories(limit?: number) {
             take: limit,
             orderBy: { name: 'asc' }
         });
-        
+
         return categories.map(cat => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
             return {
@@ -73,7 +73,7 @@ function formatImagePath(path: string | null | undefined): string | null {
     if (!path || typeof path !== 'string') return null;
     let trimmed = path.trim();
     if (trimmed === '') return null;
-    
+
     // If it's already a valid absolute URL, data URI, or relative path with leading slash
     if (trimmed.startsWith('http') || trimmed.startsWith('/') || trimmed.startsWith('data:')) {
         // If it starts with /public/, remove it as Next.js serves from public root
@@ -82,12 +82,12 @@ function formatImagePath(path: string | null | undefined): string | null {
         }
         return trimmed;
     }
-    
+
     // Handle cases where path might start with 'public/'
     if (trimmed.startsWith('public/')) {
         return '/' + trimmed.replace('public/', '');
     }
-    
+
     // For any other string, assume it's a relative path from the public directory
     // and ensure it has a leading slash as required by Next.js Image component
     return '/' + trimmed;
@@ -96,9 +96,9 @@ function formatImagePath(path: string | null | undefined): string | null {
 function transformProduct(product: any) {
     let images: string[] = [];
     const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800';
-    
+
     const rawImages = product.Images || product.images;
-    
+
     try {
         if (typeof rawImages === 'string') {
             if (rawImages.startsWith('[') || rawImages.startsWith('{')) {
@@ -128,7 +128,7 @@ function transformProduct(product: any) {
     // Use all possible casings to be safe
     const s1 = product.supImage1 || product.supimage1 || product.SupImage1;
     const s2 = product.supImage2 || product.supimage2 || product.SupImage2;
-    
+
     // Create temporary images array to track uniqueness after formatting
     let processedImages = images
         .map(img => formatImagePath(img))
@@ -156,9 +156,9 @@ function transformProduct(product: any) {
 
     // Final filter for valid formats and deduplicate
     images = [...new Set(processedImages.filter(img => {
-        return img.startsWith('http') || 
-               img.startsWith('/') || 
-               img.startsWith('data:');
+        return img.startsWith('http') ||
+            img.startsWith('/') ||
+            img.startsWith('data:');
     }))];
 
     if (images.length === 0) {
@@ -227,7 +227,7 @@ export async function getBestSellers(limit?: number) {
 export async function getAllProducts(page: number = 1, limit: number = 50) {
     try {
         const skip = (page - 1) * limit;
-        
+
         const [products, totalCount] = await Promise.all([
             prisma.product.findMany({
                 include: {
@@ -286,11 +286,11 @@ export async function getProductsByCategory(categorySlug: string, page: number =
 
         // Fetch subcategories safely
         let rawSubCategories: any[] = [];
-        
+
         // Check if subCategory model exists on prisma client (handle stale client case)
         // @ts-ignore
         if (prisma.subCategory) {
-             try {
+            try {
                 // @ts-ignore
                 rawSubCategories = await prisma.subCategory.findMany({
                     where: { categoryId: category.id },
@@ -300,9 +300,9 @@ export async function getProductsByCategory(categorySlug: string, page: number =
                         }
                     }
                 });
-             } catch (e) {
+            } catch (e) {
                 console.error("Error fetching subcategories:", e);
-             }
+            }
         }
 
         const subCategories = rawSubCategories.map(sub => ({
@@ -316,7 +316,7 @@ export async function getProductsByCategory(categorySlug: string, page: number =
         // If subCategorySlug is provided, filter by it
         if (subCategorySlug) {
             currentSubCategory = subCategories.find(sub => sub.slug === subCategorySlug || sub.id === subCategorySlug);
-            
+
             if (currentSubCategory) {
                 whereClause.subCategoryId = currentSubCategory.id;
             }
@@ -489,6 +489,7 @@ export async function createOrder(data: {
     name: string;
     email: string;
     phone: string;
+    nationalId?: string;
     streetAddress: string;
     city: string;
     postalCode?: string;
@@ -507,6 +508,7 @@ export async function createOrder(data: {
                 Name: data.name,
                 email: data.email,
                 phone: data.phone,
+                nationalId: data.nationalId,
                 streetAddress: data.streetAddress,
                 city: data.city,
                 postalCode: data.postalCode,
@@ -535,9 +537,9 @@ export async function createOrder(data: {
             errorMessage: error?.message || String(error),
             inputData: data
         });
-        return { 
-            success: false, 
-            error: error?.message || "Internal server error during order creation" 
+        return {
+            success: false,
+            error: error?.message || "Internal server error during order creation"
         };
     }
 }
@@ -545,7 +547,7 @@ export async function createOrder(data: {
 export async function validatePromoCode(code: string) {
     try {
         const promo = await prisma.promoCode.findUnique({
-            where: { 
+            where: {
                 code: code,
                 isActive: true
             }
@@ -555,10 +557,10 @@ export async function validatePromoCode(code: string) {
             return { success: false, error: "Invalid or inactive promo code" };
         }
 
-        return { 
-            success: true, 
-            promoId: promo.id, 
-            discountPercentage: promo.discountPercentage 
+        return {
+            success: true,
+            promoId: promo.id,
+            discountPercentage: promo.discountPercentage
         };
     } catch (error) {
         console.error("Failed to validate promo code:", error);

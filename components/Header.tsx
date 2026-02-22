@@ -67,29 +67,28 @@ export default function Header() {
     const isProductsListPage = pathname === '/products';
     const isCartPage = pathname === '/cart';
     const isAdminPage = pathname?.startsWith('/admin');
-    const isSolid = isScrolled || isHovered || isCollectionPage || isProductPage || isProductsListPage || isCartPage;
+    const isSolid = true; // Always solid as per user request
 
     if (pathname === '/checkout' || pathname === '/order-success' || isAdminPage) return null;
 
     return (
-        <div 
-            className={`${(isCartPage || isProductsListPage) ? 'relative' : 'fixed top-0 left-0'} w-full z-50 group/header`}
+        <div
+            className="sticky top-0 w-full z-50 group/header bg-primary shadow-2xl"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <header 
-                className={`w-full ${(isCartPage || isProductsListPage) ? '' : 'transition-all duration-500 ease-in-out'} flex items-center h-[90px] ${
-                    isSolid 
-                        ? 'bg-primary shadow-2xl' 
-                        : 'bg-transparent'
-                } text-white`}
+            <header
+                className={`w-full ${(isCartPage || isProductsListPage) ? '' : 'transition-all duration-500 ease-in-out'} flex items-center h-[90px] ${isSolid
+                    ? 'bg-primary shadow-2xl'
+                    : 'bg-transparent'
+                    } text-white`}
             >
                 <div className="w-full px-4 md:px-[48px]">
                     <div className="grid grid-cols-3 items-center">
                         {/* Primary Nav - Left on Desktop, Hamburger on Mobile */}
                         <div className="flex items-center">
                             {/* Mobile Hamburger */}
-                            <button 
+                            <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                 className={`md:hidden p-2 ${language === 'ar' ? '-mr-2' : '-ml-2'} transition-colors text-white hover:text-accent`}
                                 aria-label="Open navigation menu"
@@ -105,21 +104,21 @@ export default function Header() {
                                     if (item.href === '/collections') {
                                         return (
                                             <div key={item.href} className="relative group/nav">
-                                                <Link 
+                                                <Link
                                                     href={item.href}
                                                     className={`${language === 'ar' ? 'text-[14px]' : 'text-[10px]'} font-black uppercase tracking-[0.15em] transition-all text-white/70 hover:text-white hover:scale-105 flex items-center gap-1`}
                                                 >
                                                     {item.title}
                                                     <MdKeyboardArrowDown className="text-lg group-hover/nav:rotate-180 transition-transform" />
                                                 </Link>
-                                                
+
                                                 {/* Dropdown */}
                                                 <div className={`absolute top-full ${language === 'ar' ? 'right-0' : 'left-0'} pt-4 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-300 w-56`}>
                                                     <div className="bg-white rounded-xl shadow-xl p-4 border border-zinc-100 overflow-hidden">
                                                         <ul className="space-y-3">
                                                             {categories.slice(0, 5).map((cat) => (
                                                                 <li key={cat.id}>
-                                                                    <Link 
+                                                                    <Link
                                                                         href={`/collections/${cat.slug}`}
                                                                         className={`block ${language === 'ar' ? 'text-right' : 'text-left'} text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-primary transition-colors`}
                                                                     >
@@ -128,7 +127,7 @@ export default function Header() {
                                                                 </li>
                                                             ))}
                                                             <li>
-                                                                <Link 
+                                                                <Link
                                                                     href="/collections"
                                                                     className={`block ${language === 'ar' ? 'text-right' : 'text-left'} text-[10px] font-black uppercase tracking-[0.2em] text-accent hover:text-accent/80 transition-colors pt-3 border-t border-zinc-100 mt-2`}
                                                                 >
@@ -142,7 +141,7 @@ export default function Header() {
                                         );
                                     }
                                     return (
-                                        <Link 
+                                        <Link
                                             key={item.href}
                                             href={item.href}
                                             className={`${language === 'ar' ? 'text-[14px]' : 'text-[10px]'} font-black uppercase tracking-[0.15em] transition-all text-white/70 hover:text-white hover:scale-105`}
@@ -158,7 +157,7 @@ export default function Header() {
                         <div className="flex justify-center">
                             <Link href="/" className="relative block group">
                                 <span className="sr-only">TELE1</span>
-                                <span 
+                                <span
                                     className="text-2xl md:text-4xl font-sans font-black tracking-tighter uppercase transition-all text-white group-hover:text-accent"
                                 >
                                     TELE1<span className="text-accent">.</span>
@@ -169,8 +168,8 @@ export default function Header() {
                         {/* Secondary Nav - Right */}
                         <div className="flex items-center justify-end gap-3 md:gap-6">
                             <LanguageToggle />
-                            <Link 
-                                href="/account" 
+                            <Link
+                                href="/account"
                                 className="hidden sm:block transition-all text-white/70 hover:text-white hover:scale-110"
                             >
                                 <span className="sr-only">Account</span>
@@ -180,7 +179,7 @@ export default function Header() {
                                 </svg>
                             </Link>
 
-                            <button 
+                            <button
                                 onClick={() => setIsSearchOpen(true)}
                                 className="transition-all text-white/70 hover:text-white hover:scale-110"
                             >
@@ -191,7 +190,7 @@ export default function Header() {
                                 </svg>
                             </button>
 
-                            <button 
+                            <button
                                 onClick={() => setIsDrawerOpen(true)}
                                 className="relative transition-all text-white/70 hover:text-white hover:scale-110"
                             >
@@ -214,30 +213,28 @@ export default function Header() {
             <SearchDrawer isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
             {/* Mobile Menu Sidebar */}
-            <div 
-                className={`fixed inset-0 z-[100] md:hidden transition-opacity duration-300 ease-in-out ${
-                    isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                }`}
+            <div
+                className={`fixed inset-0 z-100 md:hidden transition-opacity duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    }`}
             >
-                <div 
-                    className="absolute inset-0 bg-black/40" 
+                <div
+                    className="absolute inset-0 bg-black/40"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
-                <div 
-                    className={`absolute inset-y-0 ${language === 'ar' ? 'right-0' : 'left-0'} w-[80%] max-w-sm bg-white shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
-                        isMobileMenuOpen 
-                            ? 'translate-x-0' 
-                            : (language === 'ar' ? 'translate-x-full' : '-translate-x-full')
-                    }`}
+                <div
+                    className={`absolute inset-y-0 ${language === 'ar' ? 'right-0' : 'left-0'} w-[80%] max-w-sm bg-white shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${isMobileMenuOpen
+                        ? 'translate-x-0'
+                        : (language === 'ar' ? 'translate-x-full' : '-translate-x-full')
+                        }`}
                     dir={language === 'ar' ? 'rtl' : 'ltr'}
                 >
-                        <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between p-6 border-b border-zinc-100">
                             <span className="text-2xl font-sans font-black tracking-tighter uppercase text-primary">
                                 TELE1<span className="text-accent">.</span>
                             </span>
-                            <button 
-                                onClick={() => setIsMobileMenuOpen(false)} 
+                            <button
+                                onClick={() => setIsMobileMenuOpen(false)}
                                 className="p-2 text-primary hover:bg-zinc-100 rounded-full transition-colors"
                                 aria-label="Close mobile menu"
                             >
@@ -250,7 +247,7 @@ export default function Header() {
                             <ul className="space-y-6">
                                 {/* Home */}
                                 <li>
-                                    <Link 
+                                    <Link
                                         href="/"
                                         className={`block ${language === 'ar' ? 'text-[16px]' : 'text-[13px]'} font-sans font-black uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors`}
                                         onClick={() => setIsMobileMenuOpen(false)}
@@ -261,7 +258,7 @@ export default function Header() {
 
                                 {/* Store */}
                                 <li>
-                                    <Link 
+                                    <Link
                                         href="/products"
                                         className={`block ${language === 'ar' ? 'text-[16px]' : 'text-[13px]'} font-sans font-black uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors`}
                                         onClick={() => setIsMobileMenuOpen(false)}
@@ -272,7 +269,7 @@ export default function Header() {
 
                                 {/* Collections Dropdown */}
                                 <li>
-                                    <button 
+                                    <button
                                         onClick={() => setIsCollectionsOpen(!isCollectionsOpen)}
                                         className={`flex items-center justify-between w-full ${language === 'ar' ? 'text-[16px]' : 'text-[13px]'} font-sans font-black uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors`}
                                     >
@@ -283,7 +280,7 @@ export default function Header() {
                                             <MdKeyboardArrowDown className="text-xl" />
                                         )}
                                     </button>
-                                    
+
                                     <div className={`grid transition-all duration-300 ease-in-out ${isCollectionsOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
                                         <div className="overflow-hidden">
                                             <ul className={`space-y-4 ${language === 'ar' ? 'pr-4 border-r-2' : 'pl-4 border-l-2'} border-zinc-100`}>
@@ -297,9 +294,9 @@ export default function Header() {
                                                     <>
                                                         {categories.slice(0, 5).map((cat) => (
                                                             <li key={cat.id}>
-                                                                <Link 
+                                                                <Link
                                                                     href={`/collections/${cat.slug}`}
-                                                                    className={`block ${language === 'ar' ? 'text-[14px]' : 'text-[11px]'} font-bold uppercase tracking-[0.1em] text-zinc-500 hover:text-primary transition-colors`}
+                                                                    className={`block ${language === 'ar' ? 'text-[14px]' : 'text-[11px]'} font-bold uppercase tracking-widest text-zinc-500 hover:text-primary transition-colors`}
                                                                     onClick={() => setIsMobileMenuOpen(false)}
                                                                 >
                                                                     {language === 'ar' && cat.nameAr ? cat.nameAr : cat.name}
@@ -307,7 +304,7 @@ export default function Header() {
                                                             </li>
                                                         ))}
                                                         <li>
-                                                            <Link 
+                                                            <Link
                                                                 href="/collections"
                                                                 className={`block ${language === 'ar' ? 'text-[12px]' : 'text-[10px]'} font-black uppercase tracking-[0.2em] text-accent hover:text-accent/80 transition-colors mt-2`}
                                                                 onClick={() => setIsMobileMenuOpen(false)}
@@ -324,7 +321,7 @@ export default function Header() {
 
                                 {/* About Us */}
                                 <li>
-                                    <Link 
+                                    <Link
                                         href="/about-us"
                                         className={`block ${language === 'ar' ? 'text-[16px]' : 'text-[13px]'} font-sans font-black uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors`}
                                         onClick={() => setIsMobileMenuOpen(false)}
@@ -334,7 +331,7 @@ export default function Header() {
                                 </li>
                             </ul>
                         </nav>
-                        
+
                     </div>
                 </div>
             </div>

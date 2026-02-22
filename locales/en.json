@@ -20,11 +20,9 @@
         "showLess": "Show less",
         "categories": "Categories",
         "collections": "Collections"
-
     },
     "header": {
         "brandName": "Ruby Beauty"
-        
     },
     "footer": {
         "brandDescription": "Premium botanical skincare designed to reveal your natural radiance. Cruelty-free, vegan, and sustainable.",
@@ -116,7 +114,7 @@
         "orderItems": "Order Items",
         "confirmOrder": "Confirm Order",
         "processing": "Processing...",
-        "deliveryInfo": "Standard delivery takes 3-5 business days. You will receive a tracking link via SMS.",
+        "deliveryInfo": "Standard delivery takes 2-4 business days within Syria.",
         "promoCode": "Promo Code",
         "discount": "Discount",
         "paymentMethod": "Payment Method",
@@ -125,8 +123,9 @@
         "totalSavings": "Total savings",
         "cashOnDelivery": "Cash on Delivery",
         "secureCheckout": "Secure Checkout Guaranteed",
+        "nationalId": "National ID (11 digits)",
         "needAssistance": "Need assistance?",
-        "speakWithExpert": "Speak with a beauty expert"
+        "speakWithExpert": "Speak with an expert"
     },
     "orderComplete": {
         "thankYou": "Thank You!",
@@ -160,10 +159,10 @@
         "switchTo": "Switch language"
     },
     "common": {
-    "yes": "Yes",
-    "no": "No"
-  },
-  "admin": {
+        "yes": "Yes",
+        "no": "No"
+    },
+    "admin": {
         "dashboard": "Dashboard",
         "products": "Products",
         "categories": "Categories",
@@ -230,7 +229,7 @@
         "deliveredMtd": "Delivered (MTD)",
         "allOrders": "All Orders",
         "pending": "Pending",
-        "selectAll":"Select All",
+        "selectAll": "Select All",
         "shipped": "Shipped",
         "delivered": "Delivered",
         "processing": "Processing",

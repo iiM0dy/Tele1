@@ -114,7 +114,7 @@
         "orderItems": "عناصر الطلب",
         "confirmOrder": "تأكيد الطلب",
         "processing": "جاري المعالجة...",
-        "deliveryInfo": "التوصيل القياسي يستغرق 3-5 أيام عمل. ستتلقى رابط تتبع عبر الرسائل النصية.",
+        "deliveryInfo": "التوصيل يستغرق 2-4 أيام عمل ضمن سوريا.",
         "promoCode": "رمز الخصم",
         "discount": "الخصم",
         "paymentMethod": "طريقة الدفع",
@@ -123,8 +123,9 @@
         "totalSavings": "إجمالي التوفير",
         "cashOnDelivery": "الدفع عند الاستلام",
         "secureCheckout": "دفع آمن مضمون",
+        "nationalId": "الرقم الوطني (11 رقم)",
         "needAssistance": "تحتاج مساعدة؟",
-        "speakWithExpert": "تحدث مع خبير جمال"
+        "speakWithExpert": "تحدث مع خبير"
     },
     "orderComplete": {
         "thankYou": "شكراً لك!",
@@ -158,10 +159,10 @@
         "switchTo": "تغيير اللغة"
     },
     "common": {
-    "yes": "نعم",
-    "no": "لا"
-  },
-  "admin": {
+        "yes": "نعم",
+        "no": "لا"
+    },
+    "admin": {
         "dashboard": "لوحة التحكم",
         "products": "المنتجات",
         "categories": "الفئات",
@@ -269,7 +270,7 @@
         "onSaleOnly": "خصومات فقط",
         "itemsSelected": "عناصر محددة",
         "deselectAll": "إلغاء تحديد الكل",
-        "selectAll":"تحديد الكل",
+        "selectAll": "تحديد الكل",
         "removeTrending": "إزالة من الرائج",
         "removeSale": "إزالة الخصم",
         "deleteSelected": "حذف المحدد",
