@@ -31,12 +31,20 @@ export interface Product {
     } | null;
 }
 
-interface SubCategory {
+interface Brand {
     id: string;
     name: string;
     image: string;
     slug: string;
     description?: string | null;
+}
+
+interface Type {
+    id: string;
+    name: string;
+    slug: string;
+    description?: string | null;
+    image?: string | null;
 }
 
 interface CollectionPageProps {
@@ -46,10 +54,22 @@ interface CollectionPageProps {
     totalPages: number;
     currentPage: number;
     categorySlug?: string;
-    subCategories?: SubCategory[];
+    brandSlug?: string;
+    subCategories?: Brand[];
+    types?: Type[];
 }
 
-export default function CollectionPage({ products, collectionName, collectionNameAr, totalPages, currentPage, categorySlug, subCategories }: CollectionPageProps) {
+export default function CollectionPage({
+    products,
+    collectionName,
+    collectionNameAr,
+    totalPages,
+    currentPage,
+    categorySlug,
+    brandSlug,
+    subCategories,
+    types
+}: CollectionPageProps) {
     const { t, language } = useLanguage();
     const [sortBy, setSortBy] = useState('featured');
     const [layout, setLayout] = useState<'large' | 'medium' | 'compact'>('medium');
@@ -63,12 +83,47 @@ export default function CollectionPage({ products, collectionName, collectionNam
     const isAr = language === 'ar';
     const displayName = isAr && collectionNameAr ? collectionNameAr : collectionName;
 
-    if (subCategories && subCategories.length > 0) {
+    // If we have types and we are currently on a Brand page (but not a Type page yet)
+    if (brandSlug && types && types.length > 0) {
         return (
             <div className="flex flex-col min-h-screen bg-white pt-[90px]">
                 <div className="container mx-auto px-4 md:px-6 py-8">
                     <div className="flex flex-col items-center mb-16 relative">
                         <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">{displayName}</h1>
+                        <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">Choose Type</p>
+                        <div className="w-20 h-1.5 bg-accent rounded-full"></div>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {types.map((type) => (
+                            <Link href={`/collections/${categorySlug}/${brandSlug}/${type.slug}`} key={type.id} className="group block text-center">
+                                <div className="relative aspect-square overflow-hidden rounded-full bg-gray-50 mb-6 border-2 border-transparent group-hover:border-accent transition-all p-4">
+                                    <div className="w-full h-full relative overflow-hidden rounded-full">
+                                        <Image
+                                            src={type.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80'}
+                                            alt={type.name}
+                                            fill
+                                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                            className="object-cover transition-transform group-hover:scale-110"
+                                        />
+                                    </div>
+                                </div>
+                                <h3 className="text-lg font-black text-[#0F172A] group-hover:text-accent transition-colors uppercase tracking-tight">{type.name}</h3>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // If we have brands and we are on a Category page (not inside a brand)
+    if (!brandSlug && subCategories && subCategories.length > 0) {
+        return (
+            <div className="flex flex-col min-h-screen bg-white pt-[90px]">
+                <div className="container mx-auto px-4 md:px-6 py-8">
+                    <div className="flex flex-col items-center mb-16 relative">
+                        <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">{displayName}</h1>
+                        <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">Explore Brands</p>
                         <div className="w-20 h-1.5 bg-accent rounded-full"></div>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

@@ -23,8 +23,11 @@ interface ProductInput {
     bestSeller?: boolean;
     images: string;
     badge?: string | null;
+    color?: string | null;
+    model?: string | null;
     categoryId: string;
     subCategoryId?: string | null;
+    typeId?: string | null;
 }
 
 interface CategoryInput {
@@ -153,8 +156,8 @@ export async function getAdminProductStats() {
             }]>`
                 SELECT
                     COUNT(*)::int as total,
-                    SUM(CASE WHEN "Stock" = 0 THEN 1 ELSE 0 END)::int as "outOfStock",
-                    SUM(CASE WHEN "Stock" > 0 AND "Stock" <= 10 THEN 1 ELSE 0 END)::int as "lowStock",
+                    SUM(CASE WHEN "quantity" = 0 THEN 1 ELSE 0 END)::int as "outOfStock",
+                    SUM(CASE WHEN "quantity" > 0 AND "quantity" <= 10 THEN 1 ELSE 0 END)::int as "lowStock",
                     SUM(CASE WHEN "BestSeller" = true THEN 1 ELSE 0 END)::int as "bestSellers",
                     SUM(CASE WHEN "IsTrending" = true THEN 1 ELSE 0 END)::int as "trending"
                 FROM "Product"
@@ -178,8 +181,8 @@ export async function getAdminProductStats() {
         try {
             const [total, outOfStock, lowStock, categoriesCount, bestSellers, trending] = await Promise.all([
                 prisma.product.count(),
-                prisma.product.count({ where: { Stock: 0 } }),
-                prisma.product.count({ where: { Stock: { gt: 0, lte: 10 } } }),
+                prisma.product.count({ where: { quantity: 0 } }),
+                prisma.product.count({ where: { quantity: { gt: 0, lte: 10 } } }),
                 prisma.category.count(),
                 prisma.product.count({ where: { BestSeller: true } }),
                 prisma.product.count({ where: { IsTrending: true } })
@@ -224,7 +227,7 @@ export async function getAllAdminProductsForExport() {
                 Name: true,
                 SKU: true,
                 Price: true,
-                Stock: true,
+                quantity: true,
                 Images: true,
                 category: {
                     select: {
@@ -235,7 +238,14 @@ export async function getAllAdminProductsForExport() {
                     select: {
                         name: true
                     }
-                }
+                },
+                type: {
+                    select: {
+                        name: true
+                    }
+                },
+                color: true,
+                model: true
             },
             orderBy: {
                 createdAt: 'desc'
@@ -247,8 +257,11 @@ export async function getAllAdminProductsForExport() {
             sku: product.SKU || '',
             category: product.category?.name || 'Uncategorized',
             subCategory: product.subCategory?.name || '',
+            type: product.type?.name || '',
+            color: product.color || '',
+            model: product.model || '',
             price: Number(product.Price) || 0,
-            stock: Number(product.Stock) || 0,
+            stock: Number(product.quantity) || 0,
             images: product.Images || ''
         }));
     } catch (error) {
@@ -311,11 +324,11 @@ export async function getAdminProducts({
 
         if (stockStatus && stockStatus !== 'all') {
             if (stockStatus === 'inStock') {
-                where.Stock = { gt: 10 };
+                where.quantity = { gt: 10 };
             } else if (stockStatus === 'lowStock') {
-                where.Stock = { gt: 0, lte: 10 };
+                where.quantity = { gt: 0, lte: 10 };
             } else if (stockStatus === 'outOfStock') {
-                where.Stock = 0;
+                where.quantity = 0;
             }
         }
 
@@ -336,13 +349,11 @@ export async function getAdminProducts({
                     SKU: true,
                     Category: true,
                     Price: true,
-                    Stock: true,
+                    quantity: true,
                     Status: true,
                     IsTrending: true,
                     BestSeller: true,
                     Images: true,
-                    supImage1: true,
-                    supImage2: true,
                     badge: true,
                     slug: true,
                     description: true,
@@ -363,7 +374,9 @@ export async function getAdminProducts({
                             name: true
                         }
                     },
-                    subCategoryId: true
+                    subCategoryId: true,
+                    color: true,
+                    model: true
                 },
                 skip,
                 take: limit,
@@ -383,16 +396,11 @@ export async function getAdminProducts({
                 sku: product.SKU || '',
                 categoryId: product.Category,
                 price: Number(product.Price) || 0,
-                stock: Number(product.Stock) || 0,
+                stock: Number(product.quantity) || 0,
                 status: product.Status || 'ACTIVE',
                 isTrending: product.IsTrending || false,
                 bestSeller: product.BestSeller || false,
-                images: (() => {
-                    let imgs = (product.Images || '').split(',').map(s => s.trim()).filter(Boolean);
-                    if (product.supImage1 && !imgs.includes(product.supImage1)) imgs.push(product.supImage1);
-                    if (product.supImage2 && !imgs.includes(product.supImage2)) imgs.push(product.supImage2);
-                    return imgs.join(',');
-                })(),
+                images: product.Images || '',
                 badge: product.badge,
                 slug: product.slug,
                 description: product.description,
@@ -409,7 +417,9 @@ export async function getAdminProducts({
                 subCategory: product.subCategory ? {
                     id: product.subCategory.id,
                     name: product.subCategory.name
-                } : null
+                } : null,
+                color: product.color,
+                model: product.model
             })),
             pagination: {
                 total,
@@ -574,15 +584,16 @@ export async function createProduct(data: ProductInput) {
                 SKU: data.sku,
                 Category: data.categoryId,
                 subCategoryId: data.subCategoryId || null,
+                typeId: data.typeId || null,
                 Price: parseFloat(data.price as string),
-                Stock: parseInt(data.stock as string),
+                quantity: parseInt(data.stock as string),
                 Status: data.status || "ACTIVE",
                 IsTrending: data.isTrending || false,
                 BestSeller: data.bestSeller || false,
                 Images: data.images,
-                supImage1: null,
-                supImage2: null,
                 badge: data.badge,
+                color: data.color || null,
+                model: data.model || null,
                 slug: slug,
                 description: data.description,
                 discountPrice: data.discountPrice ? parseFloat(data.discountPrice as string) : null,
@@ -608,9 +619,11 @@ export async function createProduct(data: ProductInput) {
                 discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
                 discountType: product.discountType,
                 discountValue: product.discountValue ? Number(product.discountValue) : null,
-                stock: Number(product.Stock),
+                stock: Number((product as any).quantity || (product as any).Stock),
                 categoryId: product.Category,
                 badge: product.badge,
+                color: product.color,
+                model: product.model,
                 createdAt: product.createdAt.toISOString(),
                 updatedAt: product.updatedAt.toISOString(),
             }
@@ -649,14 +662,14 @@ export async function updateProduct(id: string, data: ProductInput & { isTrendin
                 Category: data.categoryId,
                 subCategoryId: data.subCategoryId || null,
                 Price: parseFloat(data.price as string),
-                Stock: parseInt(data.stock as string),
+                quantity: parseInt(data.stock as string),
                 Status: data.status,
                 IsTrending: data.isTrending,
                 BestSeller: data.bestSeller,
                 Images: data.images,
-                supImage1: null,
-                supImage2: null,
                 badge: data.badge,
+                color: data.color || null,
+                model: data.model || null,
                 slug: slug,
                 description: data.description,
                 discountPrice: data.discountPrice ? parseFloat(data.discountPrice as string) : null,
@@ -682,9 +695,11 @@ export async function updateProduct(id: string, data: ProductInput & { isTrendin
                 discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
                 discountType: product.discountType,
                 discountValue: product.discountValue ? Number(product.discountValue) : null,
-                stock: Number(product.Stock),
+                stock: Number((product as any).quantity || (product as any).Stock),
                 categoryId: product.Category,
                 badge: product.badge,
+                color: product.color,
+                model: product.model,
                 createdAt: product.createdAt.toISOString(),
                 updatedAt: product.updatedAt.toISOString(),
             }
@@ -1088,7 +1103,7 @@ export async function getTrendingProducts() {
             discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
             discountType: product.discountType,
             discountValue: product.discountValue ? Number(product.discountValue) : null,
-            stock: Number(product.Stock),
+            stock: Number(product.quantity),
             createdAt: product.createdAt.toISOString(),
             updatedAt: product.updatedAt.toISOString(),
             category: product.category ? {
@@ -1122,7 +1137,7 @@ export async function getOnSaleProducts() {
             discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
             discountType: product.discountType,
             discountValue: product.discountValue ? Number(product.discountValue) : null,
-            stock: Number(product.Stock),
+            stock: Number(product.quantity),
             createdAt: product.createdAt.toISOString(),
             updatedAt: product.updatedAt.toISOString(),
             category: product.category ? {
@@ -1241,7 +1256,7 @@ export async function bulkCreateProducts(products: any[]) {
                         Math.random().toString(36).substr(2, 5),
                     description: p.Description?.toString() || "",
                     Price: typeof p.Price === 'number' ? p.Price : parseFloat(p.Price?.toString() || "0"),
-                    Stock: typeof p.Stock === 'number' ? p.Stock : parseInt(p.Stock?.toString() || "0"),
+                    quantity: typeof p.Stock === 'number' ? p.Stock : parseInt(p.Stock?.toString() || "0"),
                     SKU: p.SKU?.toString() || "",
                     Images: mainImages.join(","),
                     Category: category.id,

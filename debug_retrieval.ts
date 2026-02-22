@@ -38,29 +38,29 @@ async function main() {
     where: { Category: category.id },
     take: 5
   });
-  
+
   if (sampleProducts.length > 0) {
     console.log('Sample Product Data (First Product):', JSON.stringify({
-        id: sampleProducts[0].id,
-        Name: sampleProducts[0].Name,
-        Category: sampleProducts[0].Category,
-        Status: sampleProducts[0].Status,
-        Stock: sampleProducts[0].Stock
+      id: sampleProducts[0].id,
+      Name: sampleProducts[0].Name,
+      Category: sampleProducts[0].Category,
+      Status: sampleProducts[0].Status,
+      Stock: sampleProducts[0].quantity
     }, null, 2));
   } else {
     console.log('NO PRODUCTS FOUND in database for this category ID.');
-    
+
     // Debug: Check if there are ANY products at all
     const totalProducts = await prisma.product.count();
     console.log('Total products in database:', totalProducts);
-    
+
     if (totalProducts > 0) {
-        const firstProduct = await prisma.product.findFirst();
-        console.log('Sample of ANY product in DB:', JSON.stringify({
-            id: firstProduct?.id,
-            Name: firstProduct?.Name,
-            Category: firstProduct?.Category
-        }, null, 2));
+      const firstProduct = await prisma.product.findFirst();
+      console.log('Sample of ANY product in DB:', JSON.stringify({
+        id: firstProduct?.id,
+        Name: firstProduct?.Name,
+        Category: firstProduct?.Category
+      }, null, 2));
     }
   }
 }

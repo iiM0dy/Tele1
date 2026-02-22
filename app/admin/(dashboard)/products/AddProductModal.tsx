@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MdClose, MdExpandMore, MdSync, MdCheckCircle } from "react-icons/md";
 import { createProduct, updateProduct } from "../../../../lib/admin-actions";
 import { getSubCategories } from "../../../../lib/subcategory-actions";
+import { getTypes } from "../../../../lib/type-actions";
 import { useLanguage } from "@/app/context/LanguageContext";
 import { toast } from "react-hot-toast";
 
@@ -19,14 +20,21 @@ interface Product {
     description: string | null;
     categoryId: string;
     subCategoryId?: string | null;
+    typeId?: string | null;
     price: number;
     discountPrice: number | null;
     discountType: string | null;
     discountValue: number | null;
     stock: number;
     sku: string | null;
+    color?: string | null;
+    model?: string | null;
     images: string;
     subCategory?: {
+        id: string;
+        name: string;
+    } | null;
+    type?: {
         id: string;
         name: string;
     } | null;
@@ -43,16 +51,20 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
     const { t } = useLanguage();
     const [isLoading, setIsLoading] = useState(false);
     const [subCategories, setSubCategories] = useState<{ id: string, name: string }[]>([]);
+    const [types, setTypes] = useState<{ id: string, name: string }[]>([]);
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         categoryId: "",
         subCategoryId: "",
+        typeId: "",
         price: "",
         discountType: "NONE", // NONE, PERCENTAGE, FIXED
         discountValue: "",
         stock: "",
         sku: "",
+        color: "",
+        model: "",
         images: "", // Comma separated links
     });
 
@@ -61,11 +73,23 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
     const fetchSubCategories = async (catId: string) => {
         if (!catId) {
             setSubCategories([]);
+            setTypes([]);
             return;
         }
         const result = await getSubCategories(catId);
         if (result.success) {
             setSubCategories(result.subCategories || []);
+        }
+    };
+
+    const fetchTypes = async (brandId: string) => {
+        if (!brandId) {
+            setTypes([]);
+            return;
+        }
+        const result = await getTypes(brandId);
+        if (result.success) {
+            setTypes(result.types || []);
         }
     };
 
@@ -77,15 +101,21 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                 description: product.description || "",
                 categoryId: product.categoryId,
                 subCategoryId: product.subCategoryId || product.subCategory?.id || "",
+                typeId: product.typeId || product.type?.id || "",
                 price: product.price.toString(),
                 discountType: product.discountType || "NONE",
                 discountValue: product.discountValue?.toString() || "",
                 stock: product.stock.toString(),
                 sku: product.sku || "",
+                color: product.color || "",
+                model: product.model || "",
                 images: product.images || "",
             });
-            // Fetch subcategories for the existing category
+            // Fetch subcategories and types for existing category/brand
             fetchSubCategories(product.categoryId);
+            if (product.subCategoryId || product.subCategory?.id) {
+                fetchTypes(product.subCategoryId || product.subCategory?.id || "");
+            }
         } else if (isOpen) {
             // Reset for new product
             setFormData({
@@ -93,14 +123,18 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                 description: "",
                 categoryId: "",
                 subCategoryId: "",
+                typeId: "",
                 price: "",
                 discountType: "NONE",
                 discountValue: "",
                 stock: "0",
                 sku: "",
+                color: "",
+                model: "",
                 images: "",
             });
             setSubCategories([]);
+            setTypes([]);
         }
     }, [product, isOpen]);
 
@@ -109,8 +143,12 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
         setFormData(prev => ({ ...prev, [name]: value }));
 
         if (name === "categoryId") {
-            setFormData(prev => ({ ...prev, subCategoryId: "" }));
+            setFormData(prev => ({ ...prev, subCategoryId: "", typeId: "" }));
             fetchSubCategories(value);
+        }
+        if (name === "subCategoryId") {
+            setFormData(prev => ({ ...prev, typeId: "" }));
+            fetchTypes(value);
         }
     };
 
@@ -140,6 +178,8 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                 discountPrice: calculatedDiscountPrice,
                 discountValue: formData.discountType === "NONE" ? null : parseFloat(formData.discountValue),
                 stock: parseInt(formData.stock) || 0,
+                color: formData.color || null,
+                model: formData.model || null,
             };
 
             const result = product
@@ -306,7 +346,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                         {subCategories.length > 0 && (
                             <div className="space-y-2">
-                                <label htmlFor="productSubCategory" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.subCategory") || "Subcategory"}</label>
+                                <label htmlFor="productSubCategory" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.brand") || "Brand"}</label>
                                 <div className="relative">
                                     <select
                                         id="productSubCategory"
@@ -315,9 +355,30 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                         onChange={handleChange}
                                         name="subCategoryId"
                                     >
-                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectSubCategory") || "Select Subcategory"}</option>
+                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectBrand") || "Select Brand"}</option>
                                         {subCategories.map(sub => (
                                             <option key={sub.id} value={sub.id} className="bg-[#0F172A]">{sub.name}</option>
+                                        ))}
+                                    </select>
+                                    <MdExpandMore className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-accent text-[20px]" />
+                                </div>
+                            </div>
+                        )}
+
+                        {types.length > 0 && (
+                            <div className="space-y-2">
+                                <label htmlFor="productType" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.type") || "Type"}</label>
+                                <div className="relative">
+                                    <select
+                                        id="productType"
+                                        className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white appearance-none outline-none cursor-pointer"
+                                        value={formData.typeId}
+                                        onChange={handleChange}
+                                        name="typeId"
+                                    >
+                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectType") || "Select Type"}</option>
+                                        {types.map(type => (
+                                            <option key={type.id} value={type.id} className="bg-[#0F172A]">{type.name}</option>
                                         ))}
                                     </select>
                                     <MdExpandMore className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-accent text-[20px]" />
@@ -415,6 +476,30 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                 type="text"
                                 value={formData.sku}
                                 onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="productColor" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.color") || "Color"}</label>
+                            <input
+                                id="productColor"
+                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
+                                placeholder={t("admin.addProductModal.colorPlaceholder") || "e.g. Midnight Black"}
+                                type="text"
+                                value={formData.color}
+                                onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="productModel" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.model") || "Model"}</label>
+                            <input
+                                id="productModel"
+                                className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
+                                placeholder={t("admin.addProductModal.modelPlaceholder") || "e.g. Pro 2024"}
+                                type="text"
+                                value={formData.model}
+                                onChange={(e) => setFormData({ ...formData, model: e.target.value })}
                             />
                         </div>
                     </div>

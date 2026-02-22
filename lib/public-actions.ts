@@ -120,39 +120,12 @@ function transformProduct(product: any) {
     if (process.env.NODE_ENV === 'development') {
         console.log(`--- DEBUG: transformProduct for [${product.slug || product.Name}] ---`);
         console.log(`Original Images:`, product.Images);
-        console.log(`Original supImage1:`, product.supImage1);
-        console.log(`Original supImage2:`, product.supImage2);
     }
-
-    // Include supplemental images if they exist
-    // Use all possible casings to be safe
-    const s1 = product.supImage1 || product.supimage1 || product.SupImage1;
-    const s2 = product.supImage2 || product.supimage2 || product.SupImage2;
 
     // Create temporary images array to track uniqueness after formatting
     let processedImages = images
         .map(img => formatImagePath(img))
         .filter((img): img is string => img !== null);
-
-    [s1, s2].forEach((s, idx) => {
-        if (s && typeof s === 'string' && s.trim() !== '') {
-            const formatted = formatImagePath(s);
-            // Relaxed deduplication: only skip if the EXACT formatted string is already there
-            if (formatted && !processedImages.includes(formatted)) {
-                if (process.env.NODE_ENV === 'development') {
-                    console.log(`Adding supplemental image ${idx + 1}:`, formatted);
-                }
-                processedImages.push(formatted);
-            } else if (formatted) {
-                // If it's a duplicate, we might still want to show it if the user explicitly added it to supImage
-                // But usually, a gallery shouldn't show the same image twice.
-                // However, for debugging, let's log that it was skipped.
-                if (process.env.NODE_ENV === 'development') {
-                    console.log(`Supplemental image ${idx + 1} is a duplicate of an existing image, skipping.`);
-                }
-            }
-        }
-    });
 
     // Final filter for valid formats and deduplicate
     images = [...new Set(processedImages.filter(img => {
@@ -182,6 +155,16 @@ function transformProduct(product: any) {
             ...product.category,
             createdAt: product.category.createdAt.toISOString(),
             updatedAt: product.category.updatedAt.toISOString(),
+        } : null,
+        subCategory: product.subCategory ? {
+            ...product.subCategory,
+            createdAt: product.subCategory.createdAt.toISOString(),
+            updatedAt: product.subCategory.updatedAt.toISOString(),
+        } : null,
+        type: product.type ? {
+            ...product.type,
+            createdAt: product.type.createdAt.toISOString(),
+            updatedAt: product.type.updatedAt.toISOString(),
         } : null
     };
 }
@@ -257,7 +240,7 @@ export async function getAllProducts(page: number = 1, limit: number = 50) {
     }
 }
 
-export async function getProductsByCategory(categorySlug: string, page: number = 1, limit: number = 50, subCategorySlug?: string) {
+export async function getProductsByCategory(categorySlug: string, page: number = 1, limit: number = 50, subCategorySlug?: string, typeSlug?: string) {
     try {
         const skip = (page - 1) * limit;
 
@@ -276,6 +259,7 @@ export async function getProductsByCategory(categorySlug: string, page: number =
             return {
                 products: [],
                 subCategories: [],
+                types: [],
                 totalCount: 0,
                 totalPages: 0,
                 currentPage: page,
@@ -284,48 +268,79 @@ export async function getProductsByCategory(categorySlug: string, page: number =
             };
         }
 
-        // Fetch subcategories safely
-        let rawSubCategories: any[] = [];
-
-        // Check if subCategory model exists on prisma client (handle stale client case)
-        // @ts-ignore
-        if (prisma.subCategory) {
-            try {
-                // @ts-ignore
-                rawSubCategories = await prisma.subCategory.findMany({
-                    where: { categoryId: category.id },
-                    include: {
-                        _count: {
-                            select: { products: true }
-                        }
+        // Fetch brands (subcategories) safely
+        let rawBrands: any[] = [];
+        try {
+            rawBrands = await prisma.subCategory.findMany({
+                where: { categoryId: category.id },
+                include: {
+                    _count: {
+                        select: { products: true, types: true }
                     }
-                });
-            } catch (e) {
-                console.error("Error fetching subcategories:", e);
-            }
+                }
+            });
+        } catch (e) {
+            console.error("Error fetching brands:", e);
         }
 
-        const subCategories = rawSubCategories.map(sub => ({
-            ...sub,
-            image: formatImagePath(sub.image) || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800'
+        const brands = rawBrands.map(brand => ({
+            ...brand,
+            image: formatImagePath(brand.image) || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800'
         }));
 
         let whereClause: any = { Category: category.id };
         let currentSubCategory = null;
+        let currentType = null;
+        let types: any[] = [];
 
-        // If subCategorySlug is provided, filter by it
+        // If subCategorySlug (Brand) is provided
         if (subCategorySlug) {
-            currentSubCategory = subCategories.find(sub => sub.slug === subCategorySlug || sub.id === subCategorySlug);
+            currentSubCategory = brands.find(b => b.slug === subCategorySlug || b.id === subCategorySlug);
 
             if (currentSubCategory) {
                 whereClause.subCategoryId = currentSubCategory.id;
+
+                // Fetch types for this brand
+                try {
+                    types = await prisma.type.findMany({
+                        where: { subCategoryId: currentSubCategory.id },
+                        include: {
+                            _count: {
+                                select: { products: true }
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.error("Error fetching types:", e);
+                }
+
+                // If typeSlug is provided, filter by it
+                if (typeSlug) {
+                    currentType = types.find(t => t.slug === typeSlug || t.id === typeSlug);
+                    if (currentType) {
+                        whereClause.typeId = currentType.id;
+                    }
+                } else if (types.length > 0) {
+                    // If we have types and no type is selected, return types and NO products
+                    return {
+                        products: [],
+                        subCategories: brands,
+                        types,
+                        currentSubCategory,
+                        totalCount: 0,
+                        totalPages: 0,
+                        currentPage: page,
+                        categoryName: category.name,
+                        categoryNameAr: category.nameAr
+                    };
+                }
             }
-        } else if (subCategories.length > 0) {
-            // If we have subcategories and no subCategorySlug is selected, 
-            // we return subcategories and NO products (as per requirement).
+        } else if (brands.length > 0) {
+            // If no brand is selected, return brands and NO products
             return {
                 products: [],
-                subCategories,
+                subCategories: brands,
+                types: [],
                 totalCount: 0,
                 totalPages: 0,
                 currentPage: page,
@@ -337,7 +352,11 @@ export async function getProductsByCategory(categorySlug: string, page: number =
         const [products, totalCount] = await Promise.all([
             prisma.product.findMany({
                 where: whereClause,
-                include: { category: true },
+                include: {
+                    category: true,
+                    subCategory: true,
+                    type: true
+                },
                 orderBy: { createdAt: 'desc' },
                 skip: skip,
                 take: limit
@@ -349,8 +368,10 @@ export async function getProductsByCategory(categorySlug: string, page: number =
 
         return {
             products: products.map(transformProduct),
-            subCategories,
+            subCategories: brands,
+            types,
             currentSubCategory,
+            currentType,
             totalCount,
             totalPages: Math.ceil(totalCount / limit),
             currentPage: page,
@@ -362,6 +383,7 @@ export async function getProductsByCategory(categorySlug: string, page: number =
         return {
             products: [],
             subCategories: [],
+            types: [],
             totalCount: 0,
             totalPages: 0,
             currentPage: page,

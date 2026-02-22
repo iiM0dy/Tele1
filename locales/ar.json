@@ -19,7 +19,9 @@
         "showMore": "المزيد",
         "showLess": "عرض أقل",
         "categories": "الاقسام",
-        "collections": "المجموعات"
+        "collections": "المجموعات",
+        "yes": "نعم",
+        "no": "لا"
     },
     "header": {
         "brandName": "Ruby Beauty"
@@ -157,10 +159,6 @@
         "english": "English",
         "arabic": "العربية",
         "switchTo": "تغيير اللغة"
-    },
-    "common": {
-        "yes": "نعم",
-        "no": "لا"
     },
     "admin": {
         "dashboard": "لوحة التحكم",
@@ -361,9 +359,7 @@
         "preview": "معاينة",
         "featuredOnHomepage": "مميزة في الصفحة الرئيسية",
         "standard": "قياسية",
-        "description": "الوصف",
         "describeCategory": "صف ما هي المنتجات التي تنتمي لهذه الفئة...",
-        "saving": "جاري الحفظ...",
         "updateCategory": "تحديث الفئة",
         "createCategory": "إنشاء الفئة",
         "categoryUpdated": "تم تحديث الفئة بنجاح!",
@@ -443,10 +439,6 @@
         "describeSubCategory": "وصف الفئة الفرعية",
         "add": "إضافة",
         "update": "تحديث",
-        "addProductModal": {
-            "subCategory": "الفئة الفرعية",
-            "selectSubCategory": "اختر الفئة الفرعية"
-        },
         "currentPassword": "كلمة المرور الحالية",
         "requiredToVerify": "مطلوب للتحقق من هويتك",
         "changeCredentials": "تغيير بيانات الاعتماد",
@@ -471,6 +463,8 @@
         "deleteProduct": "حذف المنتج",
         "editProduct": "تعديل المنتج",
         "addProductModal": {
+            "subCategory": "الفئة الفرعية",
+            "selectSubCategory": "اختر الفئة الفرعية",
             "titleAdd": "إضافة منتج جديد",
             "titleEdit": "تعديل المنتج",
             "subtitleAdd": "أدخل التفاصيل لإضافة منتج جديد إلى المخزون.",
@@ -493,8 +487,13 @@
             "discountPrice": "سعر الخصم",
             "discountPricePlaceholder": "0.00",
             "percentagePlaceholder": "مثال: 20",
-            "stockQuantity": "الكمية في المخزون",
             "stockPlaceholder": "0",
+            "brand": "العلامة التجارية",
+            "selectBrand": "اختر العلامة التجارية",
+            "color": "اللون",
+            "colorPlaceholder": "مثال: أسود ملكي",
+            "model": "الموديل",
+            "modelPlaceholder": "مثال: برو 2024",
             "skuNumber": "رقم SKU",
             "skuPlaceholder": "مثال: GLOW-001",
             "cancel": "إلغاء",

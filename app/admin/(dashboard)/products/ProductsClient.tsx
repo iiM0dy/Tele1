@@ -55,6 +55,8 @@ interface Product {
     discountType: string | null;
     discountValue: number | null;
     stock: number;
+    color?: string | null;
+    model?: string | null;
     images: string;
     isTrending: boolean;
     bestSeller: boolean;
@@ -370,7 +372,9 @@ export default function ProductsClient({
                 t('admin.category') || "Category",
                 t('admin.subCategory') || "Sub Category",
                 t('admin.price') || "Price",
-                t('admin.stock') || "Stock",
+                t('admin.addProductModal.stockQuantity') || "Quantity",
+                "Color",
+                "Model",
                 t('admin.images') || "Images"
             ];
 
@@ -382,6 +386,8 @@ export default function ProductsClient({
                 `"${(p.subCategory || '').replace(/"/g, '""')}"`,
                 p.price,
                 p.stock,
+                `"${(p.color || '').replace(/"/g, '""')}"`,
+                `"${(p.model || '').replace(/"/g, '""')}"`,
                 `"${(p.images || '').replace(/"/g, '""')}"`
             ]);
 
@@ -428,7 +434,9 @@ export default function ProductsClient({
                 [t('admin.category') || "Category"]: p.category || 'Uncategorized',
                 [t('admin.subCategory') || "Sub Category"]: p.subCategory || '',
                 [t('admin.price') || "Price"]: p.price,
-                [t('admin.stock') || "Stock"]: p.stock,
+                [t('admin.addProductModal.stockQuantity') || "Quantity"]: p.stock,
+                ["Color"]: p.color || '',
+                ["Model"]: p.model || '',
                 [t('admin.images') || "Images"]: p.images || ''
             }));
 
@@ -534,6 +542,10 @@ export default function ProductsClient({
                             normalized.SubCategory = value;
                         } else if (k === 'images' || k === 'الصور' || k === t('admin.images').toLowerCase()) {
                             normalized.Images = value;
+                        } else if (k === 'color' || k === 'اللون' || k === 'اللون') {
+                            normalized.color = value;
+                        } else if (k === 'model' || k === 'الموديل' || k === 'الموديل') {
+                            normalized.model = value;
                         } else if (k === 'is trending' || k === 'trending' || k === 'رائج') {
                             normalized.IsTrending = value;
                         } else if (k === 'best seller' || k === 'best sellers' || k === 'الأكثر مبيعاً' || k === 'الأكثر مبيعا') {
@@ -873,7 +885,7 @@ export default function ProductsClient({
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.productName')}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.categoryName')}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.priceValue')}</th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.inventory')}</th>
+                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.addProductModal.stockQuantity') || "Quantity"}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.trending')}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.bestSeller')}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.statusValue')}</th>
@@ -906,7 +918,15 @@ export default function ProductsClient({
                                                         </div>
                                                         <div className="flex flex-col min-w-0">
                                                             <span className="font-semibold text-white text-xs sm:text-sm line-clamp-1 tracking-tight">{product.name}</span>
-                                                            <span className="text-[10px] text-white/60 font-semibold tracking-wider">{t('admin.sku')}: {product.sku || 'N/A'}</span>
+                                                            <div className="flex flex-wrap gap-x-2 gap-y-1">
+                                                                <span className="text-[10px] text-white/60 font-semibold tracking-wider">{t('admin.sku')}: {product.sku || 'N/A'}</span>
+                                                                {product.color && (
+                                                                    <span className="text-[10px] text-accent font-semibold tracking-wider">| {product.color}</span>
+                                                                )}
+                                                                {product.model && (
+                                                                    <span className="text-[10px] text-white/40 font-semibold tracking-wider">| {product.model}</span>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>

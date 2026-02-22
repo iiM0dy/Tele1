@@ -6,6 +6,7 @@ import { createSubCategory, updateSubCategory, deleteSubCategory, getSubCategori
 import { toast } from "react-hot-toast";
 import { useLanguage } from "@/app/context/LanguageContext";
 import Image from "next/image";
+import TypesModal from "./TypesModal";
 
 interface SubCategoriesModalProps {
     isOpen: boolean;
@@ -27,9 +28,9 @@ interface SubCategory {
     };
 }
 
-export default function SubCategoriesModal({ isOpen, onClose, category }: SubCategoriesModalProps) {
+export default function BrandsModal({ isOpen, onClose, category }: SubCategoriesModalProps) {
     const { t, dir } = useLanguage();
-    const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+    const [brands, setBrands] = useState<SubCategory[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     // Form State
@@ -39,23 +40,27 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
     const [image, setImage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Types management state
+    const [selectedBrandForTypes, setSelectedBrandForTypes] = useState<SubCategory | null>(null);
+    const [isTypesModalOpen, setIsTypesModalOpen] = useState(false);
+
     useEffect(() => {
         if (isOpen && category) {
-            fetchSubCategories();
+            fetchBrands();
         } else {
             resetForm();
-            setSubCategories([]);
+            setBrands([]);
         }
     }, [isOpen, category]);
 
-    const fetchSubCategories = async () => {
+    const fetchBrands = async () => {
         if (!category) return;
         setIsLoading(true);
         const result = await getSubCategories(category.id);
         if (result.success) {
-            setSubCategories(result.subCategories || []);
+            setBrands(result.subCategories || []);
         } else {
-            toast.error(result.error || "Failed to fetch subcategories");
+            toast.error(result.error || "Failed to fetch brands");
         }
         setIsLoading(false);
     };
@@ -79,8 +84,8 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
 
         const result = await deleteSubCategory(id);
         if (result.success) {
-            toast.success(t('admin.subCategoryDeleted') || "Subcategory deleted");
-            fetchSubCategories();
+            toast.success(t('admin.brandDeleted') || "Brand deleted");
+            fetchBrands();
         } else {
             toast.error(result.error || "Failed to delete subcategory");
         }
@@ -96,21 +101,21 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
             let result;
 
             if (isEditing) {
-                result = await updateSubCategory(isEditing, data);
+                result = await updateSubCategory(isEditing, data); // Still using updateSubCategory from lib
             } else {
-                result = await createSubCategory(data);
+                result = await createSubCategory(data); // Still using createSubCategory from lib
             }
 
             if (result.success) {
-                toast.success(isEditing ? (t('admin.subCategoryUpdated') || "Subcategory updated") : (t('admin.subCategoryCreated') || "Subcategory created"));
+                toast.success(isEditing ? "Brand updated" : "Brand created");
                 resetForm();
-                fetchSubCategories();
+                fetchBrands();
             } else {
-                toast.error(result.error || `Failed to ${isEditing ? "update" : "create"} subcategory`);
+                toast.error(result.error || "Failed to save brand");
             }
         } catch (error) {
-            console.error("Error submitting subcategory:", error);
-            toast.error("An unexpected error occurred");
+            console.error("Error saving brand:", error);
+            toast.error("An error occurred");
         } finally {
             setIsSubmitting(false);
         }
@@ -128,11 +133,11 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
             <div className="relative w-full max-w-5xl bg-[#202126] rounded-4xl shadow-2xl overflow-hidden border border-white/5 flex flex-col max-h-[90vh]">
                 <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
                     <div>
-                        <h2 className="text-2xl font-black text-white tracking-tight">
-                            {t('admin.manageSubCategories') || "Manage Subcategories"}
-                        </h2>
-                        <p className="text-white/40 text-[11px] font-semibold tracking-wider mt-1">
-                            {category?.name}
+                        <h3 className="text-xl font-bold text-gray-900">
+                            {category?.name} - Brands
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                            Manage brands for this category
                         </p>
                     </div>
                     <button
@@ -148,84 +153,64 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                     {/* Left: Form */}
                     <div className="w-full md:w-80 p-8 border-r border-white/5 md:overflow-y-auto shrink-0">
                         <h3 className="text-[11px] font-semibold text-white/40 tracking-wider mb-6">
-                            {isEditing ? (t('admin.editSubCategory') || "Edit Subcategory") : (t('admin.addNewSubCategory') || "Add New Subcategory")}
+                            {isEditing ? (t('admin.editBrand') || "Edit Brand") : (t('admin.addNewBrand') || "Add New Brand")}
                         </h3>
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                            <div className="flex flex-col gap-3">
-                                <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                    {t('admin.name') || "Name"}
-                                </label>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder={t('admin.subCategoryName') || "Subcategory Name"}
-                                    required
-                                    aria-label={t('admin.subCategoryName') || "Subcategory Name"}
-                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-3">
-                                <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                    {t('admin.imageLink') || "Image Link"}
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        type="url"
-                                        value={image}
-                                        onChange={(e) => setImage(e.target.value)}
-                                        placeholder="https://..."
-                                        required
-                                        aria-label={t('admin.imageLink') || "Image Link"}
-                                        className={`w-full ${dir === 'rtl' ? 'pl-12' : 'pr-12'} px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40`}
-                                    />
-                                    <div className={`absolute top-1/2 -translate-y-1/2 ${dir === 'rtl' ? 'left-4' : 'right-4'} text-white/20 pointer-events-none`}>
-                                        <MdImage className="text-xl" />
+                        <div className="bg-gray-50 p-6 border-b border-gray-100">
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Brand Name</label>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="w-full h-10 px-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                            placeholder="e.g. Nike, Dior..."
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                                        <input
+                                            type="text"
+                                            value={image}
+                                            onChange={(e) => setImage(e.target.value)}
+                                            className="w-full h-10 px-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                            placeholder="Paste image link"
+                                            required
+                                        />
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="flex flex-col gap-3">
-                                <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                    {t('admin.description') || "Description"}
-                                </label>
-                                <textarea
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder={t('admin.describeSubCategory') || "Describe the subcategory..."}
-                                    rows={3}
-                                    aria-label={t('admin.description') || "Description"}
-                                    className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
-                                />
-                            </div>
-
-                            <div className="flex gap-3 mt-2">
-                                {isEditing && (
-                                    <button
-                                        type="button"
-                                        onClick={resetForm}
-                                        className="flex-1 px-4 py-3 rounded-xl border border-white/5 text-white/60 hover:text-white hover:bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] transition-all"
-                                    >
-                                        {t('admin.cancel') || "Cancel"}
-                                    </button>
-                                )}
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="flex-1 bg-accent text-white py-3.5 rounded-2xl font-black uppercase tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                                >
-                                    {isSubmitting ? (
-                                        <span className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />
-                                    ) : (
-                                        <>
-                                            {isEditing ? <MdEdit className="text-lg" /> : <MdAdd className="text-lg" />}
-                                            {isEditing ? (t('admin.update') || "Update") : (t('admin.add') || "Add")}
-                                        </>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
+                                    <textarea
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all min-h-[80px]"
+                                        placeholder="Brief description of the brand"
+                                    />
+                                </div>
+                                <div className="flex justify-end gap-3">
+                                    {isEditing && (
+                                        <button
+                                            type="button"
+                                            onClick={resetForm}
+                                            className="px-4 h-10 rounded-lg text-gray-600 hover:bg-gray-100 font-medium transition-all"
+                                        >
+                                            Cancel
+                                        </button>
                                     )}
-                                </button>
-                            </div>
-                        </form>
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="px-6 h-10 rounded-lg bg-accent text-white font-bold flex items-center gap-2 hover:opacity-90 transition-all disabled:opacity-50"
+                                    >
+                                        {isSubmitting ? <span className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" /> : (isEditing ? <MdEdit /> : <MdAdd />)}
+                                        {isEditing ? "Update Brand" : "Add Brand"}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     {/* Right: List */}
@@ -235,49 +220,59 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                                 <div className="col-span-full flex justify-center py-10">
                                     <span className="animate-spin h-8 w-8 border-2 border-white/10 border-t-accent rounded-full" />
                                 </div>
-                            ) : subCategories.length === 0 ? (
+                            ) : brands.length === 0 ? (
                                 <div className="col-span-full flex flex-col items-center justify-center py-10 text-white/60">
                                     <MdSearchOff className="text-4xl mb-2" />
                                     <p className="text-[10px] font-black uppercase tracking-[0.2em]">
-                                        {t('admin.noSubCategories') || "No subcategories found"}
+                                        {t('admin.noBrands') || "No brands found"}
                                     </p>
                                 </div>
                             ) : (
-                                subCategories.map((sub) => (
-                                    <div key={sub.id} className="bg-white/2 border border-white/5 rounded-2xl p-4 flex gap-4 group hover:border-accent/30 transition-all">
+                                brands.map((brand) => (
+                                    <div key={brand.id} className="bg-white/2 border border-white/5 rounded-2xl p-4 flex gap-4 group hover:border-accent/30 transition-all">
                                         <div className="w-16 h-16 rounded-xl bg-white/5 relative overflow-hidden shrink-0">
                                             <Image
-                                                src={sub.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"}
-                                                alt={sub.name}
+                                                src={brand.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"}
+                                                alt={brand.name}
                                                 fill
                                                 className="object-cover"
                                             />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <h4 className="text-white text-[13px] font-black tracking-tight truncate">
-                                                {sub.name}
+                                                {brand.name}
                                             </h4>
                                             <p className="text-white/60 text-[11px] mt-1 line-clamp-2 leading-relaxed">
-                                                {sub.description}
+                                                {brand.description}
                                             </p>
-                                            <div className="flex items-center gap-3 mt-3">
+                                            <div className="flex items-center gap-2">
                                                 <button
-                                                    onClick={() => handleEdit(sub)}
-                                                    className="text-white/60 hover:text-accent transition-colors"
-                                                    aria-label={t('admin.editSubCategory') || "Edit subcategory"}
+                                                    onClick={() => {
+                                                        setSelectedBrandForTypes(brand);
+                                                        setIsTypesModalOpen(true);
+                                                    }}
+                                                    className="p-2 text-accent hover:bg-accent/10 rounded-lg transition-all flex items-center gap-1 text-xs font-bold"
+                                                    title="Manage Types"
                                                 >
-                                                    <MdEdit className="text-lg" />
+                                                    Types
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(sub.id)}
-                                                    className="text-white/60 hover:text-red-500 transition-colors"
-                                                    aria-label={t('admin.deleteSubCategory') || "Delete subcategory"}
+                                                    onClick={() => handleEdit(brand)}
+                                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                                    title="Edit"
                                                 >
-                                                    <MdDelete className="text-lg" />
+                                                    <MdEdit size={20} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(brand.id)}
+                                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                                    title="Delete"
+                                                >
+                                                    <MdDelete size={20} />
                                                 </button>
                                                 <div className="flex-1" />
                                                 <span className="text-[10px] font-semibold tracking-wider text-white/40 bg-white/5 px-3 py-1.5 rounded-xl">
-                                                    {sub._count?.products || 0} Products
+                                                    {brand._count?.products || 0} Products
                                                 </span>
                                             </div>
                                         </div>
@@ -288,6 +283,12 @@ export default function SubCategoriesModal({ isOpen, onClose, category }: SubCat
                     </div>
                 </div>
             </div>
+
+            <TypesModal
+                isOpen={isTypesModalOpen}
+                onClose={() => setIsTypesModalOpen(false)}
+                brand={selectedBrandForTypes}
+            />
         </div>
     );
 }

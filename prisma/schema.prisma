@@ -14,6 +14,7 @@ model User {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   username            String   @unique
+  role                Role     @default(ADMIN)
   canDeleteBanners    Boolean  @default(true)
   canDeleteCategories Boolean  @default(true)
   canDeleteOrders     Boolean  @default(true)
@@ -24,7 +25,6 @@ model User {
   canManageOrders     Boolean  @default(true)
   canManageProducts   Boolean  @default(true)
   canManagePromoCodes Boolean  @default(true)
-  role                Role     @default(ADMIN)
 }
 
 model Category {
@@ -49,11 +49,25 @@ model SubCategory {
   image       String
   categoryId  String
   category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  types       Type[]
   products    Product[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   @@index([categoryId])
+}
+
+model Type {
+  id            String      @id @default(cuid())
+  name          String
+  slug          String      @unique
+  subCategoryId String
+  subCategory   SubCategory @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+  products      Product[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([subCategoryId])
 }
 
 model Product {
@@ -62,18 +76,18 @@ model Product {
   SKU           String?
   Category      String
   Price         Decimal      @db.Decimal(10, 2)
-  Stock         Int          @default(0)
-  Status        String       @default("ACTIVE") // New field for Status
+  quantity      Int          @default(0)
+  Status        String       @default("ACTIVE")
   IsTrending    Boolean      @default(false)
   BestSeller    Boolean      @default(false)
   Images        String
-  supImage1     String?
-  supImage2     String?
   badge         String?
+  color         String?
+  model         String?
   slug          String       @unique
   description   String?
   discountPrice Decimal?     @db.Decimal(10, 2)
-  discountType  String? // "PERCENTAGE" | "FIXED"
+  discountType  String?
   discountValue Decimal?     @db.Decimal(10, 2)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -82,9 +96,12 @@ model Product {
   category      Category     @relation(fields: [Category], references: [id])
   subCategoryId String?
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+  typeId        String?
+  type          Type?        @relation(fields: [typeId], references: [id])
 
   @@index([Category])
   @@index([subCategoryId])
+  @@index([typeId])
   @@index([Name])
 }
 
@@ -169,7 +186,6 @@ model Settings {
   categoriesCtaDescAr  String? @default("مستشارونا هنا لمساعدتك في العثور على المنتجات المثالية لاحتياجاتك.")
   categoriesCtaImage   String? @default("https://via.placeholder.com/400x300")
 
-  // Shipping & Returns Page Content
   shippingTitle   String? @default("Fast & Reliable Shipping")
   shippingDesc    String? @default("We ensure your products reach you in perfect condition, wherever you are.")
   shippingTitleAr String? @default("شحن سريع وموثوق")
@@ -193,13 +209,11 @@ model Settings {
   finalSaleTitleAr String? @default("أصناف البيع النهائي")
   finalSaleDescAr  String? @default("بعض العناصر هي بيع نهائي لأسباب صحية.")
 
-  // Hygiene Section
   hygieneTitle   String? @default("Hygiene & Safety Protocols")
   hygieneDesc    String? @default("For your safety, we follow strict protocols for handling all products.")
   hygieneTitleAr String? @default("بروتوكولات النظافة والسلامة")
   hygieneDescAr  String? @default("من أجل سلامتك، نتبع بروتوكولات صارمة للتعامل مع جميع المنتجات.")
 
-  // Shipping & Returns Image
   shippingReturnsImage String? @default("https://via.placeholder.com/800x400")
 
   updatedAt DateTime @updatedAt

@@ -4,31 +4,43 @@ import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
-export default async function SubCategoryCollectionPage(props: {
-    params: Promise<{ categorySlug: string; subCategorySlug: string }>;
+export default async function TypeCollectionPage(props: {
+    params: Promise<{ categorySlug: string; subCategorySlug: string; typeSlug: string }>;
     searchParams: Promise<{ page?: string }>;
 }) {
     const params = await props.params;
     const searchParams = await props.searchParams;
 
     const page = Number(searchParams.page) || 1;
-    const { products, subCategories, types, currentSubCategory, totalPages, currentPage, categoryName, categoryNameAr } = await getProductsByCategory(params.categorySlug, page, 24, params.subCategorySlug);
+    const {
+        products,
+        currentSubCategory,
+        currentType,
+        totalPages,
+        currentPage,
+        categoryName,
+        categoryNameAr
+    } = await getProductsByCategory(
+        params.categorySlug,
+        page,
+        24,
+        params.subCategorySlug,
+        params.typeSlug
+    );
 
-    if (!currentSubCategory) {
+    if (!currentType) {
         notFound();
     }
 
     return (
         <CollectionPage
             products={products as any}
-            collectionName={currentSubCategory.name}
+            collectionName={currentType.name}
             collectionNameAr={null}
             totalPages={totalPages}
             currentPage={currentPage}
             categorySlug={params.categorySlug}
             brandSlug={params.subCategorySlug}
-            subCategories={subCategories}
-            types={types}
         />
     );
 }

@@ -67,21 +67,36 @@ export default function Header() {
     const isProductsListPage = pathname === '/products';
     const isCartPage = pathname === '/cart';
     const isAdminPage = pathname?.startsWith('/admin');
-    const isSolid = true; // Always solid as per user request
+
+    // Detect 404 page via body attribute set in not-found.tsx
+    const [isNotFoundPage, setIsNotFoundPage] = useState(false);
+
+    useEffect(() => {
+        const checkNotFound = () => {
+            setIsNotFoundPage(document.body.hasAttribute('data-not-found'));
+        };
+        checkNotFound();
+        // Use an observer to catch changes to body attributes
+        const observer = new MutationObserver(checkNotFound);
+        observer.observe(document.body, { attributes: true });
+        return () => observer.disconnect();
+    }, [pathname]);
+
+    const isSolid = isScrolled || isHovered || isCollectionPage || isProductPage || isProductsListPage || isCartPage || isNotFoundPage;
 
     if (pathname === '/checkout' || pathname === '/order-success' || isAdminPage) return null;
 
     return (
         <div
-            className="sticky top-0 w-full z-50 group/header bg-primary shadow-2xl"
+            className={`${(isCartPage || isProductsListPage || isNotFoundPage) ? 'relative' : 'fixed top-0 left-0'} w-full z-50 group/header transition-all duration-700 ease-in-out ${isSolid
+                    ? 'bg-primary shadow-2xl py-0'
+                    : 'bg-transparent py-2'
+                }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <header
-                className={`w-full ${(isCartPage || isProductsListPage) ? '' : 'transition-all duration-500 ease-in-out'} flex items-center h-[90px] ${isSolid
-                    ? 'bg-primary shadow-2xl'
-                    : 'bg-transparent'
-                    } text-white`}
+                className="w-full flex items-center h-[90px] text-white"
             >
                 <div className="w-full px-4 md:px-[48px]">
                     <div className="grid grid-cols-3 items-center">

@@ -380,8 +380,8 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                                         setIsSubCategoriesModalOpen(true);
                                                     }}
                                                     className="p-2.5 text-white/60 hover:text-accent hover:bg-accent/5 rounded-xl transition-all border border-transparent hover:border-accent/10"
-                                                    title={t('admin.manageSubCategories') || "Manage Subcategories"}
-                                                    aria-label={t('admin.manageSubCategories') || "Manage Subcategories"}
+                                                    title={t('admin.manageBrands') || "Manage Brands"}
+                                                    aria-label={t('admin.manageBrands') || "Manage Brands"}
                                                 >
                                                     <MdList className="text-lg" />
                                                 </button>

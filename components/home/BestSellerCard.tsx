@@ -14,8 +14,6 @@ interface Product {
     Price: any;
     discountPrice: any;
     Images: string;
-    supImage1?: string | null;
-    supImage2?: string | null;
     IsTrending: boolean;
     BestSeller: boolean;
     description?: string;
@@ -109,13 +107,13 @@ export default function BestSellerCard({ product, index }: { product: any; index
                 <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
                     {language === 'ar' && product.category?.nameAr ? product.category.nameAr : product.category?.name}
                 </div>
-                <Link 
+                <Link
                     href={`/products/${product.slug}`}
                     className="text-sm font-bold text-primary group-hover:text-accent transition-colors line-clamp-2 min-h-[40px]"
                 >
                     {product.Name}
                 </Link>
-                
+
                 <div className="flex items-center gap-3 pt-1">
                     {discountPrice ? (
                         <>

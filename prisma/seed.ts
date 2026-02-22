@@ -44,14 +44,14 @@ async function main() {
       const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + `-${Math.random().toString(36).substring(2, 5)}`;
       const price = Math.floor(Math.random() * (2500 - 500 + 1)) + 500;
       const sku = `JL-${category.id.substring(0, 3).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      
+
       await prisma.product.create({
         data: {
           Name: name,
           SKU: sku,
           Category: category.id,
           Price: price,
-          Stock: Math.floor(Math.random() * 50) + 5,
+          quantity: Math.floor(Math.random() * 50) + 5,
           Status: 'ACTIVE',
           IsTrending: Math.random() > 0.7,
           Images: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 1000000000)}?q=80&w=800`,

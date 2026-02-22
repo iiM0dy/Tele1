@@ -1,30 +1,20 @@
 "use client";
 
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { HiOutlineArrowRight, HiOutlineHome } from "react-icons/hi";
 import { useLanguage } from "@/app/context/LanguageContext";
 
 export default function NotFound() {
-    // Attempt to use language context, but provide fallbacks in case it's rendered outside the provider
-    let t = (key: string) => {
-        if (key === "notFound.title") return "404 Error";
-        if (key === "notFound.heading") return "Lost in Space?";
-        if (key === "notFound.description") return "The page you're looking for doesn't exist or has been moved.";
-        if (key === "notFound.homeCta") return "Go Home";
-        if (key === "notFound.shopCta") return "Shop Products";
-        return key;
-    };
-    let isRTL = false;
+    const { t, language } = useLanguage();
+    const isRTL = language === "ar";
 
-    try {
-        const langContext = useLanguage();
-        if (langContext) {
-            t = langContext.t;
-            isRTL = langContext.language === "ar";
-        }
-    } catch (e) {
-        // Fallback to defaults defined above
-    }
+    // Signal to the Header that this is a 404 page
+    // This allows the Header to be solid and push content down (relative) only on this page
+    useEffect(() => {
+        document.body.setAttribute('data-not-found', 'true');
+        return () => document.body.removeAttribute('data-not-found');
+    }, []);
 
     return (
         <div className="relative min-h-[80vh] flex flex-col items-center justify-center px-4 pt-20 pb-12 overflow-hidden bg-white dark:bg-black">
