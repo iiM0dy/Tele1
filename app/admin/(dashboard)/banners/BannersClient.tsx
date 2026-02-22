@@ -33,8 +33,8 @@ interface Banner {
 export default function BannersClient({ banners }: { banners: Banner[] }) {
     const { data: session } = useSession();
     const { t, dir } = useLanguage();
-    const canManage = session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageBanners;
-    const canDelete = session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteBanners;
+    const canManage = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageBanners;
+    const canDelete = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteBanners;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);

@@ -60,6 +60,7 @@ export function ProductCard({ product, index }: { product: any; index: number })
                     fill
                     sizes="(max-width: 1024px) 50vw, 33vw"
                     priority={isPriority}
+                    fetchPriority={isPriority ? "high" : undefined}
                     className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                 />
                 {hoverImage && (
@@ -98,9 +99,9 @@ export function ProductCard({ product, index }: { product: any; index: number })
             </div>
 
             <div className="p-6 space-y-3">
-                <h3 className="text-[13px] font-bold tracking-tight text-[#0F172A] line-clamp-2 min-h-[40px] group-hover:text-accent transition-colors">
+                <h2 className="text-[13px] font-bold tracking-tight text-[#0F172A] line-clamp-2 min-h-[40px] group-hover:text-accent transition-colors">
                     {product.Name}
-                </h3>
+                </h2>
                 <div className="flex items-center justify-between gap-2 pt-2 border-t border-zinc-50">
                     {discountPrice ? (
                         <div className="flex items-center gap-3">

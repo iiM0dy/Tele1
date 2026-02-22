@@ -239,6 +239,7 @@ export default function Header() {
                             <button 
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="p-2 text-primary hover:bg-zinc-100 rounded-full transition-colors"
+                                aria-label="Close mobile menu"
                             >
                                 <svg aria-hidden="true" focusable="false" fill="none" width="24" height="24" viewBox="0 0 24 24">
                                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>

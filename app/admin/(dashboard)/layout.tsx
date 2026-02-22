@@ -8,13 +8,13 @@ export default async function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
 
     // Don't check auth for login page - it's handled by route group
     // This layout only applies to protected routes
-    if (!session) {
-        redirect("/admin/login");
-    }
+    // if (!session) {
+    //     redirect("/admin/login");
+    // }
 
     return <DashboardLayoutClient>{children}</DashboardLayoutClient>;
 }

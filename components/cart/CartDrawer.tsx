@@ -111,7 +111,7 @@ export default function CartDrawer() {
                             <h3 className="text-lg font-medium text-zinc-600">{t('cart.emptyCart')}</h3>
                             <button 
                                 onClick={() => setIsDrawerOpen(false)}
-                                className="text-sm font-bold uppercase tracking-widest text-accent underline underline-offset-4 hover:text-accent/80"
+                                className="text-sm font-bold uppercase tracking-widest text-accent/90 bg-accent/10 px-4 py-2 rounded-xl hover:text-accent hover:bg-accent/20 transition-colors"
                             >
                                 {t('cart.startShopping')}
                             </button>

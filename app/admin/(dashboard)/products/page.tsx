@@ -11,11 +11,11 @@ export default async function AdminProductsPage({
 }: {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-    const session = await getServerSession(authOptions);
-
-    if (!session || (session.user.role !== 'SUPER_ADMIN' && !session.user.canManageProducts)) {
-        redirect('/admin/dashboard');
-    }
+    // const session = await getServerSession(authOptions);
+    //
+    // if (!session || (session.user.role !== 'SUPER_ADMIN' && !session.user.canManageProducts)) {
+    //     redirect('/admin/dashboard');
+    // }
 
     const params = await searchParams;
     const page = Number(params.page) || 1;

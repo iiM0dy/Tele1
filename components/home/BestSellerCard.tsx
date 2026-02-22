@@ -77,6 +77,7 @@ export default function BestSellerCard({ product, index }: { product: any; index
                         className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                         sizes="(max-width: 699px) 74vw, (max-width: 999px) 38vw, 25vw"
                         priority={isPriority}
+                        fetchPriority={isPriority ? "high" : undefined}
                     />
                     {hoverImage && (
                         <Image

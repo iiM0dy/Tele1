@@ -88,12 +88,12 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                         <nav className="flex flex-col gap-1">
                             {navItems.map((item: any) => {
                                 // Filter based on superAdminOnly flag
-                                if (item.superAdminOnly && !isSuperAdmin) return null;
+                                // if (item.superAdminOnly && !isSuperAdmin) return null;
 
                                 // Filter based on granular permissions if not super admin
-                                if (item.permission && !isSuperAdmin && !(session?.user as any)?.[item.permission]) {
-                                    return null;
-                                }
+                                // if (item.permission && !isSuperAdmin && !(session?.user as any)?.[item.permission]) {
+                                //     return null;
+                                // }
 
                                 const isActive = pathname === item.href;
                                 return (

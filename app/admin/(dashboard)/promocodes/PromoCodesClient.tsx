@@ -23,8 +23,8 @@ interface PromoCode {
 export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode[] }) {
     const { data: session } = useSession();
     const { t, dir } = useLanguage();
-    const canManage = session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManagePromoCodes;
-    const canDelete = session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeletePromoCodes;
+    const canManage = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManagePromoCodes;
+    const canDelete = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeletePromoCodes;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);

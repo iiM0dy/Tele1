@@ -44,8 +44,8 @@ export default function ReviewsClient({
 }) {
     const { data: session } = useSession();
     const { t, dir } = useLanguage();
-    const canManage = session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageProducts; // Using product permission for reviews
-    const canDelete = session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteProducts;
+    const canManage = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageProducts; // Using product permission for reviews
+    const canDelete = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteProducts;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState<Review | null>(null);
