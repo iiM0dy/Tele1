@@ -305,6 +305,7 @@
         "bestSeller": "الأكثر مبيعاً",
         "name": "الاسم",
         "category": "الفئة",
+        "description": "الوصف",
         "subCategory": "الفئة الفرعية",
         "price": "السعر",
         "stock": "المخزون",

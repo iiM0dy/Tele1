@@ -303,6 +303,7 @@
         "bestSeller": "Best Seller",
         "name": "Name",
         "category": "Category",
+        "description": "Description",
         "subCategory": "Sub Category",
         "price": "Price",
         "stock": "Stock",
