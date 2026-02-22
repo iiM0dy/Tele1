@@ -367,17 +367,17 @@ export default function ProductsClient({
 
             // Prepare headers
             const headers = [
-                t('admin.name') || "Name",
-                t('admin.category') || "Category",
-                t('admin.addProductModal.brand') || "Brand",
-                t('admin.addProductModal.type') || "Type",
-                t('admin.addProductModal.model') || "Model",
+                "Name",
+                "Category",
+                "Brand",
+                "Type",
+                "Model",
                 "Color",
-                t('admin.description') || "Description",
-                t('admin.addProductModal.stockQuantity') || "Quantity",
-                t('admin.price') || "Price",
-                t('admin.sku') || "SKU",
-                t('admin.images') || "Images"
+                "Description",
+                "Quantity",
+                "Price",
+                "SKU",
+                "Images"
             ];
 
             // Prepare data rows
@@ -433,17 +433,17 @@ export default function ProductsClient({
 
             // Prepare data for Excel
             const excelData = exportData.map((p: any) => ({
-                [t('admin.name') || "Name"]: p.name,
-                [t('admin.category') || "Category"]: p.category || 'Uncategorized',
-                [t('admin.addProductModal.brand') || "Brand"]: p.brand || '',
-                [t('admin.addProductModal.type') || "Type"]: p.type || '',
-                [t('admin.addProductModal.model') || "Model"]: p.model || '',
-                ["Color"]: p.color || '',
-                [t('admin.description') || "Description"]: p.description || '',
-                [t('admin.addProductModal.stockQuantity') || "Quantity"]: p.stock,
-                [t('admin.price') || "Price"]: p.price,
-                [t('admin.sku') || "SKU"]: p.sku || '',
-                [t('admin.images') || "Images"]: p.images || ''
+                "Name": p.name,
+                "Category": p.category || 'Uncategorized',
+                "Brand": p.brand || '',
+                "Type": p.type || '',
+                "Model": p.model || '',
+                "Color": p.color || '',
+                "Description": p.description || '',
+                "Quantity": p.stock,
+                "Price": p.price,
+                "SKU": p.sku || '',
+                "Images": p.images || ''
             }));
 
             const worksheet = XLSX.utils.json_to_sheet(excelData);
