@@ -200,6 +200,8 @@
             "selectSubCategory": "Select Subcategory",
             "brand": "Brand",
             "selectBrand": "Select Brand",
+            "type": "Type",
+            "selectType": "Select Type",
             "model": "Model",
             "color": "Color",
             "modelPlaceholder": "e.g. Pro 2024"

@@ -408,6 +408,8 @@
             "selectSubCategory": "Select Subcategory",
             "brand": "Brand",
             "selectBrand": "Select Brand",
+            "type": "Type",
+            "selectType": "Select Type",
             "color": "Color",
             "colorPlaceholder": "e.g. Midnight Black",
             "model": "Model",

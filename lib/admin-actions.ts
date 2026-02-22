@@ -245,7 +245,8 @@ export async function getAllAdminProductsForExport() {
                     }
                 },
                 color: true,
-                model: true
+                model: true,
+                description: true
             },
             orderBy: {
                 createdAt: 'desc'
@@ -257,9 +258,11 @@ export async function getAllAdminProductsForExport() {
             sku: product.SKU || '',
             category: product.category?.name || 'Uncategorized',
             subCategory: product.subCategory?.name || '',
+            brand: product.subCategory?.name || '', // Explicitly map Brand for clarity
             type: product.type?.name || '',
             color: product.color || '',
             model: product.model || '',
+            description: product.description || '',
             price: Number(product.Price) || 0,
             stock: Number(product.quantity) || 0,
             images: product.Images || ''
@@ -1208,8 +1211,10 @@ export async function bulkCreateProducts(products: any[]) {
             }
 
             let subCategoryId: string | null = null;
-            if (p.SubCategory) {
-                const subCatName = p.SubCategory.toString().trim();
+            // Support both Brand and SubCategory headers
+            const subCategoryValue = p.Brand || p.SubCategory;
+            if (subCategoryValue) {
+                const subCatName = subCategoryValue.toString().trim();
                 const subCatNameLower = subCatName.toLowerCase();
                 let subCat = category.subCategories.find((sc) => sc.name.toLowerCase() === subCatNameLower);
 
@@ -1224,10 +1229,37 @@ export async function bulkCreateProducts(products: any[]) {
                             categoryId: category.id,
                             image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800",
                         },
+                        include: { types: true }
                     });
-                    category.subCategories.push(subCat);
+                    category.subCategories.push(subCat as any);
                 }
                 subCategoryId = subCat.id;
+
+                // Handle Type if present
+                if (p.Type) {
+                    const typeName = p.Type.toString().trim();
+                    const typeNameLower = typeName.toLowerCase();
+
+                    // Re-fetch or ensure subCat has types (it might be newly created or from cache)
+                    const fullSubCat = await prisma.subCategory.findUnique({
+                        where: { id: subCategoryId },
+                        include: { types: true }
+                    });
+
+                    if (fullSubCat) {
+                        let typeObj = fullSubCat.types.find(t => t.name.toLowerCase() === typeNameLower);
+                        if (!typeObj) {
+                            typeObj = await prisma.type.create({
+                                data: {
+                                    name: typeName,
+                                    slug: typeNameLower.replace(/ /g, "-") + "-" + Math.random().toString(36).substr(2, 5),
+                                    subCategoryId: subCategoryId
+                                }
+                            });
+                        }
+                        p.typeId = typeObj.id;
+                    }
+                }
             }
 
             // Merge images
@@ -1238,11 +1270,6 @@ export async function bulkCreateProducts(products: any[]) {
                 .split(",")
                 .map((s: string) => s.trim())
                 .filter(Boolean);
-
-            const s1 = (p.supImage1 || p["Supplemental Image 1"])?.toString();
-            const s2 = (p.supImage2 || p["Supplemental Image 2"])?.toString();
-            if (s1 && !mainImages.includes(s1)) mainImages.push(s1);
-            if (s2 && !mainImages.includes(s2)) mainImages.push(s2);
 
             const product = await prisma.product.create({
                 data: {
@@ -1261,6 +1288,9 @@ export async function bulkCreateProducts(products: any[]) {
                     Images: mainImages.join(","),
                     Category: category.id,
                     subCategoryId: subCategoryId,
+                    typeId: p.typeId || null,
+                    color: p.color?.toString() || null,
+                    model: p.model?.toString() || null,
                     IsTrending:
                         p.IsTrending === true ||
                         p.IsTrending === "Yes" ||

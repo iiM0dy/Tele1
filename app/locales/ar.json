@@ -410,6 +410,8 @@
             "selectSubCategory": "اختر الفئة الفرعية",
             "brand": "العلامة التجارية",
             "selectBrand": "اختر العلامة التجارية",
+            "type": "النوع",
+            "selectType": "اختر النوع",
             "color": "اللون",
             "colorPlaceholder": "مثال: أسود ملكي",
             "model": "الموديل",

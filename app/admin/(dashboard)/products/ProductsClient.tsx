@@ -368,26 +368,30 @@ export default function ProductsClient({
             // Prepare headers
             const headers = [
                 t('admin.name') || "Name",
-                t('admin.sku') || "SKU",
                 t('admin.category') || "Category",
-                t('admin.subCategory') || "Sub Category",
-                t('admin.price') || "Price",
-                t('admin.addProductModal.stockQuantity') || "Quantity",
+                t('admin.addProductModal.brand') || "Brand",
+                t('admin.addProductModal.type') || "Type",
+                t('admin.addProductModal.model') || "Model",
                 "Color",
-                "Model",
+                t('admin.description') || "Description",
+                t('admin.addProductModal.stockQuantity') || "Quantity",
+                t('admin.price') || "Price",
+                t('admin.sku') || "SKU",
                 t('admin.images') || "Images"
             ];
 
             // Prepare data rows
             const rows = exportData.map((p: any) => [
                 `"${p.name.replace(/"/g, '""')}"`,
-                `"${(p.sku || '').replace(/"/g, '""')}"`,
                 `"${(p.category || 'Uncategorized').replace(/"/g, '""')}"`,
-                `"${(p.subCategory || '').replace(/"/g, '""')}"`,
-                p.price,
-                p.stock,
-                `"${(p.color || '').replace(/"/g, '""')}"`,
+                `"${(p.brand || '').replace(/"/g, '""')}"`,
+                `"${(p.type || '').replace(/"/g, '""')}"`,
                 `"${(p.model || '').replace(/"/g, '""')}"`,
+                `"${(p.color || '').replace(/"/g, '""')}"`,
+                `"${(p.description || '').replace(/"/g, '""')}"`,
+                p.stock,
+                p.price,
+                `"${(p.sku || '').replace(/"/g, '""')}"`,
                 `"${(p.images || '').replace(/"/g, '""')}"`
             ]);
 
@@ -430,13 +434,15 @@ export default function ProductsClient({
             // Prepare data for Excel
             const excelData = exportData.map((p: any) => ({
                 [t('admin.name') || "Name"]: p.name,
-                [t('admin.sku') || "SKU"]: p.sku || '',
                 [t('admin.category') || "Category"]: p.category || 'Uncategorized',
-                [t('admin.subCategory') || "Sub Category"]: p.subCategory || '',
-                [t('admin.price') || "Price"]: p.price,
-                [t('admin.addProductModal.stockQuantity') || "Quantity"]: p.stock,
+                [t('admin.addProductModal.brand') || "Brand"]: p.brand || '',
+                [t('admin.addProductModal.type') || "Type"]: p.type || '',
+                [t('admin.addProductModal.model') || "Model"]: p.model || '',
                 ["Color"]: p.color || '',
-                ["Model"]: p.model || '',
+                [t('admin.description') || "Description"]: p.description || '',
+                [t('admin.addProductModal.stockQuantity') || "Quantity"]: p.stock,
+                [t('admin.price') || "Price"]: p.price,
+                [t('admin.sku') || "SKU"]: p.sku || '',
                 [t('admin.images') || "Images"]: p.images || ''
             }));
 
@@ -532,20 +538,22 @@ export default function ProductsClient({
                             normalized.Description = value;
                         } else if (k === 'price' || k === 'السعر' || k === t('admin.price').toLowerCase()) {
                             normalized.Price = value;
-                        } else if (k === 'stock' || k === 'المخزون' || k === 'الكمية' || k === t('admin.stock').toLowerCase()) {
-                            normalized.Stock = value;
                         } else if (k === 'sku' || k === 'رمز المنتج' || k === t('admin.sku').toLowerCase()) {
                             normalized.SKU = value;
                         } else if (k === 'category' || k === 'الفئة' || k === 'القسم' || k === t('admin.category').toLowerCase()) {
                             normalized.Category = value;
-                        } else if (k === 'sub category' || k === 'subcategory' || k === 'الفئة الفرعية' || k === 'القسم الفرعي' || k === t('admin.subCategory').toLowerCase()) {
-                            normalized.SubCategory = value;
+                        } else if (k === 'sub category' || k === 'subcategory' || k === 'brand' || k === 'الماركة' || k === 'البراند' || k === t('admin.subCategory').toLowerCase() || k === 'brand') {
+                            normalized.Brand = value;
+                        } else if (k === 'type' || k === 'النوع' || k === 'نوع المنتج') {
+                            normalized.Type = value;
                         } else if (k === 'images' || k === 'الصور' || k === t('admin.images').toLowerCase()) {
                             normalized.Images = value;
-                        } else if (k === 'color' || k === 'اللون' || k === 'اللون') {
+                        } else if (k === 'color' || k === 'اللون') {
                             normalized.color = value;
-                        } else if (k === 'model' || k === 'الموديل' || k === 'الموديل') {
+                        } else if (k === 'model' || k === 'الموديل') {
                             normalized.model = value;
+                        } else if (k === 'qty' || k === 'quantity' || k === 'stock' || k === 'المخزون' || k === 'الكمية' || k === t('admin.addProductModal.stockQuantity').toLowerCase()) {
+                            normalized.Stock = value;
                         } else if (k === 'is trending' || k === 'trending' || k === 'رائج') {
                             normalized.IsTrending = value;
                         } else if (k === 'best seller' || k === 'best sellers' || k === 'الأكثر مبيعاً' || k === 'الأكثر مبيعا') {
