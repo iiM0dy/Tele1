@@ -71,14 +71,15 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                                 <h1 className="text-white text-2xl font-black tracking-tighter leading-tight">
                                     TELE1<span className="text-accent">.</span>
                                 </h1>
-                                <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
                                     {t('admin.adminPanel')}
                                 </p>
                             </div>
                             {/* Close button for mobile */}
                             <button
                                 onClick={onClose}
-                                className="lg:hidden text-white/30 hover:text-white"
+                                className="lg:hidden text-white/60 hover:text-white"
+                                aria-label="Close sidebar"
                             >
                                 <MdClose className="text-2xl" />
                             </button>
@@ -103,11 +104,11 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                                         onClick={onClose}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
                                             ? "bg-accent text-white"
-                                            : "text-white/40 hover:bg-white/[0.03] hover:text-white"
+                                            : "text-white/60 hover:bg-white/[0.03] hover:text-white"
                                             } group`}
                                     >
                                         <item.icon
-                                            className={`text-xl ${isActive ? "text-white" : "text-white/20 group-hover:text-accent transition-colors"}`}
+                                            className={`text-xl ${isActive ? "text-white" : "text-white/40 group-hover:text-accent transition-colors"}`}
                                         />
                                         <p
                                             className={`text-[11px] uppercase tracking-[0.15em] leading-normal ${isActive ? "font-black" : "font-bold"
@@ -124,7 +125,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                     {/* Bottom Actions */}
                     <div className="flex flex-col gap-3 pt-6 border-t border-white/5">
                         <div className="flex items-center justify-between px-4 py-2">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
                                 {t('language.switchTo')}
                             </p>
                             <LanguageToggle />
@@ -132,7 +133,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
                         <button
                             onClick={handleSignOut}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all group"
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all group"
                         >
                             <MdLogout className={`text-xl group-hover:text-red-400 transition-colors ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                             <p className="text-[11px] font-black uppercase tracking-[0.15em] leading-normal">{t('admin.signOut')}</p>
@@ -146,7 +147,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                                 <p className="text-white text-[12px] font-black uppercase tracking-wider leading-tight">
                                     {session?.user?.name || "Admin"}
                                 </p>
-                                <p className="text-white/20 text-[9px] uppercase tracking-widest font-black">
+                                <p className="text-white/60 text-[9px] uppercase tracking-widest font-black">
                                     {isSuperAdmin ? t('admin.superAdmin') : t('admin.editor')}
                                 </p>
                             </div>

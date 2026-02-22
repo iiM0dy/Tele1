@@ -32,9 +32,9 @@ export default function HeroBanner({ banners }: { banners: Banner[] }) {
                 src={banner.image}
                 alt={title || "Banner"}
                 fill
-                unoptimized
                 className="object-cover opacity-60 scale-105 animate-slow-zoom"
                 priority
+                sizes="100vw"
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent opacity-80" />

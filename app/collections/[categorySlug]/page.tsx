@@ -12,7 +12,7 @@ export default async function CategoryCollectionPage(props: {
     const searchParams = await props.searchParams;
     
     const page = Number(searchParams.page) || 1;
-    const { products, subCategories, totalPages, currentPage, categoryName, categoryNameAr } = await getProductsByCategory(params.categorySlug, page, 50);
+    const { products, subCategories, totalPages, currentPage, categoryName, categoryNameAr } = await getProductsByCategory(params.categorySlug, page, 24);
 
     if (products.length === 0 && (!subCategories || subCategories.length === 0) && page === 1 && categoryName === '') {
         notFound();

@@ -16,6 +16,7 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
                     <button
                         onClick={openSidebar}
                         className="bg-[#202126] border border-white/5 text-white p-2 rounded-xl shadow-2xl hover:bg-white/5 transition-all active:scale-95"
+                        aria-label="Open sidebar"
                     >
                         <MdMenu className="text-2xl" />
                     </button>

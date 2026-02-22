@@ -138,10 +138,9 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         src={images[previewIdx]}
                                         alt={product.Name}
                                         fill
-                                        unoptimized
                                         className="object-contain pswp__img"
                                         priority
-                                        sizes="951px"
+                                        sizes="(max-width: 768px) 100vw, 951px"
                                     />
                                 </div>
                             </div>
@@ -215,13 +214,14 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                             className={`relative aspect-square w-20 md:w-full flex-shrink-0 border transition-all cursor-pointer rounded-lg overflow-hidden ${
                                                 activeSlide === idx ? 'border-accent ring-1 ring-accent' : 'border-zinc-200 hover:border-accent'
                                             }`}
+                                            aria-label={`View image ${idx + 1}`}
                                         >
                                             <Image
                                                 src={img}
                                                 alt={`${product.Name} thumbnail ${idx + 1}`}
                                                 fill
-                                                unoptimized
                                                 className="object-cover"
+                                                sizes="(max-width: 768px) 20vw, 100px"
                                             />
                                         </button>
                                     ))}
@@ -240,7 +240,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                     onTouchEnd={onTouchEnd}
                                 >
                                      {/* Slider Track */}
-                                     <div 
+                                    <div 
                                         className="flex h-full transition-transform duration-500 ease-out"
                                         style={{ transform: `translateX(-${activeSlide * 100}%)` }}
                                      >
@@ -249,15 +249,22 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                 key={idx}
                                                 className="min-w-full h-full relative cursor-zoom-in"
                                                 onClick={() => handleImageClick(idx)}
+                                                role="button"
+                                                tabIndex={0}
+                                                aria-label={`View full screen image ${idx + 1}`}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' || e.key === ' ') {
+                                                        handleImageClick(idx);
+                                                    }
+                                                }}
                                             >
                                                 <Image
                                                     src={img}
                                                     alt={`${product.Name} image ${idx + 1}`}
                                                     fill
-                                                    unoptimized
                                                     priority={idx === 0}
                                                     className="object-cover transition-transform duration-700 hover:scale-105"
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 800px"
                                                 />
                                             </div>
                                         ))}
@@ -320,7 +327,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                         </div>
 
                             <div id="product-extra-information" className="hidden lg:block product-content-below-gallery empty:hidden scroll-margin-offset mt-12 w-full">
-                            <details className="accordion accordion--lg group border-t border-zinc-100" aria-expanded="false">
+                            <details className="accordion accordion--lg group border-t border-zinc-100">
                                 <summary className="flex items-center justify-between py-6 cursor-pointer list-none">
                                     <span className="accordion__toggle h6 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#0F172A]">
                                         <svg aria-hidden="true" focusable="false" fill="none" strokeWidth="1.1" width="16" className="icon icon-picto-shield text-accent" viewBox="0 0 24 24">
@@ -349,7 +356,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                 </div>
                             </details>
 
-                            <details className="accordion accordion--lg group border-t border-b border-zinc-100" aria-expanded="false">
+                            <details className="accordion accordion--lg group border-t border-b border-zinc-100">
                                 <summary className="flex items-center justify-between py-6 cursor-pointer list-none">
                                     <span className="accordion__toggle h6 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#0F172A]">
                                         <svg aria-hidden="true" focusable="false" fill="none" strokeWidth="1.1" width="16" className="icon icon-picto-delivery-truck text-accent" viewBox="0 0 24 24">

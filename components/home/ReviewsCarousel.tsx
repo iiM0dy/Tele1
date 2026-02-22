@@ -86,7 +86,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                                             alt={`Review by ${review.name}`}
                                             fill
                                             className="object-cover"
-                                            sizes="400px"
+                                            sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 25vw"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                                     </div>

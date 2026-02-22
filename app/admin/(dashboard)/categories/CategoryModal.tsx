@@ -88,7 +88,8 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/40 hover:text-white"
+                        className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/60 hover:text-white"
+                        aria-label={t('admin.close') || "Close"}
                     >
                         <MdClose className="text-xl" />
                     </button>
@@ -96,7 +97,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
 
                 <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-6 overflow-y-auto max-h-[80vh]">
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.categoryName')}
                         </label>
                         <input
@@ -105,12 +106,13 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             onChange={(e) => setName(e.target.value)}
                             placeholder={t('admin.categoryPlaceholder')}
                             required
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/10"
+                            aria-label={t('admin.categoryName') || "Category Name"}
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                         />
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.categoryNameAr') || "Category Name (Arabic)"}
                         </label>
                         <input
@@ -118,13 +120,14 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             value={nameAr}
                             onChange={(e) => setNameAr(e.target.value)}
                             placeholder={t('admin.categoryPlaceholderAr') || "أدخل اسم القسم بالعربية"}
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/10"
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                             dir="rtl"
+                            aria-label={t('admin.categoryNameAr') || "Category Name (Arabic)"}
                         />
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.imageUrl')}
                         </label>
                         <input
@@ -132,7 +135,8 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
                             placeholder="https://example.com/image.jpg"
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/10"
+                            aria-label={t('admin.imageUrl') || "Image URL"}
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                         />
                         {image && (
                             <div className="mt-2 relative aspect-video w-full rounded-2xl overflow-hidden border border-white/5 bg-white/[0.01]">
@@ -149,7 +153,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.featuredOnHomepage')}
                         </label>
                         <div className="flex items-center gap-4 bg-white/[0.02] p-4 rounded-2xl border border-white/5">
@@ -157,6 +161,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                 type="button"
                                 onClick={() => setIsFeatured(!isFeatured)}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${isFeatured ? 'bg-accent' : 'bg-white/10'}`}
+                                aria-label={t('admin.featuredOnHomepage') || "Featured on Homepage"}
                             >
                                 <span
                                     className={`${isFeatured ? (dir === 'rtl' ? '-translate-x-6' : 'translate-x-6') : (dir === 'rtl' ? '-translate-x-1' : 'translate-x-1')} inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm`}
@@ -169,7 +174,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.description')}
                         </label>
                         <textarea
@@ -177,7 +182,8 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder={t('admin.describeCategory')}
                             rows={3}
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/10 leading-relaxed"
+                            aria-label={t('admin.description') || "Description"}
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white text-[10px] font-black uppercase tracking-[0.2em] focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
                         />
                     </div>
 

@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import AddProductModal from "./AddProductModal";
+import dynamic from "next/dynamic";
 import { 
     deleteProduct, 
     toggleProductTrending, 
@@ -37,6 +37,11 @@ import {
     MdStar,
     MdStarOutline
 } from 'react-icons/md';
+
+const AddProductModal = dynamic(() => import("./AddProductModal"), { 
+    ssr: false,
+    loading: () => null 
+});
 
 interface Product {
     id: string;
@@ -515,19 +520,22 @@ export default function ProductsClient({
                     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                         <div className="flex flex-col gap-1">
                             {/* Breadcrumbs */}
-                            <div className="flex items-center gap-2 text-sm text-white/40 mb-1">
+                            <div className="flex items-center gap-2 text-sm text-white/60 mb-1">
                                 <Link href="/admin/dashboard" className="hover:text-accent cursor-pointer transition-colors uppercase tracking-[0.2em] text-[10px] font-black">{t('admin.dashboard')}</Link>
                                 <MdChevronRight className={`text-[12px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                                 <span className="text-white font-black uppercase tracking-[0.2em] text-[10px]">{t('admin.products')}</span>
                             </div>
                             <h2 className="text-3xl font-black text-white tracking-tight uppercase">{t('admin.products')}</h2>
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.manageCatalog')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.manageCatalog')}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-3">
                             <div className="relative">
                                 <button
                                     onClick={() => setShowExportMenu(!showExportMenu)}
                                     className="bg-white/[0.02] border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 transition-all shadow-sm hover:border-accent/30"
+                                    aria-label="Export data options"
+                                    aria-expanded={showExportMenu}
+                                    aria-haspopup="true"
                                 >
                                     <MdFileUpload className="text-[20px] text-accent" />
                                     {t('admin.exportData')}
@@ -572,6 +580,7 @@ export default function ProductsClient({
                                     className="hidden"
                                     onChange={handleImportFile}
                                     disabled={isSubmittingBulk}
+                                    aria-label="Import products from file"
                                 />
                             </label>
                             {canEdit && (
@@ -601,28 +610,28 @@ export default function ProductsClient({
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1">
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalProducts')}</p>
+                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalProducts')}</p>
                             <p className="text-2xl font-black text-white tracking-tight">{stats.total.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1">
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.trending')}</p>
+                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.trending')}</p>
                             <p className="text-2xl font-black text-accent tracking-tight">{products.filter(p => p.isTrending).length}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1">
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.outOfStock')}</p>
+                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.outOfStock')}</p>
                             <p className="text-2xl font-black text-red-500 tracking-tight">{stats.outOfStock.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1">
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.lowInventory')}</p>
+                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.lowInventory')}</p>
                             <p className="text-2xl font-black text-orange-500 tracking-tight">{stats.lowStock.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1">
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.categories')}</p>
+                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.categories')}</p>
                             <p className="text-2xl font-black text-white tracking-tight">{stats.categories.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1">
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.bestSeller')}</p>
+                        <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.bestSeller')}</p>
                             <p className="text-2xl font-black text-accent tracking-tight">{stats.bestSellers.toLocaleString()}</p>
                         </div>
                     </div>
@@ -641,6 +650,7 @@ export default function ProductsClient({
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
+                                    aria-label="Search products"
                                 />
                             </div>
                             <div className="flex flex-wrap items-center gap-3">
@@ -650,6 +660,7 @@ export default function ProductsClient({
                                         className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
                                         value={selectedCategory}
                                         onChange={(e) => updateUrl({ category: e.target.value })}
+                                        aria-label="Filter by category"
                                     >
                                         <option value="all" className="bg-[#0F172A]">{t('admin.allCategories')}</option>
                                         <option value="uncategorized" className="bg-[#0F172A]">{t('admin.uncategorized')}</option>
@@ -665,6 +676,7 @@ export default function ProductsClient({
                                         className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
                                         value={selectedStockStatus}
                                         onChange={(e) => updateUrl({ stock: e.target.value })}
+                                        aria-label="Filter by stock status"
                                     >
                                         <option value="all" className="bg-[#0F172A]">{t('admin.stockStatus')}</option>
                                         <option value="inStock" className="bg-[#0F172A]">{t('admin.inStock')}</option>
@@ -779,7 +791,7 @@ export default function ProductsClient({
                         {/* Table */}
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse min-w-[900px]">
-                                <thead className="bg-white/[0.02] border-b border-white/5 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
+                                <thead className="bg-white/[0.02] border-b border-white/5 text-[10px] font-black text-white/60 uppercase tracking-[0.2em]">
                                     <tr>
                                         <th className="p-3 sm:p-5 w-10 sm:w-12 text-center">
                                             <input
@@ -787,6 +799,7 @@ export default function ProductsClient({
                                                 type="checkbox"
                                                 checked={currentItems.length > 0 && currentItems.every(p => selectedIds.has(p.id))}
                                                 onChange={toggleSelectAll}
+                                                aria-label="Select all products"
                                             />
                                         </th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.productName')}</th>
@@ -809,23 +822,23 @@ export default function ProductsClient({
                                                         type="checkbox"
                                                         checked={selectedIds.has(product.id)}
                                                         onChange={() => toggleSelectOne(product.id)}
+                                                        aria-label={`Select product ${product.Name}`}
                                                     />
                                                 </td>
                                                 <td className="p-3 sm:p-5">
                                                     <div className="flex items-center gap-3 sm:gap-4">
                                                         <div className="relative size-10 sm:size-12 rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden shrink-0">
                                                             <Image
-                                                                src={product.images ? (product.images.includes(',') && !product.images.startsWith('http') ? product.images.split(',')[0].trim() : product.images.trim()) : '/placeholder.jpg'}
+                                                                src={product.images ? product.images.split(',')[0].trim() : '/placeholder.jpg'}
                                                                 alt={product.name || 'Product Image'}
                                                                 fill
                                                                 className="object-cover"
-                                                                sizes="48px"
-                                                                unoptimized
+                                                                sizes="(max-width: 640px) 40px, 48px"
                                                             />
                                                         </div>
                                                         <div className="flex flex-col min-w-0">
                                                             <span className="font-black text-white text-xs sm:text-sm line-clamp-1 uppercase tracking-tight">{product.name}</span>
-                                                            <span className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em]">{t('admin.sku')}: {product.sku || 'N/A'}</span>
+                                                            <span className="text-[10px] text-white/60 font-black uppercase tracking-[0.2em]">{t('admin.sku')}: {product.sku || 'N/A'}</span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -845,7 +858,7 @@ export default function ProductsClient({
                                                     {product.discountPrice !== null && product.discountPrice !== undefined ? (
                                                         <div className="flex flex-col">
                                                             <span className="text-accent">${Number(product.discountPrice).toFixed(2)}</span>
-                                                            <span className="text-[10px] text-white/20 line-through decoration-red-500/50">${Number(product.price).toFixed(2)}</span>
+                                                            <span className="text-[10px] text-white/40 line-through decoration-red-500/50">${Number(product.price).toFixed(2)}</span>
                                                         </div>
                                                     ) : (
                                                         <span>${Number(product.price).toFixed(2)}</span>

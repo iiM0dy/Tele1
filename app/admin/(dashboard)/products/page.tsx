@@ -1,4 +1,4 @@
-import { getAdminProducts, getAdminCategories, getAdminProductStats } from "../../../../lib/admin-actions";
+import { getAdminProducts, getAdminCategoryOptions, getAdminProductStats } from "../../../../lib/admin-actions";
 import ProductsClient from "./ProductsClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -25,7 +25,7 @@ export default async function AdminProductsPage({
     const showTrendingOnly = params.trending === "true";
     const showBestSellerOnly = params.bestSeller === "true";
 
-    const [productsData, categoriesData, stats] = await Promise.all([
+    const [productsData, categories, stats] = await Promise.all([
         getAdminProducts({ 
             page, 
             limit: 20, 
@@ -35,14 +35,14 @@ export default async function AdminProductsPage({
             isTrending: showTrendingOnly, 
             isBestSeller: showBestSellerOnly 
         }),
-        getAdminCategories(1, 2000),
+        getAdminCategoryOptions(),
         getAdminProductStats()
     ]);
 
     return (
         <ProductsClient 
             products={productsData.products} 
-            categories={categoriesData.categories}
+            categories={categories}
             pagination={productsData.pagination}
             initialStats={stats}
         />

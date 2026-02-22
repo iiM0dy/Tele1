@@ -200,7 +200,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                             <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
                                 {t('admin.productCategories')}
                             </h3>
-                            <p className="text-white/40 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
                                 {t('admin.manageCategories')}
                             </p>
                         </div>
@@ -213,6 +213,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                 disabled={isFixing}
                                 className="flex items-center justify-center gap-2 px-6 py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all whitespace-nowrap w-full md:w-auto"
                                 title={t('admin.fixGarbledNames')}
+                                aria-label={t('admin.fixGarbledNames') || "Fix garbled names"}
                             >
                                 {isFixing ? (
                                     <MdSync className="animate-spin text-lg" />
@@ -228,6 +229,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                     onClick={handleBulkDelete}
                                     disabled={isSubmittingBulk}
                                     className="flex items-center justify-center gap-2 px-6 py-3 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all disabled:opacity-50 whitespace-nowrap border border-red-500/20 w-full md:w-auto animate-in fade-in slide-in-from-top-2 duration-300"
+                                    aria-label={t('admin.deleteSelected') || "Delete selected categories"}
                                 >
                                     {isSubmittingBulk ? (
                                         <MdSync className="animate-spin text-lg" />
@@ -244,6 +246,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                     <button
                                         onClick={toggleSelectAll}
                                         className="flex items-center justify-center gap-2 px-6 py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all whitespace-nowrap flex-1 md:flex-none"
+                                        aria-label={selectedIds.size === filteredCategories.length ? (t('admin.deselectAll') || "Deselect all") : (t('admin.selectAll') || "Select all")}
                                     >
                                         {selectedIds.size === filteredCategories.length ? (
                                             <MdCheckBox className="text-lg text-accent" />
@@ -255,7 +258,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                 )}
 
                                 {selectedIds.size > 0 && (
-                                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] text-white/40 whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-300 ${dir === 'rtl' ? 'ml-2' : 'mr-2'}`}>
+                                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] text-white/60 whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-300 ${dir === 'rtl' ? 'ml-2' : 'mr-2'}`}>
                                         {selectedIds.size} {t('admin.selected')}
                                     </span>
                                 )}
@@ -264,20 +267,21 @@ export default function CategoriesClient({ categories }: { categories: Category[
 
                             {/* Featured Count Indicator */}
                             <div className={`hidden md:flex flex-col items-end ${dir === 'rtl' ? 'ml-2' : 'mr-2'} whitespace-nowrap`}>
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{t('admin.featured')}</span>
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">{t('admin.featured')}</span>
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">
                                     {categories.filter(c => c.isFeatured).length} / 8 {t('admin.active')}
                                 </span>
                             </div>
 
                             <div className="relative w-full md:w-64">
-                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/20 text-xl`} />
+                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/60 text-xl`} />
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchCategories')}
-                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/20`}
+                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/60`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
+                                    aria-label="Search categories"
                                 />
                             </div>
                             {canManage && (
@@ -314,19 +318,22 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                 <button
                                     onClick={() => toggleSelect(category.id)}
                                     className={`absolute top-4 left-4 z-10 w-6 h-6 rounded-xl border flex items-center justify-center transition-all ${selectedIds.has(category.id) ? 'bg-accent border-accent text-white' : 'bg-black/40 backdrop-blur-md border-white/10 text-transparent hover:border-accent/50'}`}
+                                    aria-label={`Select category ${category.name}`}
                                 >
                                     <MdCheck className="text-lg" />
                                 </button>
 
-                                <div className="aspect-[16/10] w-full overflow-hidden bg-white/[0.01] flex items-center justify-center border-b border-white/5">
+                                <div className="aspect-[16/10] w-full overflow-hidden bg-white/[0.01] flex items-center justify-center border-b border-white/5 relative">
                                     {category.image ? (
-                                        <img
-                                            alt={category.name}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                        <Image
                                             src={category.image}
+                                            alt={category.name}
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
                                     ) : (
-                                        <MdImage className="text-4xl text-white/5" />
+                                        <MdImage className="text-4xl text-white/20" />
                                     )}
                                 </div>
                                 <div className="p-6 flex flex-col flex-1">
@@ -334,14 +341,14 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                         <div className="flex flex-col">
                                             <h3 className="text-xs font-black text-white uppercase tracking-[0.2em]">{category.name}</h3>
                                             {category.nameAr && (
-                                                <span className="text-[10px] text-white/40 mt-1 font-medium">{category.nameAr}</span>
+                                                <span className="text-[10px] text-white/60 mt-1 font-medium">{category.nameAr}</span>
                                             )}
                                         </div>
                                         <span className="shrink-0 bg-white/[0.05] text-white/60 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-white/5">
                                             {category._count.products}
                                         </span>
                                     </div>
-                                    <p className="text-[10px] text-white/30 line-clamp-2 mb-6 font-black uppercase tracking-[0.2em] leading-relaxed">
+                                    <p className="text-[10px] text-white/60 line-clamp-2 mb-6 font-black uppercase tracking-[0.2em] leading-relaxed">
                                         {category.description || t('admin.noDescription')}
                                     </p>
                                     
@@ -351,8 +358,9 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                                 <button
                                                     onClick={() => handleToggleFeatured(category.id, category.isFeatured)}
                                                     disabled={loadingMap[category.id]}
-                                                    className={`p-2.5 rounded-xl transition-all ${category.isFeatured ? 'text-accent bg-accent/10 border border-accent/20' : 'text-white/20 hover:text-white hover:bg-white/5 border border-transparent'}`}
+                                                    className={`p-2.5 rounded-xl transition-all ${category.isFeatured ? 'text-accent bg-accent/10 border border-accent/20' : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'}`}
                                                     title={category.isFeatured ? t('admin.removeFromHome') : t('admin.featureOnHome')}
+                                                    aria-label={category.isFeatured ? t('admin.removeFromHome') : t('admin.featureOnHome')}
                                                 >
                                                     {loadingMap[category.id] ? (
                                                         <MdSync className="animate-spin text-lg" />
@@ -370,8 +378,9 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                                         setSelectedCategoryForSubs(category);
                                                         setIsSubCategoriesModalOpen(true);
                                                     }}
-                                                    className="p-2.5 text-white/20 hover:text-accent hover:bg-accent/5 rounded-xl transition-all border border-transparent hover:border-accent/10"
+                                                    className="p-2.5 text-white/60 hover:text-accent hover:bg-accent/5 rounded-xl transition-all border border-transparent hover:border-accent/10"
                                                     title={t('admin.manageSubCategories') || "Manage Subcategories"}
+                                                    aria-label={t('admin.manageSubCategories') || "Manage Subcategories"}
                                                 >
                                                     <MdList className="text-lg" />
                                                 </button>
@@ -379,8 +388,9 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                             {canManage && (
                                                 <button
                                                     onClick={() => handleEdit(category)}
-                                                    className="p-2.5 text-white/20 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
+                                                    className="p-2.5 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
                                                     title={t('admin.editCategory')}
+                                                    aria-label={t('admin.editCategory')}
                                                 >
                                                     <MdEdit className="text-lg" />
                                                 </button>
@@ -388,8 +398,9 @@ export default function CategoriesClient({ categories }: { categories: Category[
                                             {canDelete && (
                                                 <button
                                                     onClick={() => handleDelete(category.id, category.name)}
-                                                    className="p-2.5 text-white/20 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
+                                                    className="p-2.5 text-white/60 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
                                                     title={t('admin.deleteCategory')}
+                                                    aria-label={t('admin.deleteCategory')}
                                                 >
                                                     <MdDelete className="text-lg" />
                                                 </button>
@@ -403,8 +414,8 @@ export default function CategoriesClient({ categories }: { categories: Category[
 
                     {filteredCategories.length === 0 && (
                         <div className="text-center py-32 bg-white/[0.01] rounded-[2rem] border-2 border-dashed border-white/5">
-                            <MdSearchOff className="text-6xl text-white/5 mb-6 mx-auto" />
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+                            <MdSearchOff className="text-6xl text-white/20 mb-6 mx-auto" />
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
                                 {searchQuery ? t('admin.noCategoriesFound') : t('admin.noCategoriesCreated')}
                             </p>
                             {!searchQuery && (

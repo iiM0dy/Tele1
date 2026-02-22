@@ -45,8 +45,8 @@ export default function CategoryList({ categories }: { categories: Category[] })
                                     src={category.image}
                                     alt={isAr && category.nameAr ? category.nameAr : category.name}
                                     fill
-                                    unoptimized
                                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    sizes={index === 0 ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 33vw"}
                                 />
                             )}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />

@@ -136,6 +136,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                         min="0"
                                         max="200000"
                                         value={priceRange.min}
+                                        aria-label="Minimum price range"
                                         onChange={(e) => {
                                             const val = Math.min(parseInt(e.target.value), priceRange.max - 1);
                                             setPriceRange({ ...priceRange, min: val });
@@ -148,6 +149,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                         min="0"
                                         max="200000"
                                         value={priceRange.max}
+                                        aria-label="Maximum price range"
                                         onChange={(e) => {
                                             const val = Math.max(parseInt(e.target.value), priceRange.min + 1);
                                             setPriceRange({ ...priceRange, max: val });
@@ -159,20 +161,22 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
 
                                 <div className="flex items-center gap-4">
                                     <div className="flex-1 relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 text-[14px] font-bold">$</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold">$</span>
                                         <input 
                                             type="number" 
                                             value={priceRange.min}
+                                            aria-label="Minimum price"
                                             onChange={(e) => setPriceRange({ ...priceRange, min: parseInt(e.target.value) || 0 })}
                                             className="w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 pl-8 pr-4 text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all"
                                         />
                                     </div>
-                                    <span className="text-[12px] text-zinc-400 font-black uppercase tracking-widest">to</span>
+                                    <span className="text-[12px] text-zinc-500 font-black uppercase tracking-widest">to</span>
                                     <div className="flex-1 relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 text-[14px] font-bold">$</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold">$</span>
                                         <input 
                                             type="number" 
                                             value={priceRange.max}
+                                            aria-label="Maximum price"
                                             onChange={(e) => setPriceRange({ ...priceRange, max: parseInt(e.target.value) || 0 })}
                                             className="w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 pl-8 pr-4 text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all"
                                         />

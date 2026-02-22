@@ -110,7 +110,8 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/40 hover:text-white"
+                        className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/60 hover:text-white"
+                        aria-label={t('admin.close') || "Close"}
                     >
                         <MdClose className="text-xl" />
                     </button>
@@ -118,7 +119,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
 
                 <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-6 overflow-y-auto max-h-[80vh]">
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.status')}
                         </label>
                         <div className="flex items-center gap-4 bg-white/[0.02] p-4 rounded-2xl border border-white/5">
@@ -126,6 +127,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 type="button"
                                 onClick={() => setIsActive(!isActive)}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${isActive ? 'bg-accent' : 'bg-white/10'}`}
+                                aria-label={t('admin.status') || "Status"}
                             >
                                 <span
                                     className={`${isActive ? (dir === 'rtl' ? '-translate-x-6' : 'translate-x-6') : (dir === 'rtl' ? '-translate-x-1' : 'translate-x-1')} inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm`}
@@ -139,30 +141,34 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
 
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-3">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            <label htmlFor="titleEn" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                 {t('admin.title')} (English)
                             </label>
                             <input
+                                id="titleEn"
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder={t('admin.titlePlaceholder')}
                                 required
-                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/10"
+                                aria-label={`${t('admin.title')} (English)`}
+                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/40"
                             />
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            <label htmlFor="titleAr" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                 {t('admin.title')} (العربية)
                             </label>
                             <input
+                                id="titleAr"
                                 type="text"
                                 value={titleAr}
                                 onChange={(e) => setTitleAr(e.target.value)}
                                 placeholder={t('admin.titlePlaceholder')}
                                 required
-                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/10"
+                                aria-label={`${t('admin.title')} (Arabic)`}
+                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/40"
                                 dir="rtl"
                             />
                         </div>
@@ -170,35 +176,39 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
 
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-3">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            <label htmlFor="subtitleEn" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                 {t('admin.subtitle')} (English)
                             </label>
                             <textarea
+                                id="subtitleEn"
                                 value={subtitle}
                                 onChange={(e) => setSubtitle(e.target.value)}
                                 placeholder={t('admin.subtitlePlaceholder')}
                                 rows={2}
-                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none resize-none text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed placeholder:text-white/10"
+                                aria-label={`${t('admin.subtitle')} (English)`}
+                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none resize-none text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed placeholder:text-white/40"
                             />
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            <label htmlFor="subtitleAr" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                 {t('admin.subtitle')} (العربية)
                             </label>
                             <textarea
+                                id="subtitleAr"
                                 value={subtitleAr}
                                 onChange={(e) => setSubtitleAr(e.target.value)}
                                 placeholder={t('admin.subtitlePlaceholder')}
                                 rows={2}
-                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none resize-none text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed placeholder:text-white/10"
+                                aria-label={`${t('admin.subtitle')} (Arabic)`}
+                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none resize-none text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed placeholder:text-white/40"
                                 dir="rtl"
                             />
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                        <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                             {t('admin.imageUrl')}
                         </label>
                         <input
@@ -207,6 +217,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                             onChange={(e) => setImage(e.target.value)}
                             placeholder="https://example.com/image.jpg"
                             required
+                            aria-label={t('admin.imageUrl') || "Image URL"}
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/10"
                         />
                         {image && (
@@ -225,7 +236,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="flex flex-col gap-3">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                 {t('admin.buttonText')}
                             </label>
                             <input
@@ -233,11 +244,12 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 value={buttonText}
                                 onChange={(e) => setButtonText(e.target.value)}
                                 placeholder={t('admin.buttonTextPlaceholder')}
+                                aria-label={t('admin.buttonText') || "Button Text"}
                                 className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/10"
                             />
                         </div>
                         <div className="flex flex-col gap-3">
-                            <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            <label className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                 {t('admin.linkUrl')}
                             </label>
                             <input
@@ -245,6 +257,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
                                 placeholder={t('admin.linkUrlPlaceholder')}
+                                aria-label={t('admin.linkUrl') || "Link URL"}
                                 className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/[0.02] text-white focus:border-accent/30 transition-all outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/10"
                             />
                         </div>

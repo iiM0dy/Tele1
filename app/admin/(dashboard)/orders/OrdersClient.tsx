@@ -3,7 +3,7 @@
 import { MdPendingActions, MdLocalShipping, MdTaskAlt, MdPayments, MdExpandMore, MdVisibility, MdDelete, MdSync, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import Link from "next/link";
 import { updateOrderStatus, deleteOrder } from "../../../../lib/admin-actions";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import OrderDetailsModal from "./OrderDetailsModal";
 import { OrderStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
@@ -45,7 +45,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
     const [filter, setFilter] = useState<string>("ALL");
 
     // Calculate stats
-    const stats = {
+    const stats = useMemo(() => ({
         pending: orders.filter(o => o.status === 'PENDING').length,
         shippedToday: orders.filter(o => {
             const date = new Date(o.createdAt);
@@ -65,12 +65,12 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
         totalRevenue: orders
             .filter(o => o.status === 'DELIVERED')
             .reduce((sum, o) => sum + Number(o.totalAmount), 0)
-    };
+    }), [orders]);
 
-    const filteredOrders = orders.filter(o => {
+    const filteredOrders = useMemo(() => orders.filter(o => {
         if (filter === "ALL") return true;
         return o.status === filter;
-    });
+    }), [orders, filter]);
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -132,43 +132,43 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
 
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group">
+                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group min-h-[160px]">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-3 bg-indigo-500/10 text-indigo-500 rounded-xl border border-indigo-500/20 group-hover:bg-indigo-500/20 transition-all">
                                     <MdPendingActions className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.pendingOrders')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.pendingOrders')}</p>
                             <h3 className="text-white text-2xl font-black mt-1 tracking-tight">{stats.pending}</h3>
                         </div>
 
-                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group">
+                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group min-h-[160px]">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-3 bg-blue-500/10 text-blue-500 rounded-xl border border-blue-500/20 group-hover:bg-blue-500/20 transition-all">
                                     <MdLocalShipping className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.shippedToday')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.shippedToday')}</p>
                             <h3 className="text-white text-2xl font-black mt-1 tracking-tight">{stats.shippedToday}</h3>
                         </div>
 
-                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group">
+                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group min-h-[160px]">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-3 bg-accent/10 text-accent rounded-xl border border-accent/20 group-hover:bg-accent/20 transition-all">
                                     <MdTaskAlt className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.deliveredMtd')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.deliveredMtd')}</p>
                             <h3 className="text-white text-2xl font-black mt-1 tracking-tight">{stats.deliveredMTD}</h3>
                         </div>
 
-                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group">
+                        <div className="bg-white/[0.02] p-6 rounded-2xl border border-white/5 shadow-sm hover:border-accent/30 transition-all group min-h-[160px]">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-3 bg-accent/10 text-accent rounded-xl border border-accent/20 group-hover:bg-accent/20 transition-all">
                                     <MdPayments className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalRevenue')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalRevenue')}</p>
                             <h3 className="text-accent text-2xl font-black mt-1 tracking-tight">
                                 ${stats.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                             </h3>
@@ -182,25 +182,29 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                 <div className="flex bg-white/[0.02] rounded-xl p-1 border border-white/5">
                                     <button
                                         onClick={() => setFilter("ALL")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "ALL" ? "bg-accent text-white" : "text-white/40 hover:text-white"}`}
+                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "ALL" ? "bg-accent text-white" : "text-white/60 hover:text-white"}`}
+                                        aria-label="Filter all orders"
                                     >
                                         {t('admin.viewAll')}
                                     </button>
                                     <button
                                         onClick={() => setFilter("PENDING")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "PENDING" ? "bg-indigo-500 text-white" : "text-white/40 hover:text-indigo-500"}`}
+                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "PENDING" ? "bg-indigo-500 text-white" : "text-white/60 hover:text-indigo-500"}`}
+                                        aria-label="Filter pending orders"
                                     >
                                         {t('admin.pending')}
                                     </button>
                                     <button
                                         onClick={() => setFilter("SHIPPED")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "SHIPPED" ? "bg-purple-500 text-white" : "text-white/40 hover:text-purple-500"}`}
+                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "SHIPPED" ? "bg-purple-500 text-white" : "text-white/60 hover:text-purple-500"}`}
+                                        aria-label="Filter shipped orders"
                                     >
                                         {t('admin.shipped')}
                                     </button>
                                     <button
                                         onClick={() => setFilter("DELIVERED")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "DELIVERED" ? "bg-accent text-white" : "text-white/40 hover:text-accent"}`}
+                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "DELIVERED" ? "bg-accent text-white" : "text-white/60 hover:text-accent"}`}
+                                        aria-label="Filter delivered orders"
                                     >
                                         {t('admin.delivered')}
                                     </button>
@@ -225,13 +229,13 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="border-b border-white/5 bg-white/[0.01]">
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderId')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.customerName')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.date')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalAmount')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.products')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderStatus')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderId')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.customerName')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.date')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalAmount')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.products')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderStatus')}</th>
+                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
@@ -258,6 +262,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                                                 value={order.status}
                                                                 disabled={updatingId === order.id || !canManage}
                                                                 onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                                                                aria-label={`Update status for order ${order.id}`}
                                                                 className={`appearance-none pl-11 pr-12 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none border shadow-sm hover:shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${statusColor === "blue" ? "text-blue-500 bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20" :
                                                                     statusColor === "indigo" ? "text-indigo-500 bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-500/20" :
                                                                         statusColor === "accent" ? "text-accent bg-accent/10 border-accent/20 hover:bg-accent/20" :

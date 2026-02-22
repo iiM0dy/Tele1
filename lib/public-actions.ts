@@ -44,6 +44,31 @@ export async function getAllCategories() {
     }
 }
 
+export async function getFeaturedCategories(limit?: number) {
+    try {
+        const categories = await prisma.category.findMany({
+            where: { isFeatured: true },
+            take: limit,
+            orderBy: { name: 'asc' }
+        });
+        
+        return categories.map(cat => {
+            const slug = cat.slug || cat.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            return {
+                ...cat,
+                slug,
+                image: formatImagePath(cat.image),
+                createdAt: cat.createdAt.toISOString(),
+                updatedAt: cat.updatedAt.toISOString(),
+                nameAr: cat.nameAr
+            };
+        });
+    } catch (error) {
+        console.error("Failed to fetch featured categories:", error);
+        return [];
+    }
+}
+
 function formatImagePath(path: string | null | undefined): string | null {
     if (!path || typeof path !== 'string') return null;
     let trimmed = path.trim();
@@ -161,10 +186,12 @@ function transformProduct(product: any) {
     };
 }
 
-export async function getTrendingProducts() {
+export async function getTrendingProducts(limit?: number) {
     try {
         const products = await prisma.product.findMany({
             where: { IsTrending: true },
+            take: limit,
+            orderBy: { createdAt: 'desc' },
             include: {
                 category: true
             }
@@ -177,10 +204,12 @@ export async function getTrendingProducts() {
     }
 }
 
-export async function getBestSellers() {
+export async function getBestSellers(limit?: number) {
     try {
         const products = await prisma.product.findMany({
             where: { BestSeller: true },
+            take: limit,
+            orderBy: { createdAt: 'desc' },
             include: {
                 category: true
             }
@@ -363,7 +392,7 @@ export async function getRelatedProducts(categoryId: string, currentProductId: s
     }
 }
 
-export async function getReviews() {
+export async function getReviews(limit?: number) {
     try {
         // @ts-ignore - Handle case where prisma client hasn't been regenerated yet
         if (!prisma.review) {
@@ -372,7 +401,8 @@ export async function getReviews() {
         }
         // @ts-ignore
         const reviews = await prisma.review.findMany({
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'desc' },
+            take: limit
         });
 
         return reviews.map((review: any) => ({

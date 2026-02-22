@@ -11,6 +11,7 @@ import {
     MdStarOutline,
     MdSync
 } from "react-icons/md";
+import Image from "next/image";
 import ReviewModal from "./ReviewModal";
 import { deleteReview } from "../../../../lib/admin-actions";
 import { toast } from "react-hot-toast";
@@ -110,17 +111,18 @@ export default function ReviewsClient({
                             <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
                                 {t('admin.reviews')}
                             </h3>
-                            <p className="text-white/40 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
                                 {t('admin.manageReviews')}
                             </p>
                         </div>
                         <div className="w-full md:w-auto flex flex-col md:flex-row gap-4 items-center justify-end">
                             <div className="relative w-full md:w-64">
-                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/20 text-xl`} />
+                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/60 text-xl`} />
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchPlaceholder')}
-                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/20`}
+                                    aria-label={t('admin.searchPlaceholder') || "Search reviews"}
+                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/60`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -154,11 +156,17 @@ export default function ReviewsClient({
                                     <div className="p-6 flex flex-col h-full">
                                         <div className="flex items-start justify-between mb-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/5 overflow-hidden flex items-center justify-center shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/5 overflow-hidden flex items-center justify-center shrink-0 relative">
                                                     {review.image ? (
-                                                        <img src={review.image} alt={review.name} className="w-full h-full object-cover" />
+                                                        <Image 
+                                                            src={review.image} 
+                                                            alt={review.name} 
+                                                            fill
+                                                            className="object-cover" 
+                                                            sizes="40px"
+                                                        />
                                                     ) : (
-                                                        <MdImage className="text-white/20 text-xl" />
+                                                        <MdImage className="text-white/60 text-xl" />
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col min-w-0">
@@ -172,8 +180,9 @@ export default function ReviewsClient({
                                                 {canManage && (
                                                     <button
                                                         onClick={() => handleEdit(review)}
-                                                        className="p-2 text-white/20 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                                                        className="p-2 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
                                                         title={t('admin.editReview')}
+                                                        aria-label={t('admin.editReview')}
                                                     >
                                                         <MdEdit className="text-lg" />
                                                     </button>
@@ -182,8 +191,9 @@ export default function ReviewsClient({
                                                     <button
                                                         onClick={() => handleDelete(review.id)}
                                                         disabled={isDeleting === review.id}
-                                                        className="p-2 text-white/20 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all disabled:opacity-50"
+                                                        className="p-2 text-white/60 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all disabled:opacity-50"
                                                         title={t('admin.deleteReview')}
+                                                        aria-label={t('admin.deleteReview')}
                                                     >
                                                         {isDeleting === review.id ? (
                                                             <MdSync className="animate-spin text-lg" />
@@ -195,20 +205,20 @@ export default function ReviewsClient({
                                             </div>
                                         </div>
 
-                                        <p className="text-[10px] text-white/40 line-clamp-3 mb-6 leading-relaxed font-medium italic">
+                                        <p className="text-[10px] text-white/60 line-clamp-3 mb-6 leading-relaxed font-medium italic">
                                             "{review.description}"
                                         </p>
 
                                         <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
                                             <div className="flex flex-col">
-                                                <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.1em] mb-1">
+                                                <span className="text-[8px] font-black text-white/60 uppercase tracking-[0.1em] mb-1">
                                                     {t('admin.product')}
                                                 </span>
                                                 <span className="text-[9px] font-black text-accent uppercase tracking-[0.1em] truncate max-w-[150px]">
                                                     {review.productName || t('admin.none')}
                                                 </span>
                                             </div>
-                                            <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.1em]">
+                                            <span className="text-[8px] font-black text-white/60 uppercase tracking-[0.1em]">
                                                 {new Date(review.createdAt).toLocaleDateString()}
                                             </span>
                                         </div>

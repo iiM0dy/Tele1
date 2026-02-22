@@ -168,7 +168,7 @@ export default function PromoCodeModal({ isOpen, onClose, promoCode }: PromoCode
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-6 py-4 rounded-2xl border border-white/5 text-white/40 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-white/5 transition-all"
+                            className="flex-1 px-6 py-4 rounded-2xl border border-white/5 text-white/60 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-white/5 transition-all"
                         >
                             {t('admin.cancel')}
                         </button>

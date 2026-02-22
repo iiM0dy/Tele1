@@ -9,7 +9,7 @@ export default async function AllCollectionsPage(props: {
 }) {
     const searchParams = await props.searchParams;
     const page = Number(searchParams.page) || 1;
-    const { products, totalPages, currentPage } = await getAllProducts(page, 50);
+    const { products, totalPages, currentPage } = await getAllProducts(page, 24);
 
     return (
         <CollectionPage 

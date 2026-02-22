@@ -201,6 +201,7 @@ export default function CheckoutPage() {
                                                     src={item.image} 
                                                     alt={item.name} 
                                                     fill 
+                                                    sizes="64px"
                                                     className="object-contain p-1 group-hover:scale-105 transition-transform"
                                                 />
                                                 <span className="absolute -top-2 -right-2 bg-[#666] text-white text-[0.7rem] w-5 h-5 flex items-center justify-center rounded-full z-10 font-medium">
@@ -244,6 +245,7 @@ export default function CheckoutPage() {
                                             <input 
                                                 type="text" 
                                                 placeholder={t('checkout.promoCode')} 
+                                                aria-label={t('checkout.promoCode')}
                                                 value={discountCode}
                                                 onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
                                                 className={`w-full px-3 py-3 border rounded-md text-[0.9rem] text-black focus:outline-none focus:ring-1 focus:ring-black transition-all uppercase ${promoError ? 'border-red-500' : 'border-[#e1e1e1]'}`}
@@ -536,6 +538,7 @@ export default function CheckoutPage() {
                                                         ref={discountInputRef}
                                                         type="text" 
                                                         placeholder={t('checkout.promoCode')} 
+                                                        aria-label={t('checkout.promoCode')}
                                                         value={discountCode}
                                                         onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
                                                         className="w-full px-3 py-3 border border-[#e1e1e1] rounded-md text-[0.9rem] text-black focus:outline-none focus:ring-1 focus:ring-black transition-all uppercase"

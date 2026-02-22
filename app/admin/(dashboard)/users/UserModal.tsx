@@ -176,25 +176,27 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
                         {/* Basic Info */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.username')}</label>
+                                <label htmlFor="username" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>{t('admin.username')}</label>
                                 <input
+                                    id="username"
                                     required
                                     type="text"
                                     value={formData.username}
                                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                                    className={`w-full px-4 py-3 bg-white/[0.02] border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black uppercase tracking-[0.2em] text-white`}
+                                    className={`w-full px-4 py-3 bg-white/[0.02] border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder:text-white/40`}
                                     placeholder="e.g. jessica_editor"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className={`text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                                <label htmlFor="password" className={`text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
                                     {user ? t('admin.newPasswordOptional') : t('admin.password')}
                                 </label>
                                 <input
+                                    id="password"
                                     type="password"
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className={`w-full px-4 py-3 bg-white/[0.02] border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black uppercase tracking-[0.2em] text-white`}
+                                    className={`w-full px-4 py-3 bg-white/[0.02] border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black uppercase tracking-[0.2em] text-white placeholder:text-white/40`}
                                     placeholder="••••••••"
                                 />
                             </div>

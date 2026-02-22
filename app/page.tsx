@@ -1,6 +1,5 @@
-import { getTrendingProducts, getBestSellers, getAllCategories, getReviews, getBanners } from "@/lib/public-actions";
+import { getTrendingProducts, getBestSellers, getFeaturedCategories, getReviews, getBanners } from "@/lib/public-actions";
 import HeroSlideshow from "@/components/home/HeroSlideshow";
-import ProductGrid from "@/components/home/ProductGrid";
 import BestSellerSection from "@/components/home/BestSellerSection";
 import NewReleasesSection from "@/components/home/NewReleasesSection";
 import CollectionList from "@/components/home/CollectionList";
@@ -11,16 +10,14 @@ import { getI18n } from "@/lib/i18n";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const [trendingProducts, bestSellers, categories, reviews, banners, { t }] = await Promise.all([
-    getTrendingProducts(),
-    getBestSellers(),
-    getAllCategories(),
-    getReviews(),
+  const [trendingProducts, bestSellers, featuredCategories, reviews, banners, { t }] = await Promise.all([
+    getTrendingProducts(8),
+    getBestSellers(8),
+    getFeaturedCategories(5),
+    getReviews(10),
     getBanners(),
     getI18n()
   ]);
-
-  const featuredCategories = categories.filter((c: any) => c.isFeatured).slice(0, 5);
 
   console.log('Home Page - Best Sellers count:', bestSellers?.length);
 

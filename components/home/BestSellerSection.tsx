@@ -2,9 +2,15 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
-import BestSellerCard from './BestSellerCard';
+import dynamic from 'next/dynamic';
 import { useLanguage } from '@/app/context/LanguageContext';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
+import BestSellerCardSkeleton from './BestSellerCardSkeleton';
+
+const BestSellerCard = dynamic(() => import('./BestSellerCard'), {
+  loading: () => <BestSellerCardSkeleton />,
+  ssr: true
+});
 
 interface Product {
     id: string;

@@ -64,7 +64,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                             <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
                                 {t('admin.systemUsers')}
                             </h3>
-                            <p className="text-white/40 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
                                 {t('admin.manageSubAdmins')}
                             </p>
                         </div>
@@ -74,6 +74,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                 setIsModalOpen(true);
                             }}
                             className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                            aria-label={t('admin.addNewUser') || "Add new user"}
                         >
                             <MdPersonAdd className="text-xl" />
                             {t('admin.addNewUser')}
@@ -94,11 +95,11 @@ export default function UsersClient({ users }: { users: User[] }) {
                             <table className="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/[0.01]">
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.username')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.role')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.permissionsSummary')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.createdAt')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.username')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.role')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.permissionsSummary')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.createdAt')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
@@ -123,7 +124,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                             <td className="p-6">
                                                 <div className="flex flex-wrap gap-2">
                                                     {user.role === 'SUPER_ADMIN' ? (
-                                                        <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">{t('admin.unlimitedAccess')}</span>
+                                                        <span className="text-[9px] font-black text-white/60 uppercase tracking-[0.2em]">{t('admin.unlimitedAccess')}</span>
                                                     ) : (
                                                         <>
                                                             {user.canManageProducts && <span className="text-[9px] font-black bg-white/[0.05] px-2.5 py-1 rounded-lg text-white/60 uppercase tracking-[0.2em] border border-white/5">{t('admin.products')}{!user.canDeleteProducts && " (No Delete)"}</span>}
@@ -134,23 +135,25 @@ export default function UsersClient({ users }: { users: User[] }) {
                                                     )}
                                                 </div>
                                             </td>
-                                            <td className="p-6 text-[11px] font-black text-white/40 tracking-wider">
+                                            <td className="p-6 text-[11px] font-black text-white/60 tracking-wider">
                                                 {new Date(user.createdAt).toLocaleDateString()}
                                             </td>
                                             <td className="p-6">
                                                 <div className={`flex items-center ${dir === 'rtl' ? 'justify-start' : 'justify-end'} gap-1`}>
                                                     <button
                                                         onClick={() => handleEdit(user)}
-                                                        className="p-2.5 text-white/20 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
+                                                        className="p-2.5 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
                                                         title={t('admin.editUser')}
+                                                        aria-label={t('admin.editUser') || "Edit user"}
                                                     >
                                                         <MdEdit className="text-xl" />
                                                     </button>
                                                     {user.username !== 'admin' && (
                                                         <button
                                                             onClick={() => handleDelete(user.id, user.username)}
-                                                            className="p-2.5 text-white/20 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
+                                                            className="p-2.5 text-white/60 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
                                                             title={t('admin.deleteUser')}
+                                                            aria-label={t('admin.deleteUser') || "Delete user"}
                                                         >
                                                             <MdDelete className="text-xl" />
                                                         </button>

@@ -88,17 +88,17 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                             <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
                                 {t('admin.promoCodes')}
                             </h3>
-                            <p className="text-white/40 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
                                 {t('admin.manageCodes')}
                             </p>
                         </div>
                         <div className="w-full md:w-auto flex flex-col md:flex-row flex-wrap gap-4 items-center justify-end">
                             <div className="relative w-full md:w-64">
-                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/20 text-xl`} />
+                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/40 text-xl`} />
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchCodes')}
-                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/20`}
+                                    className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/[0.02] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/40`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -106,7 +106,8 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                             {canManage && (
                                 <button
                                     onClick={handleAdd}
-                                    className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                                    className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-black rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/90 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] w-full md:w-auto"
+                                    aria-label={t('admin.addCode') || "Add promo code"}
                                 >
                                     <MdAdd className="text-xl" />
                                     {t('admin.addPromoCode')}
@@ -124,13 +125,13 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                     {/* Stats Summary */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
                         <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
-                            <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalSales')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalSales')}</p>
                             <p className="text-2xl font-black text-white tracking-wider">
                                 ${promoCodes.reduce((sum, pc) => sum + pc.totalSales, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                             </p>
                         </div>
                         <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
-                            <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.activeCodes')}</p>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.activeCodes')}</p>
                             <p className="text-2xl font-black text-accent tracking-wider">
                                 {promoCodes.filter(pc => pc.isActive).length}
                             </p>
@@ -142,14 +143,14 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                             <table className={`w-full text-left border-collapse ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/[0.01]">
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.code')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.discount')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.delegate')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalSales')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.thisMonth')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.usage')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.status')}</th>
-                                        <th className={`p-6 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.code')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.discount')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.delegate')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalSales')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.thisMonth')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.usage')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.status')}</th>
+                                        <th className={`p-6 text-[10px] font-black text-white/60 uppercase tracking-[0.2em] ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
@@ -164,7 +165,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                                 {pc.discountPercentage}%
                                             </td>
                                             <td className="p-6 text-white font-black text-[10px] uppercase tracking-[0.2em]">
-                                                {pc.delegateName || <span className="text-white/20 lowercase font-medium">{t('admin.none')}</span>}
+                                                {pc.delegateName || <span className="text-white/40 lowercase font-medium">{t('admin.none')}</span>}
                                             </td>
                                             <td className="p-6 font-black text-white text-[11px] tracking-wider">
                                                 ${pc.totalSales.toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -172,13 +173,13 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                             <td className="p-6 font-black text-accent text-[11px] tracking-wider">
                                                 ${pc.thisMonthSales.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                                             </td>
-                                            <td className="p-6 text-white/40 font-black text-[11px] tracking-wider">
+                                            <td className="p-6 text-white/60 font-black text-[11px] tracking-wider">
                                                 {pc.usageCount}
                                             </td>
                                             <td className="p-6">
                                                 <span className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] border ${pc.isActive
                                                     ? "bg-accent/10 text-accent border-accent/20"
-                                                    : "bg-white/5 text-white/30 border-white/10"
+                                                    : "bg-white/5 text-white/40 border-white/10"
                                                     }`}>
                                                     {pc.isActive ? t('admin.active') : t('admin.inactive')}
                                                 </span>
@@ -189,7 +190,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                                         <button
                                                             onClick={() => handleToggleStatus(pc.id, pc.isActive)}
                                                             disabled={loadingMap[pc.id]}
-                                                            className={`p-2.5 rounded-xl transition-all ${pc.isActive ? 'text-accent hover:bg-accent/10' : 'text-white/20 hover:text-white hover:bg-white/5'}`}
+                                                            className={`p-2.5 rounded-xl transition-all ${pc.isActive ? 'text-accent hover:bg-accent/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
                                                             title={pc.isActive ? t('admin.deactivate') : t('admin.activate')}
                                                         >
                                                             {loadingMap[pc.id] ? (
@@ -202,7 +203,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                                     {canManage && (
                                                         <button
                                                             onClick={() => handleEdit(pc)}
-                                                            className="p-2.5 text-white/20 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
+                                                            className="p-2.5 text-white/40 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
                                                             title={t('admin.editPromoCode')}
                                                         >
                                                             <MdEdit className="text-xl" />
@@ -211,7 +212,7 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                                     {canDelete && (
                                                         <button
                                                             onClick={() => handleDelete(pc.id, pc.code)}
-                                                            className="p-2.5 text-white/20 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
+                                                            className="p-2.5 text-white/40 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
                                                             title={t('admin.deletePromoCode')}
                                                         >
                                                             <MdDelete className="text-xl" />

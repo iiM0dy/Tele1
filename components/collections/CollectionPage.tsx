@@ -7,9 +7,16 @@ import { useLanguage } from '@/app/context/LanguageContext';
 import { useCart } from '@/app/context/CartContext';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
+import dynamic from 'next/dynamic';
 import FilterDrawer from './FilterDrawer';
+import ProductCardSkeleton from './ProductCardSkeleton';
 
-interface Product {
+const ProductCard = dynamic(() => import('./ProductCard'), {
+  loading: () => <ProductCardSkeleton />,
+  ssr: true
+});
+
+export interface Product {
     id: string;
     Name: string;
     slug: string;
@@ -72,6 +79,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                         src={sub.image || '/placeholder.png'}
                                         alt={sub.name}
                                         fill
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                         className="object-cover transition-transform group-hover:scale-105"
                                     />
                                 </div>
@@ -274,6 +282,7 @@ export default function CollectionPage({ products, collectionName, collectionNam
                                         product={product} 
                                         hideInfo={layout === 'compact'}
                                         index={index}
+                                        layout={layout}
                                     />
                                 ))}
                             </div>
@@ -333,124 +342,12 @@ export default function CollectionPage({ products, collectionName, collectionNam
                         </>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-32 text-center">
-                            <h3 className="text-[24px] font-bold uppercase tracking-widest text-[#0F172A] mb-4">
-                                No products found
-                            </h3>
-                            <p className="text-[14px] text-zinc-500 mb-8 uppercase tracking-widest">
-                                Try adjusting your filters or search criteria.
-                            </p>
-                            <button 
-                                onClick={() => setFilters({ inStockOnly: false, priceRange: { min: 0, max: 10000 } })}
-                                className="px-8 py-4 bg-accent text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-accent/90 transition-all rounded-xl shadow-lg shadow-accent/20"
-                            >
-                                Clear all filters
-                            </button>
+                            <h3 className="text-xl font-bold text-[#0F172A] mb-2">{t('products.noProductsFound')}</h3>
+                            <p className="text-zinc-500">{t('products.tryDifferentFilter')}</p>
                         </div>
                     )}
                 </div>
             </div>
         </div>
-    );
-}
-
-function ProductCard({ product, hideInfo, index }: { product: Product, hideInfo?: boolean, index?: number }) {
-    const { t } = useLanguage();
-    const { addItem } = useCart();
-
-    const images = [...(product.Images || [])];
-    
-    const mainImage = images[0] || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800';
-    const price = Number(product.Price);
-    const discountPrice = product.discountPrice ? Number(product.discountPrice) : null;
-    const hoverImage = images[1];
-    const isPriority = typeof index === 'number' && index < 4;
-
-    const handleAddToCart = (e: React.MouseEvent) => {
-        e.preventDefault();
-        addItem({
-            id: product.id,
-            name: product.Name,
-            price: discountPrice || price,
-            image: mainImage,
-            quantity: 1,
-            slug: product.slug
-        });
-        toast.success(t('products.addToCartSuccess') || 'Added to cart');
-    };
-
-    return (
-        <Link href={`/products/${product.slug}`} className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-zinc-100 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500">
-            <div className="relative aspect-square overflow-hidden bg-zinc-50">
-                <Image
-                    src={mainImage}
-                    alt={product.Name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    priority={isPriority}
-                    fetchPriority={isPriority ? "high" : undefined}
-                    className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
-                />
-                {hoverImage && (
-                    <Image
-                        src={hoverImage}
-                        alt={product.Name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
-                    />
-                )}
-                
-                {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
-                    {product.BestSeller && (
-                        <div className="bg-primary/90 backdrop-blur-md text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-                            best seller
-                        </div>
-                    )}
-                    {discountPrice && (
-                        <div className="bg-highlight text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-                            sale {Math.round((1 - discountPrice / price) * 100)}% off
-                        </div>
-                    )}
-                </div>
-
-                {/* Quick Add Overlay */}
-                {!hideInfo && (
-                    <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 z-20">
-                        <button
-                            onClick={handleAddToCart}
-                            className="w-full py-3 bg-accent text-black text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-accent/20 hover:bg-black hover:text-white active:scale-95 transition-all duration-300 rounded-xl"
-                        >
-                            quick add
-                        </button>
-                    </div>
-                )}
-            </div>
-
-            {!hideInfo && (
-                <div className="p-6 space-y-3">
-                    <h2 className="text-[13px] font-bold tracking-tight text-[#0F172A] line-clamp-2 min-h-[40px] group-hover:text-accent transition-colors">
-                        {product.Name}
-                    </h2>
-                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-zinc-50">
-                        {discountPrice ? (
-                            <div className="flex items-center gap-3">
-                                <span className="text-base font-black text-accent">
-                                    ${discountPrice.toFixed(2)}
-                                </span>
-                                <span className="text-xs text-zinc-400 line-through">${price.toFixed(2)}</span>
-                            </div>
-                        ) : (
-                            <span className="text-base font-black text-[#0F172A]">
-                                ${price.toFixed(2)}
-                            </span>
-                        )}
-                        <div className="w-8 h-8 rounded-full bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
-                            <HiOutlineShoppingBag className="w-4 h-4" />
-                        </div>
-                    </div>
-                </div>
-            )}
-        </Link>
     );
 }

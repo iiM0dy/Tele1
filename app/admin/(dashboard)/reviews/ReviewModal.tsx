@@ -128,7 +128,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                             <h3 className="text-2xl font-black text-white uppercase tracking-[0.2em]">
                                 {review ? t('admin.addReviewModal.titleEdit') : t('admin.addReviewModal.titleAdd')}
                             </h3>
-                            <p className="text-white/40 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
                                 {review ? t('admin.addReviewModal.subtitleEdit') : t('admin.addReviewModal.subtitleAdd')}
                             </p>
                         </div>
@@ -144,7 +144,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                         <div className="grid grid-cols-1 gap-6">
                             {/* Customer Name */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
                                     {t('admin.addReviewModal.customerName')}
                                 </label>
                                 <input
@@ -152,13 +152,13 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     placeholder={t('admin.addReviewModal.customerNamePlaceholder')}
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-accent/30 transition-all"
+                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
                                 />
                             </div>
 
                             {/* Customer Image */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
                                     {t('admin.addReviewModal.customerImage')}
                                 </label>
                                 <input
@@ -166,13 +166,13 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     value={formData.image}
                                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                                     placeholder="https://..."
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-accent/30 transition-all"
+                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
                                 />
                             </div>
 
                             {/* Rating */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
                                     {t('admin.addReviewModal.rating')}
                                 </label>
                                 <div className="flex gap-2 p-2 bg-white/[0.02] border border-white/5 rounded-2xl w-fit">
@@ -195,7 +195,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
 
                             {/* Comment */}
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
                                     {t('admin.addReviewModal.comment')}
                                 </label>
                                 <textarea
@@ -203,13 +203,13 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     placeholder={t('admin.addReviewModal.commentPlaceholder')}
                                     rows={4}
-                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-accent/30 transition-all resize-none"
+                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all resize-none"
                                 />
                             </div>
 
                             {/* Searchable Product Select */}
                             <div className="space-y-2 relative" ref={dropdownRef}>
-                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
+                                <label className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-1">
                                     {t('admin.addReviewModal.product')}
                                 </label>
                                 
@@ -217,17 +217,17 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     onClick={() => setIsProductSelectOpen(!isProductSelectOpen)}
                                     className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white cursor-pointer hover:border-white/10 transition-all flex items-center justify-between"
                                 >
-                                    <span className={selectedProduct ? "text-white" : "text-white/20"}>
+                                    <span className={selectedProduct ? "text-white" : "text-white/40"}>
                                         {selectedProduct ? selectedProduct.Name : t('admin.addReviewModal.selectProduct')}
                                     </span>
-                                    <MdSearch className="text-xl text-white/20" />
+                                    <MdSearch className="text-xl text-white/40" />
                                 </div>
 
                                 {isProductSelectOpen && (
                                     <div className="absolute bottom-full mb-2 left-0 right-0 bg-[#0F0F0F] border border-white/10 rounded-3xl shadow-2xl overflow-hidden z-[110] animate-in fade-in slide-in-from-bottom-2 duration-200">
                                         <div className="p-4 border-b border-white/5">
                                             <div className="relative">
-                                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/20`} />
+                                                <MdSearch className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/40`} />
                                                 <input
                                                     type="text"
                                                     autoFocus

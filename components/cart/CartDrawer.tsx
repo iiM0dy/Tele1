@@ -106,7 +106,7 @@ export default function CartDrawer() {
                 {/* Cart Items */}
                 <div className="flex-grow overflow-y-auto px-6 scrollbar-hide">
                     {items.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center text-zinc-400 space-y-4 py-12">
+                        <div className="h-full flex flex-col items-center justify-center text-zinc-500 space-y-4 py-12">
                             <HiOutlineShoppingBag className="w-16 h-16 opacity-20" />
                             <h3 className="text-lg font-medium text-zinc-600">{t('cart.emptyCart')}</h3>
                             <button 
@@ -128,8 +128,8 @@ export default function CartDrawer() {
                                                     src={item.image}
                                                     alt={item.name}
                                                     fill
-                                                    unoptimized
                                                     className="object-cover"
+                                                    sizes="80px"
                                                 />
                                             </div>
                                         </Link>
@@ -177,6 +177,7 @@ export default function CartDrawer() {
                                                 <input 
                                                     className="w-[30px] border-none text-center text-[0.9rem] font-medium text-[#1a1a1a] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                                     type="number" 
+                                                    aria-label="Quantity"
                                                     value={item.quantity}
                                                     onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 0)}
                                                     min="0"
@@ -211,7 +212,7 @@ export default function CartDrawer() {
                             <span className="uppercase tracking-widest text-sm text-zinc-500">{t('cart.subtotal')}</span>
                             <span className="text-[#1a1a1a]">${subtotal.toFixed(2)}</span>
                         </div>
-                        <p className="text-[11px] text-zinc-400 uppercase tracking-widest text-center">
+                        <p className="text-[11px] text-zinc-500 uppercase tracking-widest text-center">
                             {t('cart.shippingCalculated')}
                         </p>
                         <div className="pt-2">

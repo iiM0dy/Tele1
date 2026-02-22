@@ -55,14 +55,14 @@ export default function BestSellerCard({ product, index }: { product: any; index
             {/* Figure / Media Area */}
             <div className="relative aspect-square overflow-hidden bg-zinc-50">
                 {/* Badges */}
-                <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+                <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
                     {product.BestSeller && (
                         <span className="bg-primary text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
                             {t('home.bestSeller')}
                         </span>
                     )}
                     {discountPrice && (
-                        <span className="bg-highlight text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
+                        <span className="bg-highlight text-black text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
                             {t('products.salePercent').replace('{percent}', Math.round((1 - discountPrice / price) * 100).toString())}
                         </span>
                     )}
@@ -75,7 +75,7 @@ export default function BestSellerCard({ product, index }: { product: any; index
                         alt={product.Name}
                         fill
                         className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
-                        sizes="(max-width: 699px) 74vw, (max-width: 999px) 38vw, 25vw"
+                        sizes="(max-width: 768px) 75vw, (max-width: 1024px) 33vw, 25vw"
                         priority={isPriority}
                         fetchPriority={isPriority ? "high" : undefined}
                     />
@@ -85,7 +85,7 @@ export default function BestSellerCard({ product, index }: { product: any; index
                             alt={product.Name}
                             fill
                             className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
-                            sizes="(max-width: 699px) 74vw, (max-width: 999px) 38vw, 25vw"
+                            sizes="(max-width: 768px) 75vw, (max-width: 1024px) 33vw, 25vw"
                         />
                     )}
                 </Link>
@@ -119,7 +119,7 @@ export default function BestSellerCard({ product, index }: { product: any; index
                 <div className="flex items-center gap-3 pt-1">
                     {discountPrice ? (
                         <>
-                            <span className="text-base font-black text-accent">${discountPrice.toFixed(2)}</span>
+                            <span className="text-base font-black text-red-600">${discountPrice.toFixed(2)}</span>
                             <span className="text-xs text-zinc-400 line-through font-medium">${price.toFixed(2)}</span>
                         </>
                     ) : (

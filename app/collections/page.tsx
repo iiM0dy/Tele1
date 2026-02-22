@@ -37,15 +37,16 @@ export default async function CollectionsPage() {
                                             alt={displayName}
                                             fill
                                             className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
                                         {/* Black filter with low opacity */}
                                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors z-[1]" />
                                     </div>
                                 )}
                                 <div className="absolute inset-0 flex items-center justify-center z-20">
-                                    <button className="px-10 py-4 bg-accent text-white text-xs font-black uppercase tracking-[0.2em] rounded-xl transform translate-y-0 md:translate-y-4 opacity-100 md:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 shadow-xl shadow-accent/20">
+                                    <span className="px-10 py-4 bg-accent text-white text-xs font-black uppercase tracking-[0.2em] rounded-xl transform translate-y-0 md:translate-y-4 opacity-100 md:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 shadow-xl shadow-accent/20">
                                         {displayName}
-                                    </button>
+                                    </span>
                                 </div>
                             </Link>
                         );

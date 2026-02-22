@@ -143,33 +143,76 @@ function getStatusColor(status: string) {
 
 export async function getAdminProductStats() {
     try {
-        const [total, outOfStock, lowStock, categoriesCount, bestSellers, trending] = await Promise.all([
-            prisma.product.count(),
-            prisma.product.count({ where: { Stock: 0 } }),
-            prisma.product.count({ where: { Stock: { gt: 0, lte: 10 } } }),
-            prisma.category.count(),
-            prisma.product.count({ where: { BestSeller: true } }),
-            prisma.product.count({ where: { IsTrending: true } })
+        const [productStats, categoriesCount] = await Promise.all([
+            prisma.$queryRaw<[{
+                total: bigint,
+                outOfStock: bigint,
+                lowStock: bigint,
+                bestSellers: bigint,
+                trending: bigint
+            }]>`
+                SELECT
+                    COUNT(*)::int as total,
+                    SUM(CASE WHEN "Stock" = 0 THEN 1 ELSE 0 END)::int as "outOfStock",
+                    SUM(CASE WHEN "Stock" > 0 AND "Stock" <= 10 THEN 1 ELSE 0 END)::int as "lowStock",
+                    SUM(CASE WHEN "BestSeller" = true THEN 1 ELSE 0 END)::int as "bestSellers",
+                    SUM(CASE WHEN "IsTrending" = true THEN 1 ELSE 0 END)::int as "trending"
+                FROM "Product"
+            `,
+            prisma.category.count()
         ]);
 
+        const stats = productStats[0];
+
         return {
-            total,
-            outOfStock,
-            lowStock,
+            total: Number(stats.total || 0),
+            outOfStock: Number(stats.outOfStock || 0),
+            lowStock: Number(stats.lowStock || 0),
             categories: categoriesCount,
-            bestSellers,
-            trending
+            bestSellers: Number(stats.bestSellers || 0),
+            trending: Number(stats.trending || 0)
         };
     } catch (error) {
         console.error("Failed to fetch product stats:", error);
-        return {
-            total: 0,
-            outOfStock: 0,
-            lowStock: 0,
-            categories: 0,
-            bestSellers: 0,
-            trending: 0
-        };
+        // Fallback to individual queries if raw query fails
+        try {
+            const [total, outOfStock, lowStock, categoriesCount, bestSellers, trending] = await Promise.all([
+                prisma.product.count(),
+                prisma.product.count({ where: { Stock: 0 } }),
+                prisma.product.count({ where: { Stock: { gt: 0, lte: 10 } } }),
+                prisma.category.count(),
+                prisma.product.count({ where: { BestSeller: true } }),
+                prisma.product.count({ where: { IsTrending: true } })
+            ]);
+            return { total, outOfStock, lowStock, categories: categoriesCount, bestSellers, trending };
+        } catch (retryError) {
+             return {
+                total: 0,
+                outOfStock: 0,
+                lowStock: 0,
+                categories: 0,
+                bestSellers: 0,
+                trending: 0
+            };
+        }
+    }
+}
+
+export async function getAdminCategoryOptions() {
+    try {
+        const categories = await prisma.category.findMany({
+            select: {
+                id: true,
+                name: true
+            },
+            orderBy: {
+                name: 'asc'
+            }
+        });
+        return categories;
+    } catch (error) {
+        console.error("Failed to fetch category options:", error);
+        return [];
     }
 }
 
