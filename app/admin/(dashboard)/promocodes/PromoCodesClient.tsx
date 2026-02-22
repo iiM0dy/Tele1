@@ -20,7 +20,12 @@ interface PromoCode {
     createdAt: string;
 }
 
-export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode[] }) {
+interface PromoCodesClientProps {
+    promoCodes: PromoCode[];
+    categoriesCount?: number;
+}
+
+export default function PromoCodesClient({ promoCodes, categoriesCount }: PromoCodesClientProps) {
     const { data: session } = useSession();
     const { t, dir } = useLanguage();
     const canManage = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManagePromoCodes;
@@ -107,10 +112,10 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                                 <button
                                     onClick={handleAdd}
                                     className="flex items-center justify-center gap-2 flex-1 px-6 py-4 rounded-2xl border border-white/5 text-white/60 font-semibold text-[11px] tracking-wider hover:bg-white/5 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] w-full md:w-auto"
-                                    aria-label={t('admin.addCode') || "Add promo code"}
+                                    aria-label={t('admin.addNewPromoCode') || "Add promo code"}
                                 >
                                     <MdAdd className="text-xl" />
-                                    {t('admin.addPromoCode')}
+                                    {t('admin.addNewPromoCode')}
                                 </button>
                             )}
                         </div>
@@ -128,6 +133,12 @@ export default function PromoCodesClient({ promoCodes }: { promoCodes: PromoCode
                             <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.totalSales')}</p>
                             <p className="text-2xl font-black text-white tracking-wider">
                                 ${promoCodes.reduce((sum, pc) => sum + pc.totalSales, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                            </p>
+                        </div>
+                        <div className="bg-white/2 p-6 rounded-3xl border border-white/5 flex flex-col gap-2">
+                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.totalCategories')}</p>
+                            <p className="text-2xl font-black text-white tracking-wider">
+                                {categoriesCount || 0}
                             </p>
                         </div>
                         <div className="bg-white/2 p-6 rounded-3xl border border-white/5 flex flex-col gap-2">

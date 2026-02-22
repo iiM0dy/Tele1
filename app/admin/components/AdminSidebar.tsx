@@ -40,6 +40,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         { href: "/admin/orders", icon: MdInventory2, label: t('admin.orders'), permission: "canManageOrders" },
         { href: "/admin/reviews", icon: MdStar, label: t('admin.reviews'), permission: "canManageProducts" },
         { href: "/admin/promocodes", icon: MdLocalOffer, label: t('admin.promoCodes'), permission: "canManagePromoCodes" },
+        { href: "/admin/site-content", icon: MdEditNote, label: t('admin.siteContent') },
         { href: "/admin/users", icon: MdGroup, label: t('admin.users'), superAdminOnly: true },
         { href: "/admin/settings", icon: MdSettings, label: t('admin.settings'), superAdminOnly: true },
     ];

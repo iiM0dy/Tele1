@@ -220,6 +220,49 @@ model Settings {
   updatedAt DateTime @updatedAt
 }
 
+model AboutUsContent {
+  id         String @id @default("about-us")
+  titleEn    String @default("About Us")
+  titleAr    String @default("من نحن")
+  subtitleEn String @default("Our mission and commitment to quality")
+  subtitleAr String @default("مهمتنا والتزامنا بالجودة")
+  heroImage  String @default("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop")
+
+  storyTitleEn String @default("Our Story")
+  storyTitleAr String @default("قصتنا")
+  storyText1En String @default("Founded with a passion for excellence...")
+  storyText1Ar String @default("تأسست بشغف للتميز...")
+  storyText2En String @default("Today, we continue to innovate...")
+  storyText2Ar String @default("اليوم، نواصل الابتكار...")
+  storyImage   String @default("https://images.unsplash.com/photo-1491933382434-500287f9b54b?q=80&w=1000&auto=format&fit=crop")
+
+  valuesTitleEn String @default("Our Values")
+  valuesTitleAr String @default("قيمنا")
+
+  qualityTitleEn String @default("Quality")
+  qualityTitleAr String @default("الجودة")
+  qualityDescEn  String @default("We never compromise on quality.")
+  qualityDescAr  String @default("نحن لا نساوم أبداً على الجودة.")
+
+  innovationTitleEn String @default("Innovation")
+  innovationTitleAr String @default("الابتكار")
+  innovationDescEn  String @default("Leading the way with new technology.")
+  innovationDescAr  String @default("نحن نقود الطريق بالتكنولوجيا الجديدة.")
+
+  customerTitleEn String @default("Customer Focus")
+  customerTitleAr String @default("تركيزنا على العميل")
+  customerDescEn  String @default("Your satisfaction is our top priority.")
+  customerDescAr  String @default("رضاكم هو أولويتنا القصوى.")
+
+  ctaTitleEn String  @default("Innovation First")
+  ctaTitleAr String  @default("الابتكار أولاً")
+  ctaDescEn  String  @default("Empowering your digital lifestyle with cutting-edge technology...")
+  ctaDescAr  String  @default("تمكين نمط حياتك الرقمي بأحدث التقنيات...")
+  ctaImage   String? @default("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop")
+
+  updatedAt DateTime @updatedAt
+}
+
 enum OrderStatus {
   PENDING
   PROCESSING

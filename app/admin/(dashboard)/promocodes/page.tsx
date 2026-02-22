@@ -1,5 +1,6 @@
 import { getPromoCodes } from "../../../../lib/admin-actions";
 import PromoCodesClient from "./PromoCodesClient";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -11,6 +12,10 @@ export default async function PromoCodesPage() {
         redirect('/admin/dashboard');
     }
 
-    const promoCodes = await getPromoCodes();
-    return <PromoCodesClient promoCodes={promoCodes} />;
+    const [promoCodes, categoriesCount] = await Promise.all([
+        getPromoCodes(),
+        prisma.category.count()
+    ]);
+
+    return <PromoCodesClient promoCodes={promoCodes} categoriesCount={categoriesCount} />;
 }

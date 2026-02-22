@@ -87,7 +87,7 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
         e.preventDefault();
 
         if (!user && !formData.password) {
-            toast.error("Password is required for new users");
+            toast.error(t('admin.passwordRequired') || "Password is required");
             return;
         }
 
@@ -101,13 +101,13 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
             }
 
             if (result.success) {
-                toast.success(user ? "User updated successfully" : "User created successfully");
+                toast.success(user ? t('admin.userUpdatedSuccess') : t('admin.userCreatedSuccess'));
                 onClose();
             } else {
-                toast.error(result.error || "Something went wrong");
+                toast.error(result.error || t('admin.errorGeneric'));
             }
         } catch (error) {
-            toast.error("An unexpected error occurred");
+            toast.error(t('admin.errorGeneric'));
         } finally {
             setIsSubmitting(false);
         }

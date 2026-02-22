@@ -45,12 +45,12 @@ export default function UsersClient({ users }: { users: User[] }) {
             try {
                 const result = await deleteUser(id);
                 if (result.success) {
-                    toast.success("User deleted successfully");
+                    toast.success(t('admin.userDeletedSuccess'));
                 } else {
-                    toast.error(result.error || "Failed to delete user");
+                    toast.error(result.error || t('admin.failedToUpdate'));
                 }
             } catch (error) {
-                toast.error("An unexpected error occurred");
+                toast.error(t('admin.errorGeneric'));
             }
         }
     };
