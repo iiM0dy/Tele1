@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ProductCard from '@/components/collections/ProductCard';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 interface Product {
     id: string;
@@ -39,19 +40,19 @@ export default function ProductGrid({ products, title }: { products: Product[], 
                 )}
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
                     {products.map((product, index) => (
-                        <ProductCard 
-                            key={product.id} 
-                            product={product as any} 
+                        <ProductCard
+                            key={product.id}
+                            product={product as any}
                             index={index}
                             sizes="(max-width: 1024px) 50vw, 33vw"
                         />
                     ))}
                 </div>
-                
+
                 {!isProductsPage && (
                     <div className="mt-20 flex justify-center">
-                        <Link 
-                            href="/products" 
+                        <Link
+                            href="/products"
                             className="px-12 py-4 border border-primary text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all rounded-xl"
                         >
                             {t('products.viewAllProducts')}

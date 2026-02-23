@@ -182,7 +182,7 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
                                     >
                                         <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-black/20 shrink-0">
                                             <img
-                                                src={type.image}
+                                                src={type.image || ""}
                                                 alt={type.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                             />
