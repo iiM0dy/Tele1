@@ -334,7 +334,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                 <path d="M12 1.254V22.75M21 11H3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 <path clipRule="evenodd" d="M3 4.285v7.274c0 4.708 2.284 8.928 6.882 10.618l1.041.382a3.13 3.13 0 0 0 2.154 0l1.041-.382C18.716 20.487 21 16.267 21 11.559V4.285a1.418 1.418 0 0 0-.868-1.301A18.248 18.248 0 0 0 12 1.254a18.248 18.248 0 0 0-8.132 1.73A1.418 1.418 0 0 0 3 4.285Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                             </svg>
-                                            LIFE TIME&nbsp;WARRANTY GUARANTEE
+                                            {t('products.warranty.title')}
                                         </span>
                                         <span className="relative w-3 h-3 flex items-center justify-center">
                                             <span className="absolute w-full h-0.5 bg-accent rounded-full transition-transform duration-300 rotate-90 group-open:rotate-0"></span>
@@ -343,15 +343,15 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                     </summary>
 
                                     <div className="accordion__content pb-6 prose prose-sm max-w-none text-zinc-600">
-                                        <p><strong>Tele1&nbsp;is committed to providing the highest standard of products – which is why we offer a Life Time Warranty for all purchases.</strong></p>
-                                        <p>If your product&nbsp;<strong>fades, breaks, or becomes damaged</strong>&nbsp;under normal use, you're entitled to a&nbsp;<strong>one-time replacement</strong>&nbsp;of the same item (including the same model and color).<br />All we ask is that you cover <strong>shipping cost.</strong></p>
-                                        <p>If the original item is no longer available, you may choose a replacement of&nbsp;<strong>equal or lesser value</strong>.</p>
-                                        <p><strong>What’s Not Covered:</strong></p>
+                                        <p><strong>{t('products.warranty.intro')}</strong></p>
+                                        <p>{t('products.warranty.coverage')}<br />{t('products.warranty.shippingCost')}</p>
+                                        <p>{t('products.warranty.unavailableItem')}</p>
+                                        <p><strong>{t('products.warranty.whatsNotCovered')}</strong></p>
                                         <ul className="list-disc pl-4 space-y-1">
-                                            <li>Lost or stolen items</li>
-                                            <li>Accidental damage (e.g. crushed, bent, etc.)</li>
-                                            <li>Damage caused by misuse or improper care</li>
-                                            <li>Additional replacements beyond the one-time warranty</li>
+                                            <li>{t('products.warranty.notCoveredItems.lost')}</li>
+                                            <li>{t('products.warranty.notCoveredItems.accidental')}</li>
+                                            <li>{t('products.warranty.notCoveredItems.misuse')}</li>
+                                            <li>{t('products.warranty.notCoveredItems.limit')}</li>
                                         </ul>
                                     </div>
                                 </details>
@@ -365,7 +365,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                 <path clipRule="evenodd" d="M7.5 19.5a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Zm12 0a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 <path d="M12 18h3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                             </svg>
-                                            SHIPPING POLICY
+                                            {t('products.shipping.title')}
                                         </span>
                                         <span className="relative w-3 h-3 flex items-center justify-center">
                                             <span className="absolute w-full h-0.5 bg-accent rounded-full transition-transform duration-300 rotate-90 group-open:rotate-0"></span>
@@ -374,8 +374,8 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                     </summary>
 
                                     <div className="accordion__content pb-6 prose prose-sm max-w-none text-zinc-600">
-                                        <p>• Delivery time Inside Beirut: 1-3 Working Days&nbsp;</p>
-                                        <p>• Delivery time Outside Beirut: 3-5 Working Days</p>
+                                        <p>{t('products.shipping.insideBeirut')}</p>
+                                        <p>{t('products.shipping.outsideBeirut')}</p>
                                     </div>
                                 </details>
                             </div>
@@ -445,7 +445,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                 {product.description && (
                                     <div className="product-info__block-item mt-8" data-block-type="description">
                                         <div className="prose prose-sm text-zinc-600 leading-relaxed max-w-none">
-                                            <p className="font-medium text-zinc-800 mb-2">PRODUCT OVERVIEW</p>
+                                            <p className="font-medium text-zinc-800 mb-2">{t('products.productOverview')}</p>
                                             <p>{product.description}</p>
                                         </div>
                                     </div>
@@ -488,7 +488,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                     {/* Quantity Selector */}
                                     <div className="space-y-3 pt-2">
                                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#0F172A]">
-                                            Quantity
+                                            {t('products.quantity')}
                                         </span>
                                         <div className="flex items-center w-36 border-2 border-zinc-100 rounded-xl overflow-hidden">
                                             <button
@@ -533,7 +533,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                             </svg>
                                         </div>
                                         <span className="text-[11px] font-bold uppercase tracking-widest text-[#0F172A]">
-                                            Free Express Shipping
+                                            {t('products.features.freeExpressShipping')}
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3 group">
@@ -542,7 +542,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">30-Day Tech Guarantee</span>
+                                        <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">{t('products.features.techGuarantee')}</span>
                                     </div>
                                     <div className="flex items-center gap-3 group">
                                         <div className="flex items-center justify-center w-6 h-6 bg-accent/10 text-accent rounded-full group-hover:bg-accent group-hover:text-white transition-all">
@@ -550,7 +550,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Original Device Compatibility</span>
+                                        <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">{t('products.features.compatibility')}</span>
                                     </div>
                                 </div>
 
@@ -563,8 +563,8 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                     <path d="M12 1.254V22.75M21 11H3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                     <path clipRule="evenodd" d="M3 4.285v7.274c0 4.708 2.284 8.928 6.882 10.618l1.041.382a3.13 3.13 0 0 0 2.154 0l1.041-.382C18.716 20.487 21 16.267 21 11.559V4.285a1.418 1.418 0 0 0-.868-1.301A18.248 18.248 0 0 0 12 1.254a18.248 18.248 0 0 0-8.132 1.73A1.418 1.418 0 0 0 3 4.285Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 </svg>
-                                                LIFE TIME&nbsp;WARRANTY GUARANTEE
-                                            </span>
+                                                {t('products.warranty.title')}
+                                        </span>
                                             <span className="relative w-3 h-3 flex items-center justify-center">
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full transition-transform duration-300 rotate-90 group-open:rotate-0"></span>
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full"></span>
@@ -572,17 +572,17 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         </summary>
 
                                         <div className="accordion__content pb-6 prose prose-sm max-w-none text-zinc-600">
-                                            <p><strong>Tele1&nbsp;is committed to providing the highest standard of products – which is why we offer a Life Time Warranty for all purchases.</strong></p>
-                                            <p>If your product&nbsp;<strong>fades, breaks, or becomes damaged</strong>&nbsp;under normal use, you're entitled to a&nbsp;<strong>one-time replacement</strong>&nbsp;of the same item (including the same model and color).<br />All we ask is that you cover <strong>shipping cost.</strong></p>
-                                            <p>If the original item is no longer available, you may choose a replacement of&nbsp;<strong>equal or lesser value</strong>.</p>
-                                            <p><strong>What’s Not Covered:</strong></p>
-                                            <ul className="list-disc pl-4 space-y-1">
-                                                <li>Lost or stolen items</li>
-                                                <li>Accidental damage (e.g. crushed, bent, etc.)</li>
-                                                <li>Damage caused by misuse or improper care</li>
-                                                <li>Additional replacements beyond the one-time warranty</li>
-                                            </ul>
-                                        </div>
+                                        <p><strong>{t('products.warranty.intro')}</strong></p>
+                                        <p>{t('products.warranty.coverage')}<br />{t('products.warranty.shippingCost')}</p>
+                                        <p>{t('products.warranty.unavailableItem')}</p>
+                                        <p><strong>{t('products.warranty.whatsNotCovered')}</strong></p>
+                                        <ul className="list-disc pl-4 space-y-1">
+                                            <li>{t('products.warranty.notCoveredItems.lost')}</li>
+                                            <li>{t('products.warranty.notCoveredItems.accidental')}</li>
+                                            <li>{t('products.warranty.notCoveredItems.misuse')}</li>
+                                            <li>{t('products.warranty.notCoveredItems.limit')}</li>
+                                        </ul>
+                                    </div>
                                     </details>
 
                                     <details className="accordion accordion--lg group border-t border-b border-zinc-100" aria-expanded="false">
@@ -594,8 +594,8 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                     <path clipRule="evenodd" d="M7.5 19.5a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Zm12 0a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                     <path d="M12 18h3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 </svg>
-                                                SHIPPING POLICY
-                                            </span>
+                                                {t('products.shipping.title')}
+                                        </span>
                                             <span className="relative w-3 h-3 flex items-center justify-center">
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full transition-transform duration-300 rotate-90 group-open:rotate-0"></span>
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full"></span>
@@ -603,9 +603,9 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         </summary>
 
                                         <div className="accordion__content pb-6 prose prose-sm max-w-none text-zinc-600">
-                                            <p>• Delivery time Inside Beirut: 1-3 Working Days&nbsp;</p>
-                                            <p>• Delivery time Outside Beirut: 3-5 Working Days</p>
-                                        </div>
+                                        <p>{t('products.shipping.insideBeirut')}</p>
+                                        <p>{t('products.shipping.outsideBeirut')}</p>
+                                    </div>
                                     </details>
                                 </div>
                             </div>

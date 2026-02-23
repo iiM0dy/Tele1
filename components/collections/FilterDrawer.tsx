@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { HiX, HiChevronUp, HiChevronDown } from 'react-icons/hi';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 interface FilterDrawerProps {
     isOpen: boolean;
@@ -10,6 +11,7 @@ interface FilterDrawerProps {
 }
 
 export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerProps) {
+    const { t } = useLanguage();
     const [mounted, setMounted] = useState(false);
     const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
@@ -53,12 +55,12 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                 {/* Header */}
                 <div className="flex items-center justify-between px-8 py-8 border-b border-zinc-100">
                     <h2 className="text-[26px] font-sans font-black uppercase tracking-tighter text-primary">
-                        Filters
+                        {t('collection.filters.title')}
                     </h2>
                     <button 
                         onClick={onClose}
                         className="p-2 hover:bg-zinc-100 rounded-full transition-colors text-primary"
-                        aria-label="Close filters"
+                        aria-label={t('collection.filters.close')}
                     >
                         <HiX className="w-6 h-6" />
                     </button>
@@ -73,7 +75,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                             className="flex items-center justify-between w-full text-left group"
                         >
                             <span className="text-[12px] font-sans font-black uppercase tracking-widest text-primary group-hover:text-accent transition-colors">
-                                Availability
+                                {t('collection.filters.availability')}
                             </span>
                             <svg 
                                 className={`w-3.5 h-3.5 transition-transform duration-300 ${isAvailabilityOpen ? 'rotate-180' : ''} text-primary`} 
@@ -93,7 +95,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                 >
                                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${inStockOnly ? 'translate-x-6' : 'translate-x-1'}`} />
                                 </button>
-                                <span className="text-[14px] font-medium text-primary/70">In stock only</span>
+                                <span className="text-[14px] font-medium text-primary/70">{t('collection.filters.inStockOnly')}</span>
                             </div>
                         )}
                     </div>
@@ -105,7 +107,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                             className="flex items-center justify-between w-full text-left group"
                         >
                             <span className="text-[12px] font-sans font-black uppercase tracking-widest text-primary group-hover:text-accent transition-colors">
-                                Price
+                                {t('collection.filters.price')}
                             </span>
                             <svg 
                                 className={`w-3.5 h-3.5 transition-transform duration-300 ${isPriceOpen ? 'rotate-180' : ''} text-primary`} 
@@ -136,7 +138,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                         min="0"
                                         max="200000"
                                         value={priceRange.min}
-                                        aria-label="Minimum price range"
+                                        aria-label={t('collection.filters.minPriceRange')}
                                         onChange={(e) => {
                                             const val = Math.min(parseInt(e.target.value), priceRange.max - 1);
                                             setPriceRange({ ...priceRange, min: val });
@@ -149,7 +151,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                         min="0"
                                         max="200000"
                                         value={priceRange.max}
-                                        aria-label="Maximum price range"
+                                        aria-label={t('collection.filters.maxPriceRange')}
                                         onChange={(e) => {
                                             const val = Math.max(parseInt(e.target.value), priceRange.min + 1);
                                             setPriceRange({ ...priceRange, max: val });
@@ -165,18 +167,18 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                         <input 
                                             type="number" 
                                             value={priceRange.min}
-                                            aria-label="Minimum price"
+                                            aria-label={t('collection.filters.minPrice')}
                                             onChange={(e) => setPriceRange({ ...priceRange, min: parseInt(e.target.value) || 0 })}
                                             className="w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 pl-8 pr-4 text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all"
                                         />
                                     </div>
-                                    <span className="text-[12px] text-zinc-500 font-black uppercase tracking-widest">to</span>
+                                    <span className="text-[12px] text-zinc-500 font-black uppercase tracking-widest">{t('collection.filters.to')}</span>
                                     <div className="flex-1 relative">
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold">$</span>
                                         <input 
                                             type="number" 
                                             value={priceRange.max}
-                                            aria-label="Maximum price"
+                                            aria-label={t('collection.filters.maxPrice')}
                                             onChange={(e) => setPriceRange({ ...priceRange, max: parseInt(e.target.value) || 0 })}
                                             className="w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 pl-8 pr-4 text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all"
                                         />
@@ -196,7 +198,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                         }}
                         className="w-full bg-accent text-white py-5 text-[13px] font-sans font-black uppercase tracking-[0.2em] hover:bg-primary transition-all rounded-xl shadow-xl shadow-accent/20 hover:shadow-primary/20"
                     >
-                        View Results
+                        {t('collection.filters.viewResults')}
                     </button>
                 </div>
             </div>

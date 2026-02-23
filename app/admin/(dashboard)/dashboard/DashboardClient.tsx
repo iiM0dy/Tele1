@@ -99,7 +99,7 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                             </div>
                             <div>
                                 <p className="text-white/60 text-[11px] font-semibold tracking-wider">
-                                    {t('admin.totalProducts') || t('admin.products')}
+                                    {t('admin.totalProducts')}
                                 </p>
                                 <h3 className="text-white text-2xl font-black mt-1 tracking-tight">
                                     {stats.totalProducts}
@@ -116,7 +116,7 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                             </div>
                             <div>
                                 <p className="text-white/60 text-[11px] font-semibold tracking-wider">
-                                    {t('admin.totalCategories') || t('admin.categories')}
+                                    {t('admin.totalCategories')}
                                 </p>
                                 <h3 className="text-white text-2xl font-black mt-1 tracking-tight">
                                     {stats.totalCategories}

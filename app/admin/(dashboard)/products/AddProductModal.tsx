@@ -233,7 +233,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                     <button
                         onClick={onClose}
                         className="p-2 text-white/40 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-                        aria-label={t("admin.addProductModal.close") || "Close modal"}
+                        aria-label={t("admin.addProductModal.close")}
                     >
                         <MdClose className="text-[24px]" />
                     </button>
@@ -264,7 +264,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                             type="button"
                                             onClick={() => removeImage(url)}
                                             className="absolute top-2 right-2 size-8 bg-red-500 text-white rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-xl"
-                                            aria-label={t("admin.addProductModal.removeImage") || "Remove image"}
+                                            aria-label={t("admin.addProductModal.removeImage")}
                                         >
                                             <MdClose className="text-sm" />
                                         </button>
@@ -346,7 +346,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                         {subCategories.length > 0 && (
                             <div className="space-y-2">
-                                <label htmlFor="productSubCategory" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.brand") || "Brand"}</label>
+                                <label htmlFor="productSubCategory" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.brand")}</label>
                                 <div className="relative">
                                     <select
                                         id="productSubCategory"
@@ -355,7 +355,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                         onChange={handleChange}
                                         name="subCategoryId"
                                     >
-                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectBrand") || "Select Brand"}</option>
+                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectBrand")}</option>
                                         {subCategories.map(sub => (
                                             <option key={sub.id} value={sub.id} className="bg-[#0F172A]">{sub.name}</option>
                                         ))}
@@ -367,7 +367,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                         {types.length > 0 && (
                             <div className="space-y-2">
-                                <label htmlFor="productType" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.type") || "Type"}</label>
+                                <label htmlFor="productType" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.type")}</label>
                                 <div className="relative">
                                     <select
                                         id="productType"
@@ -376,7 +376,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                         onChange={handleChange}
                                         name="typeId"
                                     >
-                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectType") || "Select Type"}</option>
+                                        <option value="" className="bg-[#0F172A]">{t("admin.addProductModal.selectType")}</option>
                                         {types.map(type => (
                                             <option key={type.id} value={type.id} className="bg-[#0F172A]">{type.name}</option>
                                         ))}
@@ -480,11 +480,11 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="productColor" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.color") || "Color"}</label>
+                            <label htmlFor="productColor" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.color")}</label>
                             <input
                                 id="productColor"
                                 className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
-                                placeholder={t("admin.addProductModal.colorPlaceholder") || "e.g. Midnight Black"}
+                                placeholder={t("admin.addProductModal.colorPlaceholder")}
                                 type="text"
                                 value={formData.color}
                                 onChange={(e) => setFormData({ ...formData, color: e.target.value })}
@@ -492,11 +492,11 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="productModel" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.model") || "Model"}</label>
+                            <label htmlFor="productModel" className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.model")}</label>
                             <input
                                 id="productModel"
                                 className="w-full h-12 rounded-2xl border border-white/5 bg-white/2 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all px-4 text-[13px] font-medium text-white placeholder-white/40 outline-none"
-                                placeholder={t("admin.addProductModal.modelPlaceholder") || "e.g. Pro 2024"}
+                                placeholder={t("admin.addProductModal.modelPlaceholder")}
                                 type="text"
                                 value={formData.model}
                                 onChange={(e) => setFormData({ ...formData, model: e.target.value })}

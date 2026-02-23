@@ -56,14 +56,14 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                     <button 
                         onClick={() => scroll('left')}
                         className="absolute left-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
-                        aria-label="Previous"
+                        aria-label={t('common.previous')}
                     >
                         <HiOutlineChevronLeft className="w-6 h-6" />
                     </button>
                     <button 
                         onClick={() => scroll('right')}
                         className="absolute right-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
-                        aria-label="Next"
+                        aria-label={t('common.next')}
                     >
                         <HiOutlineChevronRight className="w-6 h-6" />
                     </button>
@@ -83,7 +83,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                                     <div className="relative w-full h-[200px] bg-zinc-100 shrink-0">
                                         <Image 
                                             src={review.image} 
-                                            alt={`Review by ${review.name}`}
+                                            alt={t('home.reviewBy').replace('{name}', review.name)}
                                             fill
                                             className="object-cover"
                                             sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 25vw"

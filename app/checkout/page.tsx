@@ -89,11 +89,11 @@ export default function CheckoutPage() {
                     percentage: result.discountPercentage!
                 });
             } else {
-                setPromoError(result.error || "Invalid promo code");
+                setPromoError(result.error || t('checkout.invalidPromoCode'));
                 setAppliedPromo(null);
             }
         } catch (error) {
-            setPromoError("Failed to apply promo code");
+            setPromoError(t('checkout.failedToApplyPromo'));
         } finally {
             setLoading(false);
         }
@@ -134,11 +134,11 @@ export default function CheckoutPage() {
                 router.push(`/order-success?id=${result.orderId}`);
             } else {
                 console.error("Order creation failed on server:", result.error);
-                alert(`Failed to create order: ${result.error || "Please try again."}`);
+                alert(`${t('checkout.failedToCreateOrder')}: ${result.error || t('checkout.errorOccurred')}`);
             }
         } catch (error) {
             console.error("Order submission error:", error);
-            alert("An error occurred. Please try again.");
+            alert(t('checkout.errorOccurred'));
         } finally {
             setLoading(false);
         }

@@ -65,11 +65,11 @@ export default function PromoCodeModal({ isOpen, onClose, promoCode }: PromoCode
                 toast.success(promoCode ? t('admin.codeUpdated') : t('admin.codeCreated'));
                 onClose();
             } else {
-                toast.error(result.error || `Failed to ${promoCode ? "update" : "create"} promo code`);
+                toast.error(result.error || (promoCode ? t('admin.failedUpdateCode') : t('admin.failedCreateCode')));
             }
         } catch (error) {
             console.error("Error submitting promo code:", error);
-            toast.error("An unexpected error occurred");
+            toast.error(t('admin.errorGeneric'));
         } finally {
             setIsSubmitting(false);
         }

@@ -63,15 +63,10 @@ export default function CartPage() {
                                         <span className="text-[13px] text-[rgb(18,18,18)] font-medium">
                                             ${item.price.toFixed(2)}
                                         </span>
-                                        {item.id === 'leather-duo-box' && (
-                                            <span className="text-[13px] text-[#999] line-through md:hidden">
-                                                $12.00
-                                            </span>
-                                        )}
                                     </div>
                                     
                                     {/* Free Gift Tag - Mobile Only */}
-                                    {item.id === 'leather-duo-box' && (
+                                    {item.price === 0 && (
                                         <div className="flex md:hidden items-center gap-1.5 bg-primary text-white text-[10px] px-2 py-1.5 font-bold uppercase tracking-wider w-fit mt-1">
                                             <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
                                                 <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l9 9a2 2 0 0 0 2.828 0l7.172-7.172a2 2 0 0 0 0-2.828l-9-9zM7 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />

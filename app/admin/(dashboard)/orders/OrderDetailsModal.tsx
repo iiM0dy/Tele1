@@ -68,7 +68,7 @@ export default function OrderDetailsModal({ isOpen, onClose, order, canDelete, o
                     <button
                         onClick={onClose}
                         className="p-2 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-                        aria-label={t('admin.close') || "Close"}
+                        aria-label={t('admin.close')}
                     >
                         <MdClose className="text-[20px]" />
                     </button>
@@ -153,14 +153,14 @@ export default function OrderDetailsModal({ isOpen, onClose, order, canDelete, o
                                                     <div className="size-10 rounded-xl bg-white/5 border border-white/10 overflow-hidden shrink-0 group-hover:border-accent/30 transition-all relative">
                                                         <Image
                                                             src={item.product?.images.split(',')[0] || '/placeholder.jpg'}
-                                                            alt={item.product?.name || 'Product'}
+                                                            alt={item.product?.name || t('admin.product')}
                                                             fill
                                                             className="object-cover"
                                                             sizes="40px"
                                                         />
                                                     </div>
                                                     <span className="text-[10px] font-black uppercase tracking-widest text-white line-clamp-1">
-                                                        {item.product?.name || 'Deleted Product'}
+                                                        {item.product?.name || t('admin.deletedProduct')}
                                                     </span>
                                                 </div>
                                             </td>
@@ -189,7 +189,7 @@ export default function OrderDetailsModal({ isOpen, onClose, order, canDelete, o
                             onClick={onDelete}
                             disabled={isDeleting}
                             className="h-11 px-5 rounded-xl font-black text-[10px] uppercase tracking-widest border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50 flex items-center gap-2"
-                            aria-label={t('admin.deleteOrder') || "Delete Order"}
+                            aria-label={t('admin.deleteOrder')}
                         >
                             {isDeleting ? (
                                 <MdSync className="text-[18px] animate-spin" />
@@ -202,7 +202,7 @@ export default function OrderDetailsModal({ isOpen, onClose, order, canDelete, o
                     <button
                         onClick={onClose}
                         className="bg-accent hover:bg-accent/90 text-white h-11 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all active:scale-95"
-                        aria-label={t('admin.close') || "Close"}
+                        aria-label={t('admin.close')}
                     >
                         {t('admin.close')}
                     </button>

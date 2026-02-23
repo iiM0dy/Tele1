@@ -87,7 +87,7 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
         e.preventDefault();
 
         if (!user && !formData.password) {
-            toast.error(t('admin.passwordRequired') || "Password is required");
+            toast.error(t('admin.passwordRequired'));
             return;
         }
 
@@ -184,7 +184,7 @@ export default function UserModal({ isOpen, onClose, user }: UserModalProps) {
                                     value={formData.username}
                                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                                     className={`w-full px-4 py-3 bg-white/2 border border-white/5 rounded-2xl outline-none focus:border-accent/50 transition-all text-[10px] font-black text-white placeholder:text-white/40`}
-                                    placeholder="e.g. jessica_editor"
+                                    placeholder={t('admin.userPlaceholder')}
                                 />
                             </div>
                             <div className="space-y-2">

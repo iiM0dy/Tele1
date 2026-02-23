@@ -62,7 +62,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
             slug: product.slug,
             originalPrice: discountPrice ? price : undefined
         });
-        toast.success(t('products.addToCartSuccess') || 'Added to cart');
+        toast.success(t('products.addToCartSuccess'));
     };
 
     return (
@@ -93,12 +93,12 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
                 <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10 pointer-events-none">
                     {product.BestSeller && (
                         <div className="bg-primary/90 backdrop-blur-md text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-                            best seller
+                            {t('home.bestSellerLabel')}
                         </div>
                     )}
                     {discountPrice && (
                         <div className="bg-highlight text-black text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-                            sale {Math.round((1 - discountPrice / price) * 100)}% off
+                            {t('products.salePercent').replace('{percent}', Math.round((1 - discountPrice / price) * 100).toString())}
                         </div>
                     )}
                 </div>
@@ -110,7 +110,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
                             onClick={handleAddToCart}
                             className="w-full py-3 bg-accent text-black text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-accent/20 hover:bg-black hover:text-white active:scale-95 transition-all duration-300 rounded-xl"
                         >
-                            quick add
+                            {t('products.quickAdd')}
                         </button>
                     </div>
                 )}
@@ -139,7 +139,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
                         <button 
                             onClick={handleAddToCart}
                             className="w-8 h-8 rounded-full bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all"
-                            aria-label="Add to cart"
+                            aria-label={t('products.addToCart')}
                         >
                             <HiOutlineShoppingBag className="w-4 h-4" />
                         </button>

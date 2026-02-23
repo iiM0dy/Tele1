@@ -80,7 +80,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                             <button
                                 onClick={onClose}
                                 className="lg:hidden text-white/60 hover:text-white"
-                                aria-label="Close sidebar"
+                                aria-label={t('admin.closeSidebar')}
                             >
                                 <MdClose className="text-2xl" />
                             </button>

@@ -71,14 +71,14 @@ export default function BestSellerSection({ products }: { products: any[] }) {
                             <button 
                                 onClick={() => scroll('left')}
                                 className="absolute left-4 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm"
-                                aria-label="Previous"
+                                aria-label={t('common.previous')}
                             >
                                 <HiOutlineChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
                                 onClick={() => scroll('right')}
                                 className="absolute right-4 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm"
-                                aria-label="Next"
+                                aria-label={t('common.next')}
                             >
                                 <HiOutlineChevronRight className="w-6 h-6" />
                             </button>

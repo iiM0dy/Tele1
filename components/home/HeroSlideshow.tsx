@@ -117,7 +117,7 @@ export default function HeroSlideshow({ banners = [] }: { banners?: Banner[] }) 
                             key={index}
                             onClick={() => setCurrentIndex(index)}
                             className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'bg-accent w-8' : 'bg-white/30 hover:bg-white/50'}`}
-                            aria-label={`Go to slide ${index + 1}`}
+                            aria-label={t('home.slideshow.goToSlide').replace('{index}', (index + 1).toString())}
                         />
                     ))}
                 </div>

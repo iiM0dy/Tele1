@@ -29,8 +29,8 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
     const [titleAr, setTitleAr] = useState("");
     const [subtitleAr, setSubtitleAr] = useState("");
     const [image, setImage] = useState("");
-    const [buttonText, setButtonText] = useState("Shop Now");
-    const [link, setLink] = useState("/products");
+    const [buttonText, setButtonText] = useState("");
+    const [link, setLink] = useState("");
     const [isActive, setIsActive] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -41,8 +41,8 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
             setTitleAr(banner.titleAr || "");
             setSubtitleAr(banner.subtitleAr || "");
             setImage(banner.image);
-            setButtonText(banner.buttonText || "Shop Now");
-            setLink(banner.link || "/products");
+            setButtonText(banner.buttonText || "");
+            setLink(banner.link || "");
             setIsActive(banner.isActive);
         } else {
             setTitle("");
@@ -50,8 +50,8 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
             setTitleAr("");
             setSubtitleAr("");
             setImage("");
-            setButtonText("Shop Now");
-            setLink("/products");
+            setButtonText("");
+            setLink("");
             setIsActive(true);
         }
     }, [banner, isOpen]);
@@ -86,11 +86,11 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                 toast.success(banner ? t('admin.bannerUpdated') : t('admin.bannerCreated'));
                 onClose();
             } else {
-                toast.error(result.error || `Failed to ${banner ? "update" : "create"} banner`);
+                toast.error(result.error || (banner ? t('admin.failedToUpdateBanner') : t('admin.failedToCreateBanner')));
             }
         } catch (error) {
             console.error("Error submitting banner:", error);
-            toast.error("An unexpected error occurred");
+            toast.error(t('admin.unexpectedError'));
         } finally {
             setIsSubmitting(false);
         }
@@ -111,7 +111,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/60 hover:text-white"
-                        aria-label={t('admin.close') || "Close"}
+                        aria-label={t('admin.close')}
                     >
                         <MdClose className="text-xl" />
                     </button>
@@ -127,7 +127,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 type="button"
                                 onClick={() => setIsActive(!isActive)}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${isActive ? 'bg-accent' : 'bg-white/10'}`}
-                                aria-label={t('admin.status') || "Status"}
+                                aria-label={t('admin.status')}
                             >
                                 <span
                                     className={`${isActive ? (dir === 'rtl' ? '-translate-x-6' : 'translate-x-6') : (dir === 'rtl' ? '-translate-x-1' : 'translate-x-1')} inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm`}
@@ -142,7 +142,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-3">
                             <label htmlFor="titleEn" className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                {t('admin.title')} (English)
+                                {t('admin.title')} ({t('language.english')})
                             </label>
                             <input
                                 id="titleEn"
@@ -151,14 +151,14 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder={t('admin.titlePlaceholder')}
                                 required
-                                aria-label={`${t('admin.title')} (English)`}
+                                aria-label={`${t('admin.title')} (${t('language.english')})`}
                                 className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                             />
                         </div>
 
                         <div className="flex flex-col gap-3">
                             <label htmlFor="titleAr" className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                {t('admin.title')} (العربية)
+                                {t('admin.title')} ({t('language.arabic')})
                             </label>
                             <input
                                 id="titleAr"
@@ -167,7 +167,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 onChange={(e) => setTitleAr(e.target.value)}
                                 placeholder={t('admin.titlePlaceholder')}
                                 required
-                                aria-label={`${t('admin.title')} (Arabic)`}
+                                aria-label={`${t('admin.title')} (${t('language.arabic')})`}
                                 className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                 dir="rtl"
                             />
@@ -177,7 +177,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-3">
                             <label htmlFor="subtitleEn" className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                {t('admin.subtitle')} (English)
+                                {t('admin.subtitle')} ({t('language.english')})
                             </label>
                             <textarea
                                 id="subtitleEn"
@@ -185,14 +185,14 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 onChange={(e) => setSubtitle(e.target.value)}
                                 placeholder={t('admin.subtitlePlaceholder')}
                                 rows={2}
-                                aria-label={`${t('admin.subtitle')} (English)`}
+                                aria-label={`${t('admin.subtitle')} (${t('language.english')})`}
                                 className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none resize-none text-[13px] font-medium leading-relaxed placeholder:text-white/40"
                             />
                         </div>
 
                         <div className="flex flex-col gap-3">
                             <label htmlFor="subtitleAr" className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                                {t('admin.subtitle')} (العربية)
+                                {t('admin.subtitle')} ({t('language.arabic')})
                             </label>
                             <textarea
                                 id="subtitleAr"
@@ -200,7 +200,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 onChange={(e) => setSubtitleAr(e.target.value)}
                                 placeholder={t('admin.subtitlePlaceholder')}
                                 rows={2}
-                                aria-label={`${t('admin.subtitle')} (Arabic)`}
+                                aria-label={`${t('admin.subtitle')} (${t('language.arabic')})`}
                                 className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none resize-none text-[13px] font-medium leading-relaxed placeholder:text-white/40"
                                 dir="rtl"
                             />
@@ -215,9 +215,9 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                             type="text"
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
-                            placeholder="https://example.com/image.jpg"
+                            placeholder={t('admin.imageUrlPlaceholder')}
                             required
-                            aria-label={t('admin.imageUrl') || "Image URL"}
+                            aria-label={t('admin.imageUrl')}
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/10"
                         />
                         {image && (
@@ -227,7 +227,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                     alt={t('admin.preview')}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                     onError={(e) => {
-                                        (e.target as HTMLImageElement).src = "https://placehold.co/1200x500?text=Invalid+Image+URL";
+                                        (e.target as HTMLImageElement).src = "https://placehold.co/1200x500?text=" + encodeURIComponent(t('admin.invalidImage'));
                                     }}
                                 />
                             </div>
@@ -244,8 +244,8 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 value={buttonText}
                                 onChange={(e) => setButtonText(e.target.value)}
                                 placeholder={t('admin.buttonTextPlaceholder')}
-                                aria-label={t('admin.buttonText') || "Button Text"}
-                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/10"
+                                aria-label={t('admin.buttonText')}
+                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                             />
                         </div>
                         <div className="flex flex-col gap-3">
@@ -257,8 +257,8 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
                                 placeholder={t('admin.linkUrlPlaceholder')}
-                                aria-label={t('admin.linkUrl') || "Link URL"}
-                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/10"
+                                aria-label={t('admin.linkUrl')}
+                                className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                             />
                         </div>
                     </div>

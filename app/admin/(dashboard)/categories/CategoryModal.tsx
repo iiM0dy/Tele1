@@ -64,11 +64,11 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                 toast.success(category ? t('admin.categoryUpdated') : t('admin.categoryCreated'));
                 onClose();
             } else {
-                toast.error(result.error || `Failed to ${category ? "update" : "create"} category`);
+                toast.error(result.error || (category ? t('admin.failedToUpdateCategory') : t('admin.failedToCreateCategory')));
             }
         } catch (error) {
             console.error("Error submitting category:", error);
-            toast.error("An unexpected error occurred");
+            toast.error(t('admin.unexpectedError'));
         } finally {
             setIsSubmitting(false);
         }
@@ -89,7 +89,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/60 hover:text-white"
-                        aria-label={t('admin.close') || "Close"}
+                        aria-label={t('admin.close')}
                     >
                         <MdClose className="text-xl" />
                     </button>
@@ -106,23 +106,23 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             onChange={(e) => setName(e.target.value)}
                             placeholder={t('admin.categoryPlaceholder')}
                             required
-                            aria-label={t('admin.categoryName') || "Category Name"}
+                            aria-label={t('admin.categoryName')}
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                         />
                     </div>
 
                     <div className="flex flex-col gap-3">
                         <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                            {t('admin.categoryNameAr') || "Category Name (Arabic)"}
+                            {t('admin.categoryNameAr')}
                         </label>
                         <input
                             type="text"
                             value={nameAr}
                             onChange={(e) => setNameAr(e.target.value)}
-                            placeholder={t('admin.categoryPlaceholderAr') || "أدخل اسم القسم بالعربية"}
+                            placeholder={t('admin.categoryPlaceholderAr')}
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                             dir="rtl"
-                            aria-label={t('admin.categoryNameAr') || "Category Name (Arabic)"}
+                            aria-label={t('admin.categoryNameAr')}
                         />
                     </div>
 
@@ -134,8 +134,8 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             type="text"
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
-                            placeholder="https://example.com/image.jpg"
-                            aria-label={t('admin.imageUrl') || "Image URL"}
+                            placeholder={t('admin.imageUrlPlaceholder')}
+                            aria-label={t('admin.imageUrl')}
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none placeholder:text-white/40"
                         />
                         {image && (
@@ -145,7 +145,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                     alt={t('admin.preview')}
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
-                                        (e.target as HTMLImageElement).src = "https://placehold.co/600x400?text=Invalid+Image+URL";
+                                        (e.target as HTMLImageElement).src = "https://placehold.co/600x400?text=" + encodeURIComponent(t('admin.invalidImage'));
                                     }}
                                 />
                             </div>
@@ -161,7 +161,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                 type="button"
                                 onClick={() => setIsFeatured(!isFeatured)}
                                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${isFeatured ? 'bg-accent' : 'bg-white/10'}`}
-                                aria-label={t('admin.featuredOnHomepage') || "Featured on Homepage"}
+                                aria-label={t('admin.featuredOnHomepage')}
                             >
                                 <span
                                     className={`${isFeatured ? (dir === 'rtl' ? '-translate-x-6' : 'translate-x-6') : (dir === 'rtl' ? '-translate-x-1' : 'translate-x-1')} inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm`}
@@ -182,7 +182,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder={t('admin.describeCategory')}
                             rows={3}
-                            aria-label={t('admin.description') || "Description"}
+                            aria-label={t('admin.description')}
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white text-[13px] font-medium focus:border-accent/30 transition-all outline-none resize-none placeholder:text-white/40 leading-relaxed"
                         />
                     </div>

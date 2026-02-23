@@ -80,14 +80,14 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm(t('admin.confirmDeleteSubCategory') || "Are you sure you want to delete this subcategory?")) return;
+        if (!confirm(t('admin.brands.confirmDelete'))) return;
 
         const result = await deleteSubCategory(id);
         if (result.success) {
-            toast.success(t('admin.brandDeleted') || "Brand deleted");
+            toast.success(t('admin.brands.deleted'));
             fetchBrands();
         } else {
-            toast.error(result.error || "Failed to delete subcategory");
+            toast.error(result.error || t('admin.brands.failedToSave'));
         }
     };
 
@@ -107,15 +107,15 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
             }
 
             if (result.success) {
-                toast.success(isEditing ? "Brand updated" : "Brand created");
+                toast.success(isEditing ? t('admin.brands.updated') : t('admin.brands.created'));
                 resetForm();
                 fetchBrands();
             } else {
-                toast.error(result.error || "Failed to save brand");
+                toast.error(result.error || t('admin.brands.failedToSave'));
             }
         } catch (error) {
             console.error("Error saving brand:", error);
-            toast.error("An error occurred");
+            toast.error(t('admin.errorGeneric'));
         } finally {
             setIsSubmitting(false);
         }
@@ -134,16 +134,16 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
                 <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/1">
                     <div>
                         <h3 className="text-xl font-bold text-white">
-                            {category?.name} - {t('admin.brands')}
+                            {category?.name} - {t('admin.brands.title')}
                         </h3>
                         <p className="text-sm text-white/60">
-                            {t('admin.manageBrands')}
+                            {t('admin.brands.manage')}
                         </p>
                     </div>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-white/5 rounded-xl transition-all text-white/60 hover:text-white"
-                        aria-label={t('admin.close') || "Close"}
+                        aria-label={t('admin.close')}
                     >
                         <MdClose className="text-xl" />
                     </button>
@@ -153,19 +153,19 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
                     {/* Left: Form */}
                     <div className="w-full md:w-80 p-8 border-r border-white/5 md:overflow-y-auto shrink-0 bg-white/2">
                         <h3 className="text-[11px] font-semibold text-white/40 tracking-wider mb-6 uppercase">
-                            {isEditing ? t('admin.editBrand') : t('admin.addNewBrand')}
+                            {isEditing ? t('admin.brands.edit') : t('admin.brands.addNew')}
                         </h3>
                         <div className="space-y-6">
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-[11px] font-bold text-white/40 uppercase tracking-wider mb-2">{t('admin.brandName')}</label>
+                                        <label className="block text-[11px] font-bold text-white/40 uppercase tracking-wider mb-2">{t('admin.brands.name')}</label>
                                         <input
                                             type="text"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                             className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all placeholder:text-white/20"
-                                            placeholder="e.g. Nike, Dior..."
+                                            placeholder={t('admin.brands.namePlaceholder')}
                                             required
                                         />
                                     </div>
@@ -176,7 +176,7 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
                                             value={image}
                                             onChange={(e) => setImage(e.target.value)}
                                             className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all placeholder:text-white/20"
-                                            placeholder="Paste image link"
+                                            placeholder={t('admin.brands.imagePlaceholder')}
                                             required
                                         />
                                     </div>
@@ -192,7 +192,7 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
                                         ) : (
                                             isEditing ? <MdEdit size={18} /> : <MdAdd size={20} />
                                         )}
-                                        {isEditing ? t('admin.update') : t('admin.add')}
+                                        {isEditing ? t('admin.brands.update') : t('admin.brands.add')}
                                     </button>
                                     {isEditing && (
                                         <button
@@ -223,7 +223,7 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
                             {isLoading ? (
                                 <div className="col-span-full flex flex-col items-center justify-center py-20">
                                     <span className="animate-spin h-10 w-10 border-2 border-white/10 border-t-accent rounded-full mb-4" />
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-white/20">Loading Brands...</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-white/20">{t('admin.brands.loading')}</p>
                                 </div>
                             ) : brands.length === 0 ? (
                                 <div className="col-span-full flex flex-col items-center justify-center py-20 text-white/20 border-2 border-dashed border-white/5 rounded-3xl">
@@ -262,20 +262,20 @@ export default function BrandsModal({ isOpen, onClose, category }: SubCategories
                                                     }}
                                                     className="h-8 px-4 rounded-lg bg-accent/10 text-accent hover:bg-accent hover:text-white transition-all text-[10px] font-black uppercase tracking-wider"
                                                 >
-                                                    Types
+                                                    {t('admin.types.title')}
                                                 </button>
                                                 <div className="flex-1" />
                                                 <button
                                                     onClick={() => handleEdit(brand)}
                                                     className="p-2 text-white/40 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all"
-                                                    title="Edit"
+                                                    title={t('admin.edit')}
                                                 >
                                                     <MdEdit size={18} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(brand.id)}
                                                     className="p-2 text-white/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
-                                                    title="Delete"
+                                                    title={t('admin.delete')}
                                                 >
                                                     <MdDelete size={18} />
                                                 </button>

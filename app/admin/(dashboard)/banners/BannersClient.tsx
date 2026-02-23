@@ -101,7 +101,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                             <button
                                 onClick={handleAdd}
                                 className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
-                                aria-label={t('admin.createNewAd') || "Create New Ad"}
+                                aria-label={t('admin.createNewAd')}
                             >
                                 <MdAdd className="text-xl" />
                                 {t('admin.createNewAd')}
@@ -121,7 +121,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                                 <div className="lg:w-1/3 aspect-[21/9] lg:aspect-auto overflow-hidden bg-white/[0.01] border-b lg:border-b-0 lg:border-r border-white/5 relative">
                                     <Image
                                         src={banner.image}
-                                        alt={banner.title || "Banner"}
+                                        alt={banner.title || t('admin.title')}
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                                         sizes="(max-width: 1024px) 100vw, 33vw"
@@ -170,7 +170,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                                                     ? 'bg-green-500/10 text-green-500 border border-green-500/20 hover:bg-green-500/20'
                                                     : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10'
                                                     }`}
-                                                aria-label={banner.isActive ? (t('admin.deactivateBanner') || "Deactivate banner") : (t('admin.activateBanner') || "Activate banner")}
+                                                aria-label={banner.isActive ? t('admin.deactivateBanner') : t('admin.activateBanner')}
                                             >
                                                 {loadingMap[banner.id] ? (
                                                     <MdSync className="animate-spin text-lg" />
@@ -186,7 +186,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                                                     onClick={() => handleEdit(banner)}
                                                     className="p-3 text-white/60 hover:text-white hover:bg-white/5 rounded-2xl transition-all border border-transparent hover:border-white/5"
                                                     title={t('admin.editBanner')}
-                                                    aria-label={t('admin.editBanner') || "Edit banner"}
+                                                    aria-label={t('admin.editBanner')}
                                                 >
                                                     <MdEdit className="text-xl" />
                                                 </button>
@@ -196,7 +196,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                                                     onClick={() => handleDelete(banner.id, banner.title || "Banner")}
                                                     className="p-3 text-white/60 hover:text-red-500 hover:bg-red-500/5 rounded-2xl transition-all border border-transparent hover:border-red-500/10"
                                                     title={t('admin.deleteBanner')}
-                                                    aria-label={t('admin.deleteBanner') || "Delete banner"}
+                                                    aria-label={t('admin.deleteBanner')}
                                                 >
                                                     <MdDelete className="text-xl" />
                                                 </button>
@@ -217,7 +217,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                             <button
                                 onClick={handleAdd}
                                 className="mt-6 text-accent font-black uppercase tracking-[0.2em] text-[10px] hover:underline"
-                                aria-label={t('admin.addFirstBanner') || "Add First Banner"}
+                                aria-label={t('admin.addFirstBanner')}
                             >
                                 {t('admin.addFirstBanner')}
                             </button>

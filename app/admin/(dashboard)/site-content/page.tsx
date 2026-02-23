@@ -15,14 +15,14 @@ export default async function SiteContentPage() {
                             {t('admin.siteContent')}
                         </h3>
                         <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
-                            {t('admin.siteContentDescription') || "Manage your website's static page content"}
+                            {t('admin.siteContentDescription')}
                         </p>
                     </div>
 
                     <div className="bg-white/2 rounded-[2.5rem] border border-white/5 overflow-hidden">
                         <div className="flex border-b border-white/5 bg-white/1">
                             <button className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-accent border-b-2 border-accent">
-                                {t('admin.aboutUsPage') || "About Us Page"}
+                                {t('admin.aboutUsPage')}
                             </button>
                         </div>
 

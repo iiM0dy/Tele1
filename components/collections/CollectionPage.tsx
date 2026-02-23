@@ -90,7 +90,7 @@ export default function CollectionPage({
                 <div className="container mx-auto px-4 md:px-6 py-8">
                     <div className="flex flex-col items-center mb-16 relative">
                         <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">{displayName}</h1>
-                        <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">Choose Type</p>
+                        <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">{t('collection.chooseType')}</p>
                         <div className="w-20 h-1.5 bg-accent rounded-full"></div>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -123,7 +123,7 @@ export default function CollectionPage({
                 <div className="container mx-auto px-4 md:px-6 py-8">
                     <div className="flex flex-col items-center mb-16 relative">
                         <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">{displayName}</h1>
-                        <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">Explore Brands</p>
+                        <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">{t('collection.exploreBrands')}</p>
                         <div className="w-20 h-1.5 bg-accent rounded-full"></div>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -267,7 +267,7 @@ export default function CollectionPage({
                                     aria-haspopup="dialog"
                                 >
                                     <span className="text-with-icon justify-center">
-                                        Sort by
+                                        {t('collection.sortBy')}
                                         <svg aria-hidden="true" focusable="false" fill="none" width="10" className="icon icon-chevron-down ml-2 inline-block transition-transform duration-300" style={{ transform: isSortOpen ? 'rotate(180deg)' : 'none' }} viewBox="0 0 10 10">
                                             <path d="m1 3 4 4 4-4" stroke="currentColor" strokeLinecap="square" />
                                         </svg>
@@ -276,17 +276,17 @@ export default function CollectionPage({
 
                                 {isSortOpen && (
                                     <div id="sort-by-popover" className="absolute top-full left-0 md:right-0 md:left-auto mt-2 w-full md:w-56 bg-white border border-zinc-100 shadow-xl py-2 z-50 popover popover--bottom-end">
-                                        <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400 border-b border-zinc-50 mb-2">Sort by</p>
+                                        <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400 border-b border-zinc-50 mb-2">{t('collection.sortBy')}</p>
                                         <div className="popover__value-list">
                                             {[
-                                                { label: 'Featured', value: 'featured' },
-                                                { label: 'Best selling', value: 'best-selling' },
-                                                { label: 'Alphabetically, A-Z', value: 'title-ascending' },
-                                                { label: 'Alphabetically, Z-A', value: 'title-descending' },
-                                                { label: 'Price, low to high', value: 'price-ascending' },
-                                                { label: 'Price, high to low', value: 'price-descending' },
-                                                { label: 'Date, old to new', value: 'created-ascending' },
-                                                { label: 'Date, new to old', value: 'created-descending' }
+                                                { label: t('collection.sortOptions.featured'), value: 'featured' },
+                                                { label: t('collection.sortOptions.bestSelling'), value: 'best-selling' },
+                                                { label: t('collection.sortOptions.alphabeticallyAZ'), value: 'title-ascending' },
+                                                { label: t('collection.sortOptions.alphabeticallyZA'), value: 'title-descending' },
+                                                { label: t('collection.sortOptions.priceLowHigh'), value: 'price-ascending' },
+                                                { label: t('collection.sortOptions.priceHighLow'), value: 'price-descending' },
+                                                { label: t('collection.sortOptions.dateOldNew'), value: 'created-ascending' },
+                                                { label: t('collection.sortOptions.dateNewOld'), value: 'created-descending' }
                                             ].map((option) => (
                                                 <button
                                                     key={option.value}
@@ -311,7 +311,7 @@ export default function CollectionPage({
                                     onClick={() => setIsFilterOpen(true)}
                                     className="text-[11px] font-bold uppercase tracking-widest hover:text-zinc-500 transition-colors w-full text-center md:text-left collection-toolbar__button heading text-xxs"
                                 >
-                                    Filter
+                                    {t('collection.filter')}
                                 </button>
                             </div>
                         </div>
@@ -345,12 +345,12 @@ export default function CollectionPage({
                             {/* Pagination */}
                             {totalPages > 1 && (
                                 <div className="mt-24 flex justify-center">
-                                    <nav className="pagination flex items-center gap-4" role="navigation" aria-label="Pagination navigation">
+                                    <nav className="pagination flex items-center gap-4" role="navigation" aria-label={t('collection.pagination.navigation')}>
                                         {currentPage > 1 ? (
                                             <Link
                                                 href={`/collections/${categorySlug || 'all'}?page=${currentPage - 1}`}
                                                 className="pagination__link h6 flex items-center justify-center w-10 h-10 border border-zinc-100 hover:bg-zinc-50 transition-colors"
-                                                aria-label="Go to previous page"
+                                                aria-label={t('collection.pagination.previous')}
                                             >
                                                 <svg aria-hidden="true" focusable="false" fill="none" width="11" className="icon icon-chevron-right rotate-180" viewBox="0 0 10 10">
                                                     <path d="m3 9 4-4-4-4" stroke="currentColor" strokeLinecap="square" />
@@ -372,7 +372,7 @@ export default function CollectionPage({
                                                     key={page}
                                                     href={`/collections/${categorySlug || 'all'}?page=${page}`}
                                                     className="pagination__link h6 flex items-center justify-center w-10 h-10 border border-zinc-100 hover:bg-accent/5 transition-colors text-[11px] font-bold uppercase tracking-widest text-zinc-400 hover:text-accent rounded-lg"
-                                                    aria-label={`Go to page ${page}`}
+                                                    aria-label={t('collection.pagination.goToPage').replace('{page}', page.toString())}
                                                 >
                                                     {page}
                                                 </Link>
@@ -383,7 +383,7 @@ export default function CollectionPage({
                                             <Link
                                                 href={`/collections/${categorySlug || 'all'}?page=${currentPage + 1}`}
                                                 className="pagination__link h6 flex items-center justify-center w-10 h-10 border border-zinc-100 hover:bg-accent/5 transition-colors rounded-lg"
-                                                aria-label={`Go to page ${currentPage + 1}`}
+                                                aria-label={t('collection.pagination.next')}
                                                 rel="next"
                                             >
                                                 <svg aria-hidden="true" focusable="false" fill="none" width="11" className="icon icon-chevron-right" viewBox="0 0 10 10">

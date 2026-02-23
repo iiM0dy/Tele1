@@ -165,7 +165,7 @@ export default function ReviewModal({ isOpen, onClose, review, products }: Revie
                                     type="text"
                                     value={formData.image}
                                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                    placeholder="https://..."
+                                    placeholder={t('admin.imageUrlPlaceholder')}
                                     className="w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-[13px] font-medium text-white placeholder:text-white/40 focus:outline-none focus:border-accent/30 transition-all"
                                 />
                             </div>

@@ -367,17 +367,17 @@ export default function ProductsClient({
 
             // Prepare headers
             const headers = [
-                "Name",
-                "Category",
-                "Brand",
-                "Type",
-                "Model",
-                "Color",
-                "Description",
-                "Quantity",
-                "Price",
-                "SKU",
-                "Images"
+                t('admin.name'),
+                t('admin.category'),
+                t('admin.brand'),
+                t('admin.type'),
+                t('admin.model'),
+                t('admin.color'),
+                t('admin.description'),
+                t('admin.quantity'),
+                t('admin.price'),
+                t('admin.sku'),
+                t('admin.images')
             ];
 
             // Prepare data rows
@@ -433,17 +433,17 @@ export default function ProductsClient({
 
             // Prepare data for Excel
             const excelData = exportData.map((p: any) => ({
-                "Name": p.name,
-                "Category": p.category || 'Uncategorized',
-                "Brand": p.brand || '',
-                "Type": p.type || '',
-                "Model": p.model || '',
-                "Color": p.color || '',
-                "Description": p.description || '',
-                "Quantity": p.stock,
-                "Price": p.price,
-                "SKU": p.sku || '',
-                "Images": p.images || ''
+                [t('admin.name')]: p.name,
+                [t('admin.category')]: p.category || t('admin.uncategorized'),
+                [t('admin.brand')]: p.brand || '',
+                [t('admin.type')]: p.type || '',
+                [t('admin.model')]: p.model || '',
+                [t('admin.color')]: p.color || '',
+                [t('admin.description')]: p.description || '',
+                [t('admin.quantity')]: p.stock,
+                [t('admin.price')]: p.price,
+                [t('admin.sku')]: p.sku || '',
+                [t('admin.images')]: p.images || ''
             }));
 
             const worksheet = XLSX.utils.json_to_sheet(excelData);

@@ -45,7 +45,7 @@ export default function BestSellerCard({ product, index }: { product: any; index
             slug: product.slug
         });
         setIsDrawerOpen(true);
-        toast.success(t('products.addToCartSuccess') || 'Added to cart');
+        toast.success(t('products.addToCartSuccess'));
     };
 
     return (
@@ -56,7 +56,7 @@ export default function BestSellerCard({ product, index }: { product: any; index
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
                     {product.BestSeller && (
                         <span className="bg-primary text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
-                            {t('home.bestSeller')}
+                            {t('home.bestSellerLabel')}
                         </span>
                     )}
                     {discountPrice && (
@@ -93,9 +93,9 @@ export default function BestSellerCard({ product, index }: { product: any; index
                     onClick={handleAddToCart}
                     type="submit"
                     className="absolute bottom-4 right-4 w-10 h-10 bg-accent text-black flex items-center justify-center rounded-xl shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-black hover:text-white hover:scale-110 active:scale-95"
-                    aria-label="Add to cart"
+                    aria-label={t('products.addToCart')}
                 >
-                    <span className="sr-only">Add to cart</span>
+                    <span className="sr-only">{t('products.addToCart')}</span>
                     <svg aria-hidden="true" focusable="false" fill="none" width="16" height="16" viewBox="0 0 12 12" className="icon icon-plus">
                         <path d="M6 0v12M0 6h12" stroke="currentColor" strokeWidth="2"></path>
                     </svg>

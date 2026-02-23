@@ -21,6 +21,7 @@ interface Product {
 
 export default function ProductGrid({ products, title }: { products: Product[], title: string }) {
     const pathname = usePathname();
+    const { t } = useLanguage();
     if (!products.length) return null;
 
     const isProductsPage = pathname === '/products';
@@ -53,7 +54,7 @@ export default function ProductGrid({ products, title }: { products: Product[], 
                             href="/products" 
                             className="px-12 py-4 border border-primary text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all rounded-xl"
                         >
-                            View All Products
+                            {t('products.viewAllProducts')}
                         </Link>
                     </div>
                 )}

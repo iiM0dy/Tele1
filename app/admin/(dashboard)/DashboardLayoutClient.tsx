@@ -3,12 +3,14 @@
 import AdminSidebar from "../components/AdminSidebar";
 import { AdminSidebarProvider, useAdminSidebar } from "../context/AdminSidebarContext";
 import { MdMenu } from "react-icons/md";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
     const { isOpen, openSidebar, closeSidebar } = useAdminSidebar();
+    const { t } = useLanguage();
 
     return (
-        <div className="flex h-screen w-full overflow-hidden bg-[#202126] text-white">
+        <div className="admin-panel flex h-screen w-full overflow-hidden bg-[#202126] text-white">
             <AdminSidebar isOpen={isOpen} onClose={closeSidebar} />
             <main className="flex-1 flex flex-col h-full overflow-hidden relative">
                 {/* Mobile Menu Button */}
@@ -16,7 +18,7 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
                     <button
                         onClick={openSidebar}
                         className="bg-[#202126] border border-white/5 text-white p-2 rounded-xl shadow-2xl hover:bg-white/5 transition-all active:scale-95"
-                        aria-label="Open sidebar"
+                        aria-label={t('common.openMenu')}
                     >
                         <MdMenu className="text-2xl" />
                     </button>

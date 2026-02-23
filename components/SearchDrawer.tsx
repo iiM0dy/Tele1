@@ -72,6 +72,13 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
     const handleSearch = () => {
         // This is a placeholder for the Enter key handler, actual search is handled by useEffect
     };
+    
+    const pagesList = [
+        { id: 'aboutUs', href: 'about-us', defaultLabel: 'About Us' },
+        { id: 'shippingPolicy', href: 'shipping-policy', defaultLabel: 'Shipping Policy' },
+        { id: 'contact', href: 'contact', defaultLabel: 'Contact' },
+        { id: 'faq', href: 'faq', defaultLabel: 'FAQ' }
+    ];
 
     return (
         <div 
@@ -120,7 +127,7 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                     activeTab === tab ? 'text-primary' : 'text-zinc-400'
                                 }`}
                             >
-                                {tab}
+                                {t(`searchDrawer.tabs.${tab}`)}
                                 {activeTab === tab && (
                                     <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary" />
                                 )}
@@ -150,7 +157,7 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                                 />
                                                 {product.BestSeller && (
                                                     <div className="absolute top-2 left-2 bg-accent text-white px-2.5 py-1 text-[8px] font-black uppercase tracking-widest rounded-full shadow-lg">
-                                                        BEST SELLER
+                                                        {t('home.bestSellerLabel')}
                                                     </div>
                                                 )}
                                             </div>
@@ -166,7 +173,7 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                 })}
                                 {query.length >= 2 && results.products.length === 0 && !isLoading && (
                                     <div className="col-span-full flex flex-col items-center justify-center py-20 bg-zinc-50 rounded-2xl border border-dashed border-zinc-200">
-                                        <p className="text-[14px] font-sans font-black text-primary/40 uppercase tracking-widest">No products found for "{query}"</p>
+                                        <p className="text-[14px] font-sans font-black text-primary/40 uppercase tracking-widest">{t('searchDrawer.noProductsFound').replace('{query}', query)}</p>
                                     </div>
                                 )}
                             </div>
@@ -185,21 +192,21 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                     </Link>
                                 ))}
                                 {query.length >= 2 && results.collections.length === 0 && !isLoading && (
-                                    <p className="text-center text-zinc-400 py-12">No collections found</p>
+                                    <p className="text-center text-zinc-400 py-12">{t('searchDrawer.noCollectionsFound')}</p>
                                 )}
                             </div>
                         )}
                         {activeTab === 'pages' && (
                             <div className="space-y-4">
                                 {/* Static pages for now */}
-                                {['About Us', 'Shipping Policy', 'Contact', 'FAQ'].filter(p => p.toLowerCase().includes(query.toLowerCase())).map((page) => (
+                                {pagesList.filter(p => p.defaultLabel.toLowerCase().includes(query.toLowerCase()) || t(`searchDrawer.pages.${p.id}`).toLowerCase().includes(query.toLowerCase())).map((page) => (
                                     <Link 
-                                        key={page}
-                                        href={`/pages/${page.toLowerCase().replace(/ /g, '-')}`}
+                                        key={page.id}
+                                        href={`/pages/${page.href}`}
                                         onClick={onClose}
                                         className="block p-4 border border-zinc-50 hover:border-accent hover:bg-accent/5 transition-all rounded-xl"
                                     >
-                                        <h4 className="text-[14px] font-medium uppercase tracking-widest">{page}</h4>
+                                        <h4 className="text-[14px] font-medium uppercase tracking-widest">{t(`searchDrawer.pages.${page.id}`)}</h4>
                                     </Link>
                                 ))}
                             </div>
@@ -213,7 +220,7 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                 onClick={onClose}
                                 className="bg-accent text-white px-12 py-4 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-accent/90 transition-all rounded-xl shadow-lg shadow-accent/20"
                             >
-                                View All Results
+                                {t('searchDrawer.viewAllResults')}
                             </Link>
                         </div>
                     )}

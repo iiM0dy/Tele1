@@ -36,13 +36,13 @@ export default function Footer() {
                             {t('footer.brandDescription')}
                         </p>
                         <div className="flex gap-6 pt-4">
-                            <Link href="https://www.facebook.com/share/18EecMHwyx/?mibextid=wwXIfr" className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-accent hover:border-accent hover:text-white hover:-translate-y-1 transition-all duration-300" aria-label="Visit TELE1 on Facebook">
+                            <Link href="https://www.facebook.com/share/18EecMHwyx/?mibextid=wwXIfr" className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-accent hover:border-accent hover:text-white hover:-translate-y-1 transition-all duration-300" aria-label={t('footer.social.facebook')}>
                                 <Facebook size={18} />
                             </Link>
-                            <Link href="https://www.instagram.com/tele1.lb" className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-accent hover:border-accent hover:text-white hover:-translate-y-1 transition-all duration-300" aria-label="Visit TELE1 on Instagram">
+                            <Link href="https://www.instagram.com/tele1.lb" className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-accent hover:border-accent hover:text-white hover:-translate-y-1 transition-all duration-300" aria-label={t('footer.social.instagram')}>
                                 <Instagram size={18} />
                             </Link>
-                            <Link href="https://wa.me/963954551777" className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-accent hover:border-accent hover:text-white hover:-translate-y-1 transition-all duration-300" aria-label="Contact TELE1 on WhatsApp">
+                            <Link href="https://wa.me/963954551777" className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-accent hover:border-accent hover:text-white hover:-translate-y-1 transition-all duration-300" aria-label={t('footer.social.whatsapp')}>
                                 <MessageCircle size={18} />
                             </Link>
                         </div>

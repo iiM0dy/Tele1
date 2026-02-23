@@ -88,11 +88,13 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
         try {
             const result = await updateOrderStatus(id, newStatus as OrderStatus);
             if (!result.success) {
-                alert(result.error || "Failed to update status");
+                toast.error(result.error || t('admin.failedUpdateStatus'));
+            } else {
+                router.refresh();
             }
         } catch (error) {
             console.error("Error updating status:", error);
-            alert("An error occurred");
+            toast.error(t('admin.errorGeneric'));
         } finally {
             setUpdatingId(null);
         }
@@ -183,28 +185,28 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                     <button
                                         onClick={() => setFilter("ALL")}
                                         className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "ALL" ? "bg-accent text-white" : "text-white/60 hover:text-white"}`}
-                                        aria-label="Filter all orders"
+                                        aria-label={t('admin.filterBy').replace('{status}', t('admin.allOrders'))}
                                     >
                                         {t('admin.viewAll')}
                                     </button>
                                     <button
                                         onClick={() => setFilter("PENDING")}
                                         className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "PENDING" ? "bg-indigo-500 text-white" : "text-white/60 hover:text-indigo-500"}`}
-                                        aria-label="Filter pending orders"
+                                        aria-label={t('admin.filterBy').replace('{status}', t('admin.pendingOrders'))}
                                     >
                                         {t('admin.pending')}
                                     </button>
                                     <button
                                         onClick={() => setFilter("SHIPPED")}
                                         className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "SHIPPED" ? "bg-purple-500 text-white" : "text-white/60 hover:text-purple-500"}`}
-                                        aria-label="Filter shipped orders"
+                                        aria-label={t('admin.filterBy').replace('{status}', t('admin.shipped'))}
                                     >
                                         {t('admin.shipped')}
                                     </button>
                                     <button
                                         onClick={() => setFilter("DELIVERED")}
                                         className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "DELIVERED" ? "bg-accent text-white" : "text-white/60 hover:text-accent"}`}
-                                        aria-label="Filter delivered orders"
+                                        aria-label={t('admin.filterBy').replace('{status}', t('admin.delivered'))}
                                     >
                                         {t('admin.delivered')}
                                     </button>
@@ -262,7 +264,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                                                 value={order.status}
                                                                 disabled={updatingId === order.id || !canManage}
                                                                 onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                                                                aria-label={`Update status for order ${order.id}`}
+                                                                aria-label={t('admin.updateStatusOrder').replace('{id}', order.id)}
                                                                 className={`appearance-none pl-11 pr-12 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none border shadow-sm hover:shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${statusColor === "blue" ? "text-blue-500 bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20" :
                                                                     statusColor === "indigo" ? "text-indigo-500 bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-500/20" :
                                                                         statusColor === "accent" ? "text-accent bg-accent/10 border-accent/20 hover:bg-accent/20" :
@@ -340,11 +342,17 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                     {t('admin.showingEntries').replace('{count}', filteredOrders.length.toString()).replace('{total}', orders.length.toString())}
                                 </p>
                                 <div className="flex items-center gap-2">
-                                    <button className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all">
+                                    <button 
+                                        className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all"
+                                        aria-label={t('common.previous')}
+                                    >
                                         <MdChevronLeft className={`text-[18px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                                     </button>
                                     <button className="size-8 flex items-center justify-center rounded-xl bg-accent text-white text-[10px] font-black uppercase tracking-widest">1</button>
-                                    <button className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all">
+                                    <button 
+                                        className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all"
+                                        aria-label={t('common.next')}
+                                    >
                                         <MdChevronRight className={`text-[18px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                                     </button>
                                 </div>

@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
                     className="flex items-center gap-2 text-white/30 hover:text-white transition-all group"
                 >
                     <MdArrowBack className={`text-lg ${isRtl ? 'rotate-180' : ''}`} />
-                    <span className="text-[11px] font-semibold tracking-wider">{t('admin.backToStore') || 'Back to Store'}</span>
+                    <span className="text-[11px] font-semibold tracking-wider">{t('admin.backToStore')}</span>
                 </Link>
             </div>
 
@@ -70,7 +70,7 @@ export default function AdminLoginPage() {
                             </span>
                         </div>
                         <h1 className="text-white/60 text-[11px] font-semibold tracking-wider">
-                            {t('admin.login.title') || 'Admin Access Portal'}
+                            {t('admin.login.title')}
                         </h1>
                     </div>
 

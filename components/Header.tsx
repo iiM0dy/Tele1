@@ -198,7 +198,7 @@ export default function Header() {
                                 onClick={() => setIsSearchOpen(true)}
                                 className="transition-all text-white/70 hover:text-white hover:scale-110"
                             >
-                                <span className="sr-only">Search</span>
+                                <span className="sr-only">{t('common.search')}</span>
                                 <svg aria-hidden="true" fill="none" focusable="false" width="22" height="22" viewBox="0 0 24 24">
                                     <path d="M10.364 3a7.364 7.364 0 1 0 0 14.727 7.364 7.364 0 0 0 0-14.727Z" stroke="currentColor" strokeWidth="1.5"></path>
                                     <path d="M15.857 15.858 21 21.001" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"></path>
@@ -209,7 +209,7 @@ export default function Header() {
                                 onClick={() => setIsDrawerOpen(true)}
                                 className="relative transition-all text-white/70 hover:text-white hover:scale-110"
                             >
-                                <span className="sr-only">Cart</span>
+                                <span className="sr-only">{t('common.cart')}</span>
                                 <svg aria-hidden="true" fill="none" focusable="false" width="22" height="22" viewBox="0 0 24 24">
                                     <path d="M2 10h20l-4 11H6L2 10Zm14-3a4 4 0 0 0-8 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                 </svg>
@@ -251,7 +251,7 @@ export default function Header() {
                             <button
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="p-2 text-primary hover:bg-zinc-100 rounded-full transition-colors"
-                                aria-label="Close mobile menu"
+                                aria-label={t('common.closeMenu')}
                             >
                                 <svg aria-hidden="true" focusable="false" fill="none" width="24" height="24" viewBox="0 0 24 24">
                                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>

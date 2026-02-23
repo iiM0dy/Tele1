@@ -121,7 +121,7 @@ export default function ReviewsClient({
                                 <input
                                     type="text"
                                     placeholder={t('admin.searchPlaceholder')}
-                                    aria-label={t('admin.searchPlaceholder') || "Search reviews"}
+                                    aria-label={t('admin.searchPlaceholder')}
                                     className={`w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[13px] font-medium tracking-normal focus:outline-none focus:border-accent/30 transition-all text-white placeholder:text-white/60`}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}

@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useRef } from 'react';
+import { useLanguage } from '@/app/context/LanguageContext';
 import BestSellerCard from '../home/BestSellerCard';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
 export default function RelatedProducts({ products }: { products: any[] }) {
+    const { t } = useLanguage();
     const scrollRef = useRef<HTMLDivElement>(null);
 
     if (!products || products.length === 0) return null;
@@ -30,9 +32,9 @@ export default function RelatedProducts({ products }: { products: any[] }) {
             <div className="container mx-auto px-4">
                 <div className="flex flex-col items-center mb-16 relative">
                     <h2 
-                        className="text-[35px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center"
+                        className="text-[35px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase"
                     >
-                        YOU MAY ALSO LIKE
+                        {t('products.youMayAlsoLike')}
                     </h2>
                     <div className="w-12 h-1 bg-accent rounded-full" />
                 </div>
@@ -45,14 +47,14 @@ export default function RelatedProducts({ products }: { products: any[] }) {
                             <button 
                                 onClick={() => scroll('left')}
                                 className="absolute left-4 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm"
-                                aria-label="Previous"
+                                aria-label={t('common.previous')}
                             >
                                 <HiOutlineChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
                                 onClick={() => scroll('right')}
                                 className="absolute right-4 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm"
-                                aria-label="Next"
+                                aria-label={t('common.next')}
                             >
                                 <HiOutlineChevronRight className="w-6 h-6" />
                             </button>

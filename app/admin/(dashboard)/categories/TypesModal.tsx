@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { MdClose, MdAdd, MdDelete, MdEdit, MdSearchOff } from "react-icons/md";
 import { createType, updateType, deleteType, getTypes } from "../../../../lib/type-actions";
 import { toast } from "react-hot-toast";
+import { useLanguage } from "../../../context/LanguageContext";
 
 interface TypesModalProps {
     isOpen: boolean;
@@ -25,6 +26,7 @@ interface Type {
 }
 
 export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) {
+    const { t } = useLanguage();
     const [types, setTypes] = useState<Type[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState("");
@@ -48,7 +50,7 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
         if (result.success) {
             setTypes(result.types || []);
         } else {
-            toast.error(result.error || "Failed to fetch types");
+            toast.error(result.error || t('admin.types.failedToSave'));
         }
         setIsLoading(false);
     };
@@ -66,13 +68,13 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this type?")) return;
+        if (!confirm(t('admin.types.confirmDelete'))) return;
         const result = await deleteType(id);
         if (result.success) {
-            toast.success("Type deleted");
+            toast.success(t('admin.types.deleted'));
             fetchTypes();
         } else {
-            toast.error(result.error || "Failed to delete type");
+            toast.error(result.error || t('admin.types.failedToSave'));
         }
     };
 
@@ -87,15 +89,15 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
                 : await createType(data);
 
             if (result.success) {
-                toast.success(isEditing ? "Type updated" : "Type created");
+                toast.success(isEditing ? t('admin.types.updated') : t('admin.types.created'));
                 resetForm();
                 fetchTypes();
             } else {
-                toast.error(result.error || "Failed to save type");
+                toast.error(result.error || t('admin.types.failedToSave'));
             }
         } catch (error) {
             console.error("Error saving type:", error);
-            toast.error("An error occurred");
+            toast.error(t('admin.errorGeneric'));
         } finally {
             setIsSubmitting(false);
         }
@@ -110,99 +112,109 @@ export default function TypesModal({ isOpen, onClose, brand }: TypesModalProps) 
                 <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-white/1">
                     <div>
                         <h3 className="text-lg font-bold text-white uppercase tracking-tight">
-                            {brand?.name} - Types
+                            {brand?.name} - {t('admin.types.title')}
                         </h3>
                     </div>
-                    <button onClick={onClose} className="p-2 text-white/40 hover:text-white transition-all">
+                    <button onClick={onClose} className="p-2 text-white/40 hover:text-white transition-all" aria-label={t('admin.close')}>
                         <MdClose size={24} />
                     </button>
                 </div>
 
                 <div className="p-6 overflow-y-auto space-y-6">
                     <form onSubmit={handleSubmit} className="bg-white/2 p-4 rounded-2xl border border-white/5 space-y-4">
-                        <div className="flex flex-col gap-2">
-                            <label className="text-[11px] font-semibold text-white/40 tracking-wider">Type Name & Image URL</label>
-                            <div className="flex flex-col gap-3">
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        placeholder="e.g. Parfume, Lotion..."
-                                        required
-                                        className="flex-1 h-12 px-4 rounded-xl border border-white/5 bg-white/2 text-white text-sm outline-none focus:border-accent/30"
-                                    />
-                                </div>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={image}
-                                        onChange={(e) => setImage(e.target.value)}
-                                        placeholder="Image URL (optional)"
-                                        className="flex-1 h-12 px-4 rounded-xl border border-white/5 bg-white/2 text-white text-sm outline-none focus:border-accent/30"
-                                    />
-                                    <button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        className="px-6 h-12 rounded-xl bg-accent text-white font-bold text-sm flex items-center gap-2 hover:opacity-90 disabled:opacity-50"
-                                    >
-                                        {isEditing ? "Update" : "Add"}
-                                    </button>
-                                    {isEditing && (
-                                        <button
-                                            type="button"
-                                            onClick={resetForm}
-                                            className="px-4 h-12 rounded-xl bg-white/5 text-white/60 text-sm font-bold"
-                                        >
-                                            Cancel
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-white/60">{t('admin.types.name')}</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all placeholder:text-white/20"
+                                placeholder={t('admin.types.namePlaceholder')}
+                                required
+                            />
                         </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-white/60">{t('admin.imageUrl')}</label>
+                            <input
+                                type="text"
+                                value={image}
+                                onChange={(e) => setImage(e.target.value)}
+                                className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all placeholder:text-white/20"
+                                placeholder={t('admin.types.imagePlaceholder')}
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full h-11 bg-accent hover:bg-accent/90 text-white font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+                        >
+                            {isSubmitting ? (
+                                <div className="flex items-center justify-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                    <span>{t('admin.updating')}</span>
+                                </div>
+                            ) : (
+                                isEditing ? t('admin.types.update') : t('admin.types.add')
+                            )}
+                        </button>
                     </form>
 
-                    <div className="space-y-2">
-                        {isLoading ? (
-                            <div className="flex justify-center p-8">
-                                <div className="animate-spin h-6 w-6 border-2 border-white/10 border-t-accent rounded-full" />
-                            </div>
-                        ) : types.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-10 text-white/40">
-                                <MdSearchOff size={32} />
-                                <p className="text-xs mt-2 uppercase tracking-widest font-bold">No types found</p>
-                            </div>
-                        ) : (
-                            types.map((type) => (
-                                <div key={type.id} className="flex items-center justify-between p-4 bg-white/2 border border-white/5 rounded-2xl group hover:border-accent/20 transition-all">
-                                    <div className="flex items-center gap-4">
-                                        {type.image ? (
-                                            <div className="size-12 rounded-xl overflow-hidden border border-white/5 bg-white/5">
-                                                <img src={type.image} alt={type.name} className="w-full h-full object-cover" />
-                                            </div>
-                                        ) : (
-                                            <div className="size-12 rounded-xl border border-dashed border-white/10 bg-white/1 flex items-center justify-center text-white/20">
-                                                <MdAdd size={20} />
-                                            </div>
-                                        )}
-                                        <div>
-                                            <h4 className="text-white font-bold text-sm uppercase tracking-tight">{type.name}</h4>
-                                            <p className="text-[10px] text-white/40 font-bold uppercase mt-1">
-                                                {type._count?.products || 0} Products
+                    <div className="mt-8 space-y-4">
+                        <h3 className="text-sm font-medium text-white/60">{t('admin.types.title')}</h3>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                            {isLoading ? (
+                                <div className="col-span-full flex flex-col items-center justify-center py-20">
+                                    <span className="animate-spin h-10 w-10 border-2 border-white/10 border-t-accent rounded-full mb-4" />
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-white/20">{t('admin.types.loading')}</p>
+                                </div>
+                            ) : types.length === 0 ? (
+                                <div className="col-span-full py-12 text-center border-2 border-dashed border-white/5 rounded-2xl">
+                                    <p className="text-white/20">{t('admin.types.notFound')}</p>
+                                </div>
+                            ) : (
+                                types.map((type) => (
+                                    <div
+                                        key={type.id}
+                                        className="group relative flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/10 transition-all duration-300"
+                                    >
+                                        <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-black/20 shrink-0">
+                                            <img
+                                                src={type.image}
+                                                alt={type.name}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                            />
+                                        </div>
+
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="text-white font-medium truncate">{type.name}</h4>
+                                            <p className="text-xs text-white/40 mt-1">
+                                                {type._count?.products || 0} {t('admin.products')}
                                             </p>
                                         </div>
+
+                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/50 backdrop-blur-md p-1.5 rounded-xl border border-white/10 translate-x-4 group-hover:translate-x-0">
+                                            <button
+                                                onClick={() => handleEdit(type)}
+                                                className="p-2 text-white/60 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all"
+                                                title={t('admin.edit')}
+                                            >
+                                                <MdEdit size={18} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(type.id)}
+                                                className="p-2 text-white/60 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
+                                                title={t('admin.delete')}
+                                            >
+                                                <MdDelete size={18} />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                                        <button onClick={() => handleEdit(type)} className="p-2 text-white/60 hover:text-accent">
-                                            <MdEdit size={18} />
-                                        </button>
-                                        <button onClick={() => handleDelete(type.id)} className="p-2 text-white/60 hover:text-red-500">
-                                            <MdDelete size={18} />
-                                        </button>
-                                    </div>
-                                </div>
-                            ))
-                        )}
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

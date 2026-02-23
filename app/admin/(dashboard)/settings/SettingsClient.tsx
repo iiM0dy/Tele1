@@ -147,7 +147,7 @@ export default function SettingsClient({
                                         value={newUsername}
                                         onChange={(e) => setNewUsername(e.target.value)}
                                         placeholder={t('admin.enterNewUsername')}
-                                        aria-label={t('admin.username') || "New username"}
+                                        aria-label={t('admin.username')}
                                         className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/50 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                     />
                                 </div>
@@ -163,7 +163,7 @@ export default function SettingsClient({
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
                                         placeholder={t('admin.leaveBlank')}
-                                        aria-label={t('admin.newPassword') || "New password"}
+                                        aria-label={t('admin.newPassword')}
                                         className="w-full h-14 px-5 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/50 transition-all outline-none text-[13px] font-medium placeholder:text-white/40"
                                     />
                                     <p className="text-[10px] text-white/40 font-semibold tracking-wider ml-1">

@@ -74,7 +74,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                 setIsModalOpen(true);
                             }}
                             className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black tracking-wider text-[11px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
-                            aria-label={t('admin.addNewUser') || "Add new user"}
+                            aria-label={t('admin.addNewUser')}
                         >
                             <MdPersonAdd className="text-xl" />
                             {t('admin.addNewUser')}
@@ -127,10 +127,10 @@ export default function UsersClient({ users }: { users: User[] }) {
                                                         <span className="text-[10px] font-semibold text-white/60 tracking-wider">{t('admin.unlimitedAccess')}</span>
                                                     ) : (
                                                         <>
-                                                            {user.canManageProducts && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.products')}{!user.canDeleteProducts && " (No Delete)"}</span>}
-                                                            {user.canManageCategories && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.categories')}{!user.canDeleteCategories && " (No Delete)"}</span>}
-                                                            {user.canManageBanners && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.banners')}{!user.canDeleteBanners && " (No Delete)"}</span>}
-                                                            {user.canManageOrders && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.orders')}{!user.canDeleteOrders && " (No Delete)"}</span>}
+                                                            {user.canManageProducts && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.products')}{!user.canDeleteProducts && t('admin.noDelete')}</span>}
+                                                            {user.canManageCategories && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.categories')}{!user.canDeleteCategories && t('admin.noDelete')}</span>}
+                                                            {user.canManageBanners && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.banners')}{!user.canDeleteBanners && t('admin.noDelete')}</span>}
+                                                            {user.canManageOrders && <span className="text-[10px] font-semibold bg-white/5 px-2.5 py-1 rounded-lg text-white/60 tracking-wider border border-white/5">{t('admin.orders')}{!user.canDeleteOrders && t('admin.noDelete')}</span>}
                                                         </>
                                                     )}
                                                 </div>
@@ -144,7 +144,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                                         onClick={() => handleEdit(user)}
                                                         className="p-2.5 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
                                                         title={t('admin.editUser')}
-                                                        aria-label={t('admin.editUser') || "Edit user"}
+                                                        aria-label={t('admin.editUser')}
                                                     >
                                                         <MdEdit className="text-xl" />
                                                     </button>
@@ -153,7 +153,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                                             onClick={() => handleDelete(user.id, user.username)}
                                                             className="p-2.5 text-white/60 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all border border-transparent hover:border-red-500/10"
                                                             title={t('admin.deleteUser')}
-                                                            aria-label={t('admin.deleteUser') || "Delete user"}
+                                                            aria-label={t('admin.deleteUser')}
                                                         >
                                                             <MdDelete className="text-xl" />
                                                         </button>

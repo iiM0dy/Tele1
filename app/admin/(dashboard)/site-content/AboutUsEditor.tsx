@@ -26,13 +26,13 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
         try {
             const result = await updateAboutUsContent(formData);
             if (result.success) {
-                toast.success("About Us content updated successfully");
+                toast.success(t('admin.aboutUsEditor.successUpdate'));
             } else {
-                toast.error(result.error || "Failed to update content");
+                toast.error(result.error || t('admin.aboutUsEditor.errorUpdate'));
             }
         } catch (error) {
             console.error("Error updating content:", error);
-            toast.error("An error occurred");
+            toast.error(t('admin.aboutUsEditor.errorGeneric'));
         } finally {
             setIsLoading(false);
         }
@@ -85,13 +85,13 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
             <div className="space-y-8">
                 <SectionHeader
                     icon={MdImage}
-                    title={t('admin.heroSection') || "Hero Section"}
-                    subtitle={t('admin.heroSectionDescription') || "Manage the header image and main titles"}
+                    title={t('admin.aboutUsEditor.heroSection')}
+                    subtitle={t('admin.aboutUsEditor.heroSectionDescription')}
                 />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="md:col-span-2">
                         <InputGroup
-                            label="Hero Background Image URL"
+                            label={t('admin.aboutUsEditor.heroImage')}
                             name="heroImage"
                             value={formData.heroImage}
                             placeholder="https://images.unsplash.com/..."
@@ -102,10 +102,10 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
                             </div>
                         )}
                     </div>
-                    <InputGroup label="Title (EN)" name="titleEn" value={formData.titleEn} placeholder="About Us" />
-                    <InputGroup label="Title (AR)" name="titleAr" value={formData.titleAr} placeholder="من نحن" ar />
-                    <InputGroup label="Subtitle (EN)" name="subtitleEn" value={formData.subtitleEn} placeholder="Our mission..." />
-                    <InputGroup label="Subtitle (AR)" name="subtitleAr" value={formData.subtitleAr} placeholder="مهمتنا..." ar />
+                    <InputGroup label={t('admin.aboutUsEditor.titleEn')} name="titleEn" value={formData.titleEn} placeholder="About Us" />
+                    <InputGroup label={t('admin.aboutUsEditor.titleAr')} name="titleAr" value={formData.titleAr} placeholder="من نحن" ar />
+                    <InputGroup label={t('admin.aboutUsEditor.subtitleEn')} name="subtitleEn" value={formData.subtitleEn} placeholder="Our mission..." />
+                    <InputGroup label={t('admin.aboutUsEditor.subtitleAr')} name="subtitleAr" value={formData.subtitleAr} placeholder="مهمتنا..." ar />
                 </div>
             </div>
 
@@ -113,13 +113,13 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
             <div className="space-y-8">
                 <SectionHeader
                     icon={MdHistoryEdu}
-                    title={t('admin.ourStory') || "Our Story"}
-                    subtitle={t('admin.ourStoryDescription') || "Manage the story text and narrative image"}
+                    title={t('admin.aboutUsEditor.ourStory')}
+                    subtitle={t('admin.aboutUsEditor.ourStoryDescription')}
                 />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="md:col-span-2">
                         <InputGroup
-                            label="Story Image URL"
+                            label={t('admin.aboutUsEditor.storyImage')}
                             name="storyImage"
                             value={formData.storyImage}
                             placeholder="https://images.unsplash.com/..."
@@ -130,12 +130,12 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
                             </div>
                         )}
                     </div>
-                    <InputGroup label="Story Title (EN)" name="storyTitleEn" value={formData.storyTitleEn} />
-                    <InputGroup label="Story Title (AR)" name="storyTitleAr" value={formData.storyTitleAr} ar />
-                    <InputGroup label="Story Paragraph 1 (EN)" name="storyText1En" value={formData.storyText1En} type="textarea" />
-                    <InputGroup label="Story Paragraph 1 (AR)" name="storyText1Ar" value={formData.storyText1Ar} type="textarea" ar />
-                    <InputGroup label="Story Paragraph 2 (EN)" name="storyText2En" value={formData.storyText2En} type="textarea" />
-                    <InputGroup label="Story Paragraph 2 (AR)" name="storyText2Ar" value={formData.storyText2Ar} type="textarea" ar />
+                    <InputGroup label={t('admin.aboutUsEditor.storyTitleEn')} name="storyTitleEn" value={formData.storyTitleEn} />
+                    <InputGroup label={t('admin.aboutUsEditor.storyTitleAr')} name="storyTitleAr" value={formData.storyTitleAr} ar />
+                    <InputGroup label={t('admin.aboutUsEditor.storyText1En')} name="storyText1En" value={formData.storyText1En} type="textarea" />
+                    <InputGroup label={t('admin.aboutUsEditor.storyText1Ar')} name="storyText1Ar" value={formData.storyText1Ar} type="textarea" ar />
+                    <InputGroup label={t('admin.aboutUsEditor.storyText2En')} name="storyText2En" value={formData.storyText2En} type="textarea" />
+                    <InputGroup label={t('admin.aboutUsEditor.storyText2Ar')} name="storyText2Ar" value={formData.storyText2Ar} type="textarea" ar />
                 </div>
             </div>
 
@@ -143,38 +143,38 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
             <div className="space-y-8">
                 <SectionHeader
                     icon={MdStarOutline}
-                    title={t('admin.coreValues') || "Core Values"}
-                    subtitle={t('admin.coreValuesDescription') || "Manage the quality, innovation and customer focus sections"}
+                    title={t('admin.aboutUsEditor.coreValues')}
+                    subtitle={t('admin.aboutUsEditor.coreValuesDescription')}
                 />
                 <div className="grid grid-cols-1 gap-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-white/2 rounded-3xl border border-white/5">
                         <div className="md:col-span-2 font-black text-xs text-accent uppercase tracking-widest border-b border-white/5 pb-4">
-                            Value 1: Quality
+                            {t('admin.aboutUsEditor.value1Quality')}
                         </div>
-                        <InputGroup label="Title (EN)" name="qualityTitleEn" value={formData.qualityTitleEn} />
-                        <InputGroup label="Title (AR)" name="qualityTitleAr" value={formData.qualityTitleAr} ar />
-                        <InputGroup label="Description (EN)" name="qualityDescEn" value={formData.qualityDescEn} type="textarea" />
-                        <InputGroup label="Description (AR)" name="qualityDescAr" value={formData.qualityDescAr} type="textarea" ar />
+                        <InputGroup label={t('admin.aboutUsEditor.titleEn')} name="qualityTitleEn" value={formData.qualityTitleEn} />
+                        <InputGroup label={t('admin.aboutUsEditor.titleAr')} name="qualityTitleAr" value={formData.qualityTitleAr} ar />
+                        <InputGroup label={t('admin.aboutUsEditor.descriptionEn')} name="qualityDescEn" value={formData.qualityDescEn} type="textarea" />
+                        <InputGroup label={t('admin.aboutUsEditor.descriptionAr')} name="qualityDescAr" value={formData.qualityDescAr} type="textarea" ar />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-white/2 rounded-3xl border border-white/5">
                         <div className="md:col-span-2 font-black text-xs text-accent uppercase tracking-widest border-b border-white/5 pb-4">
-                            Value 2: Innovation
+                            {t('admin.aboutUsEditor.value2Innovation')}
                         </div>
-                        <InputGroup label="Title (EN)" name="innovationTitleEn" value={formData.innovationTitleEn} />
-                        <InputGroup label="Title (AR)" name="innovationTitleAr" value={formData.innovationTitleAr} ar />
-                        <InputGroup label="Description (EN)" name="innovationDescEn" value={formData.innovationDescEn} type="textarea" />
-                        <InputGroup label="Description (AR)" name="innovationDescAr" value={formData.innovationDescAr} type="textarea" ar />
+                        <InputGroup label={t('admin.aboutUsEditor.titleEn')} name="innovationTitleEn" value={formData.innovationTitleEn} />
+                        <InputGroup label={t('admin.aboutUsEditor.titleAr')} name="innovationTitleAr" value={formData.innovationTitleAr} ar />
+                        <InputGroup label={t('admin.aboutUsEditor.descriptionEn')} name="innovationDescEn" value={formData.innovationDescEn} type="textarea" />
+                        <InputGroup label={t('admin.aboutUsEditor.descriptionAr')} name="innovationDescAr" value={formData.innovationDescAr} type="textarea" ar />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-white/2 rounded-3xl border border-white/5">
                         <div className="md:col-span-2 font-black text-xs text-accent uppercase tracking-widest border-b border-white/5 pb-4">
-                            Value 3: Customer Focus
+                            {t('admin.aboutUsEditor.value3CustomerFocus')}
                         </div>
-                        <InputGroup label="Title (EN)" name="customerTitleEn" value={formData.customerTitleEn} />
-                        <InputGroup label="Title (AR)" name="customerTitleAr" value={formData.customerTitleAr} ar />
-                        <InputGroup label="Description (EN)" name="customerDescEn" value={formData.customerDescEn} type="textarea" />
-                        <InputGroup label="Description (AR)" name="customerDescAr" value={formData.customerDescAr} type="textarea" ar />
+                        <InputGroup label={t('admin.aboutUsEditor.titleEn')} name="customerTitleEn" value={formData.customerTitleEn} />
+                        <InputGroup label={t('admin.aboutUsEditor.titleAr')} name="customerTitleAr" value={formData.customerTitleAr} ar />
+                        <InputGroup label={t('admin.aboutUsEditor.descriptionEn')} name="customerDescEn" value={formData.customerDescEn} type="textarea" />
+                        <InputGroup label={t('admin.aboutUsEditor.descriptionAr')} name="customerDescAr" value={formData.customerDescAr} type="textarea" ar />
                     </div>
                 </div>
             </div>
@@ -183,13 +183,13 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
             <div className="space-y-8">
                 <SectionHeader
                     icon={MdImage}
-                    title={t('admin.ctaSection') || "CTA Section"}
-                    subtitle={t('admin.ctaSectionDescription') || "Manage the bottom call-to-action section"}
+                    title={t('admin.aboutUsEditor.ctaSection')}
+                    subtitle={t('admin.aboutUsEditor.ctaSectionDescription')}
                 />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="md:col-span-2">
                         <InputGroup
-                            label="CTA Background Image URL"
+                            label={t('admin.aboutUsEditor.ctaImage')}
                             name="ctaImage"
                             value={formData.ctaImage}
                             placeholder="https://images.unsplash.com/..."
@@ -200,10 +200,12 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
                             </div>
                         )}
                     </div>
-                    <InputGroup label="CTA Title (EN)" name="ctaTitleEn" value={formData.ctaTitleEn} />
-                    <InputGroup label="CTA Title (AR)" name="ctaTitleAr" value={formData.ctaTitleAr} ar />
-                    <InputGroup label="CTA Description (EN)" name="ctaDescEn" value={formData.ctaDescEn} type="textarea" />
-                    <InputGroup label="CTA Description (AR)" name="ctaDescAr" value={formData.ctaDescAr} type="textarea" ar />
+                    <InputGroup label={t('admin.aboutUsEditor.ctaTitleEn')} name="ctaTitleEn" value={formData.ctaTitleEn} />
+                    <InputGroup label={t('admin.aboutUsEditor.ctaTitleAr')} name="ctaTitleAr" value={formData.ctaTitleAr} ar />
+                    <InputGroup label={t('admin.aboutUsEditor.ctaSubtitleEn')} name="ctaSubtitleEn" value={formData.ctaSubtitleEn} />
+                    <InputGroup label={t('admin.aboutUsEditor.ctaSubtitleAr')} name="ctaSubtitleAr" value={formData.ctaSubtitleAr} ar />
+                    <InputGroup label={t('admin.aboutUsEditor.ctaButtonTextEn')} name="ctaButtonTextEn" value={formData.ctaButtonTextEn} />
+                    <InputGroup label={t('admin.aboutUsEditor.ctaButtonTextAr')} name="ctaButtonTextAr" value={formData.ctaButtonTextAr} ar />
                 </div>
             </div>
 
