@@ -15,17 +15,39 @@ interface Product {
     Images: string[];
     IsTrending: boolean;
     BestSeller: boolean;
+    Stock: number;
     category: {
         name: string;
-    };
+    } | null;
 }
 
-export default function ProductGrid({ products, title }: { products: Product[], title: string }) {
+interface ProductGridProps {
+    products: Product[];
+    title?: string;
+    cols?: number;
+    hideInfo?: boolean;
+}
+
+export default function ProductGrid({
+    products,
+    title,
+    cols = 3,
+    hideInfo = false
+}: ProductGridProps) {
     const pathname = usePathname();
     const { t } = useLanguage();
+
     if (!products.length) return null;
 
     const isProductsPage = pathname === '/products';
+
+    const gridColsClass = {
+        1: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+        2: 'grid-cols-2 lg:grid-cols-2',
+        3: 'grid-cols-2 lg:grid-cols-3',
+        4: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+        6: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6'
+    }[cols as 1 | 2 | 3 | 4 | 6] || 'grid-cols-2 lg:grid-cols-3';
 
     return (
         <section className="py-12 bg-white">
@@ -38,13 +60,19 @@ export default function ProductGrid({ products, title }: { products: Product[], 
                         <div className="w-12 h-[2px] bg-primary" />
                     </div>
                 )}
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                <div className={`grid ${gridColsClass} gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16`}>
                     {products.map((product, index) => (
                         <ProductCard
                             key={product.id}
                             product={product as any}
                             index={index}
-                            sizes="(max-width: 1024px) 50vw, 33vw"
+                            hideInfo={hideInfo}
+                            layout={cols >= 4 ? 'compact' : 'medium'}
+                            sizes={
+                                cols === 6 ? "(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw" :
+                                    cols === 4 ? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" :
+                                        "(max-width: 1024px) 50vw, 33vw"
+                            }
                         />
                     ))}
                 </div>

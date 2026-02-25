@@ -61,7 +61,7 @@ export default async function AboutUsPage() {
       </section>
 
       {/* Story Section */}
-      <section className="py-24 px-4 md:px-8 bg-white">
+      <section className="py-24 px-4 md:px-[48px] bg-white">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <div className="relative aspect-4/5 bg-zinc-100 rounded-2xl overflow-hidden group shadow-2xl">
             <div
@@ -84,7 +84,7 @@ export default async function AboutUsPage() {
 
       {/* Values Section */}
       <section className="py-24 bg-zinc-50 border-y border-zinc-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-[48px]">
           <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-center mb-16">
             {data.valuesTitle}
           </h2>
@@ -127,7 +127,7 @@ export default async function AboutUsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 bg-black text-white text-center px-4 relative overflow-hidden">
+      <section className="py-32 bg-black text-white text-center px-4 md:px-[48px] relative overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: `url('${data.ctaImage}')` }} />
         <div className="relative z-10 max-w-4xl mx-auto space-y-8">
           <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">

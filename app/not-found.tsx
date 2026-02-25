@@ -17,7 +17,7 @@ export default function NotFound() {
     }, []);
 
     return (
-        <div className="relative min-h-[80vh] flex flex-col items-center justify-center px-4 pt-20 pb-12 overflow-hidden bg-white dark:bg-black">
+        <div className="relative min-h-[80vh] flex flex-col items-center justify-center px-4 md:px-[48px] pt-20 pb-12 overflow-hidden bg-white dark:bg-black">
             {/* Background Text */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none opacity-[0.05]">
                 <span className="text-[18rem] md:text-[35rem] font-sans font-black text-black dark:text-white leading-none">

@@ -11,11 +11,9 @@
         "about": "من نحن",
         "aboutUs": "من نحن",
         "blog": "المدونة",
-        "search": "البحث",
         "searchProducts": "ابحث عن المنتجات...",
         "suggestions": "اقتراحات",
         "store": "تسوق",
-        "cart": "السلة",
         "viewAll": "عرض الكل",
         "viewAllCategories": "عرض جميع الفئات",
         "loading": "جاري التحميل...",
@@ -27,10 +25,17 @@
         "showLess": "عرض أقل",
         "categories": "الاقسام",
         "collections": "المجموعات",
+        "allCollections": "جميع المجموعات",
         "yes": "نعم",
         "no": "لا",
         "previous": "السابق",
-        "next": "التالي"
+        "next": "التالي",
+        "all": "الكل",
+        "inStock": "متوفر في المخزون فقط",
+        "availability": "التوفر",
+        "price": "السعر",
+        "viewResults": "عرض النتائج",
+        "filter": "تصفية"
     },
     "header": {
         "brandName": "TELE1"

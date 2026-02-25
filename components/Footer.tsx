@@ -22,8 +22,8 @@ export default function Footer() {
             </div>
             {/* Glow Effect */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
-            
-            <div className="container mx-auto px-4 py-24 relative z-10">
+
+            <div className="w-full px-4 md:px-[48px] py-24 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-10 gap-16 md:gap-8">
                     {/* Brand & Description */}
                     <div className="md:col-span-4 space-y-8">

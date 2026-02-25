@@ -13,7 +13,7 @@ function OrderSuccessContent() {
         <div className="bg-white min-h-screen">
             {/* Minimal Header with Solid Color and No Effects */}
             <header className="w-full flex items-center h-[107px] border-b border-zinc-800 bg-black">
-                <div className="container mx-auto px-4 md:px-6">
+                <div className="w-full px-4 md:px-[48px]">
                     <div className="grid grid-cols-3 items-center">
                         <div className="flex items-center">
                             <button className="md:hidden p-2 -ml-2 transition-colors text-primary" aria-label="Open navigation menu">
@@ -22,10 +22,10 @@ function OrderSuccessContent() {
                                 </svg>
                             </button>
                             <nav className="hidden md:flex items-center gap-6">
-                                <Link className="text-[11px] font-bold uppercase tracking-[0.1em] transition-colors text-white/70 hover:text-primary" href="/collections/phones">Phones</Link>
-                                <Link className="text-[11px] font-bold uppercase tracking-[0.1em] transition-colors text-white/70 hover:text-primary" href="/collections/airpods">AirPods</Link>
-                                <Link className="text-[11px] font-bold uppercase tracking-[0.1em] transition-colors text-white/70 hover:text-primary" href="/collections/covers">Covers</Link>
-                                <Link className="text-[11px] font-bold uppercase tracking-[0.1em] transition-colors text-white/70 hover:text-primary" href="/collections/screens">Screens</Link>
+                                <Link className="text-[11px] font-bold uppercase tracking-widest transition-colors text-white/70 hover:text-primary" href="/collections/phones">Phones</Link>
+                                <Link className="text-[11px] font-bold uppercase tracking-widest transition-colors text-white/70 hover:text-primary" href="/collections/airpods">AirPods</Link>
+                                <Link className="text-[11px] font-bold uppercase tracking-widest transition-colors text-white/70 hover:text-primary" href="/collections/covers">Covers</Link>
+                                <Link className="text-[11px] font-bold uppercase tracking-widest transition-colors text-white/70 hover:text-primary" href="/collections/screens">Screens</Link>
                             </nav>
                         </div>
                         <div className="flex justify-center">
@@ -71,9 +71,9 @@ function OrderSuccessContent() {
                     <h1 className="text-3xl font-bold text-gray-900 mb-4">
                         Thank you for your order!
                     </h1>
-                    
+
                     <p className="text-lg text-gray-600 mb-8">
-                        Your order has been placed successfully. 
+                        Your order has been placed successfully.
                         {orderId && (
                             <span className="block mt-2 font-medium text-gray-900">
                                 Order ID: {orderId}
@@ -82,15 +82,15 @@ function OrderSuccessContent() {
                     </p>
 
                     <div className="space-y-4">
-                        <Link 
+                        <Link
                             href="/products"
                             className="w-full bg-black text-white py-4 px-8 rounded-md font-bold text-[0.95rem] hover:bg-zinc-800 transition-all flex items-center justify-center gap-2"
                         >
                             <HiOutlineShoppingBag className="w-5 h-5" />
                             Continue Shopping
                         </Link>
-                        
-                        <Link 
+
+                        <Link
                             href="/"
                             className="w-full bg-white text-gray-600 py-4 px-8 rounded-md font-medium text-[0.95rem] hover:bg-gray-50 border border-gray-200 transition-all flex items-center justify-center gap-2"
                         >

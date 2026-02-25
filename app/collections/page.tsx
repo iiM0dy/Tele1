@@ -13,7 +13,7 @@ export default async function CollectionsPage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-white pt-[110px]">
-            <div className="container mx-auto px-4 md:px-6 pb-24">
+            <div className="w-full px-4 md:px-[48px] pb-24">
                 <div className="flex flex-col items-center mb-16 relative">
                     <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">
                         {t('common.allCollections') || "ALL COLLECTIONS"}
@@ -25,8 +25,8 @@ export default async function CollectionsPage() {
                     {categories.map((category) => {
                         const displayName = isAr && category.nameAr ? category.nameAr : category.name;
                         return (
-                            <Link 
-                                key={category.id} 
+                            <Link
+                                key={category.id}
                                 href={`/collections/${category.slug}`}
                                 className="group relative w-full aspect-square bg-[#E5E5E5] overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500"
                             >
@@ -40,7 +40,7 @@ export default async function CollectionsPage() {
                                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
                                         {/* Black filter with low opacity */}
-                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors z-[1]" />
+                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors z-1" />
                                     </div>
                                 )}
                                 <div className="absolute inset-0 flex items-center justify-center z-20">

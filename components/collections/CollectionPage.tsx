@@ -87,7 +87,7 @@ export default function CollectionPage({
     if (brandSlug && types && types.length > 0) {
         return (
             <div className="flex flex-col min-h-screen bg-white pt-[90px]">
-                <div className="container mx-auto px-4 md:px-6 py-8">
+                <div className="w-full px-4 md:px-[48px] py-8">
                     <div className="flex flex-col items-center mb-16 relative">
                         <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">{displayName}</h1>
                         <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">{t('collection.chooseType')}</p>
@@ -120,7 +120,7 @@ export default function CollectionPage({
     if (!brandSlug && subCategories && subCategories.length > 0) {
         return (
             <div className="flex flex-col min-h-screen bg-white pt-[90px]">
-                <div className="container mx-auto px-4 md:px-6 py-8">
+                <div className="w-full px-4 md:px-[48px] py-8">
                     <div className="flex flex-col items-center mb-16 relative">
                         <h1 className="text-[32px] md:text-[42px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase">{displayName}</h1>
                         <p className="text-zinc-500 text-sm font-bold tracking-widest uppercase mb-4">{t('collection.exploreBrands')}</p>
@@ -194,7 +194,7 @@ export default function CollectionPage({
         <div className="flex flex-col min-h-screen bg-white pt-[90px]">
             {/* Sticky Toolbar */}
             <div className="sticky top-[90px] z-40 bg-white border-y border-zinc-100 collection-toolbar full-bleed mb-8">
-                <div className="container mx-auto px-4 md:px-6">
+                <div className="w-full px-4 md:px-[48px]">
                     <div className="flex items-center justify-between h-14 collection-toolbar__button-list">
                         {/* Layout Switchers (Moved to Left) */}
                         <div className="flex items-center gap-4">
@@ -327,7 +327,7 @@ export default function CollectionPage({
 
             {/* Product Grid */}
             <div className="grow pt-16 pb-24">
-                <div className="container mx-auto px-4 md:px-6">
+                <div className="w-full px-4 md:px-[48px]">
                     {processedProducts.length > 0 ? (
                         <>
                             <div className={`grid ${getGridCols()} gap-x-4 gap-y-12 md:gap-x-6 md:gap-y-16`}>

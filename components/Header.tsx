@@ -10,7 +10,7 @@ import { getAllCategories } from '@/lib/public-actions';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 
 import CartDrawer from './cart/CartDrawer';
-import SearchDrawer from './SearchDrawer';
+import SearchBar from './SearchBar';
 import LanguageToggle from './LanguageToggle';
 
 interface Category {
@@ -88,9 +88,9 @@ export default function Header() {
 
     return (
         <div
-            className={`${(isCartPage || isProductsListPage || isNotFoundPage) ? 'relative' : 'fixed top-0 left-0'} w-full z-50 group/header transition-all duration-700 ease-in-out ${isSolid
-                    ? 'bg-primary shadow-2xl py-0'
-                    : 'bg-transparent py-2'
+            className={`${(isCartPage || isNotFoundPage) ? 'relative' : 'fixed top-0 left-0'} w-full z-50 group/header transition-all duration-700 ease-in-out ${isSolid
+                ? 'bg-primary shadow-2xl py-0'
+                : 'bg-transparent py-2'
                 }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -195,7 +195,7 @@ export default function Header() {
                             </Link>
 
                             <button
-                                onClick={() => setIsSearchOpen(true)}
+                                onClick={() => setIsSearchOpen(!isSearchOpen)}
                                 className="transition-all text-white/70 hover:text-white hover:scale-110"
                             >
                                 <span className="sr-only">{t('common.search')}</span>
@@ -225,7 +225,7 @@ export default function Header() {
             </header>
 
             <CartDrawer />
-            <SearchDrawer isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+            <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
             {/* Mobile Menu Sidebar */}
             <div

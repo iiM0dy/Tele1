@@ -200,7 +200,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                     </div>
                 )}
 
-                <div className="container mx-auto px-4 md:px-6">
+                <div className="w-full px-4 md:px-[48px]">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
                         {/* Left: Product Gallery */}
@@ -564,7 +564,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                     <path clipRule="evenodd" d="M3 4.285v7.274c0 4.708 2.284 8.928 6.882 10.618l1.041.382a3.13 3.13 0 0 0 2.154 0l1.041-.382C18.716 20.487 21 16.267 21 11.559V4.285a1.418 1.418 0 0 0-.868-1.301A18.248 18.248 0 0 0 12 1.254a18.248 18.248 0 0 0-8.132 1.73A1.418 1.418 0 0 0 3 4.285Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 </svg>
                                                 {t('products.warranty.title')}
-                                        </span>
+                                            </span>
                                             <span className="relative w-3 h-3 flex items-center justify-center">
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full transition-transform duration-300 rotate-90 group-open:rotate-0"></span>
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full"></span>
@@ -572,17 +572,17 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         </summary>
 
                                         <div className="accordion__content pb-6 prose prose-sm max-w-none text-zinc-600">
-                                        <p><strong>{t('products.warranty.intro')}</strong></p>
-                                        <p>{t('products.warranty.coverage')}<br />{t('products.warranty.shippingCost')}</p>
-                                        <p>{t('products.warranty.unavailableItem')}</p>
-                                        <p><strong>{t('products.warranty.whatsNotCovered')}</strong></p>
-                                        <ul className="list-disc pl-4 space-y-1">
-                                            <li>{t('products.warranty.notCoveredItems.lost')}</li>
-                                            <li>{t('products.warranty.notCoveredItems.accidental')}</li>
-                                            <li>{t('products.warranty.notCoveredItems.misuse')}</li>
-                                            <li>{t('products.warranty.notCoveredItems.limit')}</li>
-                                        </ul>
-                                    </div>
+                                            <p><strong>{t('products.warranty.intro')}</strong></p>
+                                            <p>{t('products.warranty.coverage')}<br />{t('products.warranty.shippingCost')}</p>
+                                            <p>{t('products.warranty.unavailableItem')}</p>
+                                            <p><strong>{t('products.warranty.whatsNotCovered')}</strong></p>
+                                            <ul className="list-disc pl-4 space-y-1">
+                                                <li>{t('products.warranty.notCoveredItems.lost')}</li>
+                                                <li>{t('products.warranty.notCoveredItems.accidental')}</li>
+                                                <li>{t('products.warranty.notCoveredItems.misuse')}</li>
+                                                <li>{t('products.warranty.notCoveredItems.limit')}</li>
+                                            </ul>
+                                        </div>
                                     </details>
 
                                     <details className="accordion accordion--lg group border-t border-b border-zinc-100" aria-expanded="false">
@@ -595,7 +595,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                     <path d="M12 18h3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 </svg>
                                                 {t('products.shipping.title')}
-                                        </span>
+                                            </span>
                                             <span className="relative w-3 h-3 flex items-center justify-center">
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full transition-transform duration-300 rotate-90 group-open:rotate-0"></span>
                                                 <span className="absolute w-full h-0.5 bg-accent rounded-full"></span>
@@ -603,9 +603,9 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         </summary>
 
                                         <div className="accordion__content pb-6 prose prose-sm max-w-none text-zinc-600">
-                                        <p>{t('products.shipping.insideBeirut')}</p>
-                                        <p>{t('products.shipping.outsideBeirut')}</p>
-                                    </div>
+                                            <p>{t('products.shipping.insideBeirut')}</p>
+                                            <p>{t('products.shipping.outsideBeirut')}</p>
+                                        </div>
                                     </details>
                                 </div>
                             </div>

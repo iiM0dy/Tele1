@@ -19,7 +19,7 @@ export default async function CategoryPage({
     const displayName = language === 'ar' && category.nameAr ? category.nameAr : category.name;
 
     return (
-        <div className="container mx-auto px-4 pt-[107px] pb-12">
+        <div className="w-full px-4 md:px-[48px] pt-[107px] pb-12">
             <h1 className="text-4xl font-bold mb-8">{displayName}</h1>
             <ProductGrid products={category.products as any} title="" />
         </div>
