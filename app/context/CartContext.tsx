@@ -24,6 +24,9 @@ interface CartContextType {
     subtotal: number;
     isDrawerOpen: boolean;
     setIsDrawerOpen: (isOpen: boolean) => void;
+    lastAddedItem: CartItem | null;
+    showSuccess: boolean;
+    setShowSuccess: (show: boolean) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -32,6 +35,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [lastAddedItem, setLastAddedItem] = useState<CartItem | null>(null);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     // Load from local storage on mount
     useEffect(() => {
@@ -53,7 +58,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
     }, [items, isLoaded]);
 
+    // Timer to hide success message
+    useEffect(() => {
+        if (showSuccess) {
+            const timer = setTimeout(() => setShowSuccess(false), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [showSuccess]);
+
     const addItem = (newItem: CartItem) => {
+        setLastAddedItem(newItem);
+        setShowSuccess(true);
         setItems(prev => {
             const existing = prev.find(item => item.id === newItem.id);
             if (existing) {
@@ -86,16 +101,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     return (
-        <CartContext.Provider value={{ 
-            items, 
-            addItem, 
-            removeItem, 
-            updateQuantity, 
-            clearCart, 
-            cartCount, 
+        <CartContext.Provider value={{
+            items,
+            addItem,
+            removeItem,
+            updateQuantity,
+            clearCart,
+            cartCount,
             subtotal,
             isDrawerOpen,
-            setIsDrawerOpen
+            setIsDrawerOpen,
+            lastAddedItem,
+            showSuccess,
+            setShowSuccess
         }}>
             {children}
         </CartContext.Provider>

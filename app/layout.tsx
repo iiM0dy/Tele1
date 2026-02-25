@@ -6,6 +6,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CartSuccessPopup from "@/components/CartSuccessPopup";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 
 const inter = Inter({
@@ -71,6 +72,7 @@ export default function RootLayout({
                 </main>
                 <Footer />
               </div>
+              <CartSuccessPopup />
               <Toaster position="bottom-right" />
             </CartProvider>
           </LanguageProvider>

@@ -20,6 +20,7 @@ export interface Product {
     Stock: number;
     category: {
         name: string;
+        nameAr?: string | null;
     } | null;
 }
 
@@ -32,11 +33,11 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, hideInfo, index, layout = 'medium', sizes }: ProductCardProps) {
-    const { t } = useLanguage();
-    const { addItem } = useCart();
+    const { t, language } = useLanguage();
+    const { addItem, setIsDrawerOpen } = useCart();
 
     const images = [...(product.Images || [])];
-    
+
     const mainImage = images[0] || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800';
     const price = Number(product.Price);
     const discountPrice = product.discountPrice ? Number(product.discountPrice) : null;
@@ -62,87 +63,82 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
             slug: product.slug,
             originalPrice: discountPrice ? price : undefined
         });
-        toast.success(t('products.addToCartSuccess'));
     };
 
     return (
-        <div className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-zinc-100 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500">
+        <div className="flex flex-col group h-full bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+            {/* Figure / Media Area */}
             <div className="relative aspect-square overflow-hidden bg-zinc-50">
+                {/* Badges */}
+                <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
+                    {product.BestSeller && (
+                        <span className="bg-primary text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
+                            {t('home.bestSellerLabel')}
+                        </span>
+                    )}
+                    {discountPrice && (
+                        <span className="bg-highlight text-black text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
+                            {t('products.salePercent').replace('{percent}', Math.round((1 - discountPrice / price) * 100).toString())}
+                        </span>
+                    )}
+                </div>
+
+                {/* Main Image */}
                 <Link href={`/products/${product.slug}`} className="block w-full h-full">
                     <Image
                         src={mainImage}
                         alt={product.Name}
                         fill
+                        className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                         sizes={getSizes()}
                         priority={isPriority}
                         fetchPriority={isPriority ? "high" : undefined}
-                        className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
                     />
                     {hoverImage && (
                         <Image
                             src={hoverImage}
                             alt={product.Name}
                             fill
-                            sizes={getSizes()}
                             className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
+                            sizes={getSizes()}
                         />
                     )}
                 </Link>
-                
-                {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10 pointer-events-none">
-                    {product.BestSeller && (
-                        <div className="bg-primary/90 backdrop-blur-md text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-                            {t('home.bestSellerLabel')}
-                        </div>
-                    )}
-                    {discountPrice && (
-                        <div className="bg-highlight text-black text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-                            {t('products.salePercent').replace('{percent}', Math.round((1 - discountPrice / price) * 100).toString())}
-                        </div>
-                    )}
-                </div>
 
-                {/* Quick Add Overlay */}
+                {/* Quick Add Button */}
                 {!hideInfo && (
-                    <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 z-20">
-                        <button
-                            onClick={handleAddToCart}
-                            className="w-full py-3 bg-accent text-black text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-accent/20 hover:bg-black hover:text-white active:scale-95 transition-all duration-300 rounded-xl"
-                        >
-                            {t('products.quickAdd')}
-                        </button>
-                    </div>
+                    <button
+                        onClick={handleAddToCart}
+                        className="absolute bottom-3 right-3 md:bottom-4 md:right-4 w-8 h-8 md:w-10 md:h-10 bg-accent text-black flex items-center justify-center rounded-lg md:rounded-xl shadow-lg transition-all duration-300 opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 hover:bg-black hover:text-white hover:scale-110 active:scale-95"
+                        aria-label={t('products.addToCart')}
+                    >
+                        <span className="sr-only">{t('products.addToCart')}</span>
+                        <svg aria-hidden="true" focusable="false" fill="none" width="14" height="14" viewBox="0 0 12 12" className="md:w-4 md:h-4">
+                            <path d="M6 0v12M0 6h12" stroke="currentColor" strokeWidth="2"></path>
+                        </svg>
+                    </button>
                 )}
             </div>
 
+            {/* Info Area */}
             {!hideInfo && (
-                <div className="p-6 space-y-3">
-                    <Link href={`/products/${product.slug}`}>
-                        <h2 className="text-[13px] font-bold tracking-tight text-[#0F172A] line-clamp-2 min-h-[40px] group-hover:text-accent transition-colors">
-                            {product.Name}
-                        </h2>
+                <div className="flex flex-col p-5 space-y-2">
+                    <Link
+                        href={`/products/${product.slug}`}
+                        className="text-sm font-bold text-primary group-hover:text-accent transition-colors line-clamp-2 min-h-[40px]"
+                    >
+                        {product.Name}
                     </Link>
-                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-zinc-50">
+
+                    <div className="flex items-center gap-3 pt-1">
                         {discountPrice ? (
-                            <div className="flex items-center gap-3">
-                                <span className="text-base font-black text-red-600">
-                                    ${discountPrice.toFixed(2)}
-                                </span>
-                                <span className="text-xs text-zinc-400 line-through">${price.toFixed(2)}</span>
-                            </div>
+                            <>
+                                <span className="text-base font-black text-red-600">${discountPrice.toFixed(2)}</span>
+                                <span className="text-xs text-zinc-400 line-through font-medium">${price.toFixed(2)}</span>
+                            </>
                         ) : (
-                            <span className="text-base font-black text-[#0F172A]">
-                                ${price.toFixed(2)}
-                            </span>
+                            <span className="text-base font-black text-primary">${price.toFixed(2)}</span>
                         )}
-                        <button 
-                            onClick={handleAddToCart}
-                            className="w-8 h-8 rounded-full bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all"
-                            aria-label={t('products.addToCart')}
-                        >
-                            <HiOutlineShoppingBag className="w-4 h-4" />
-                        </button>
                     </div>
                 </div>
             )}

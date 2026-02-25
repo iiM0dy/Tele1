@@ -18,6 +18,7 @@ interface Product {
     Stock: number;
     category: {
         name: string;
+        nameAr?: string | null;
     } | null;
 }
 

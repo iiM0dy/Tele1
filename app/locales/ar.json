@@ -35,7 +35,8 @@
         "availability": "التوفر",
         "price": "السعر",
         "viewResults": "عرض النتائج",
-        "filter": "تصفية"
+        "filter": "تصفية",
+        "view": "عرض"
     },
     "header": {
         "brandName": "TELE1"

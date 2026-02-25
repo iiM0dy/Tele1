@@ -99,7 +99,6 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
             quantity: quantity,
             slug: product.slug
         });
-        toast.success(t('products.addToCartSuccess') || 'Added to cart');
     };
 
     const handleNext = (e: React.MouseEvent) => {

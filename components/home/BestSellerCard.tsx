@@ -44,8 +44,6 @@ export default function BestSellerCard({ product, index }: { product: any; index
             quantity: 1,
             slug: product.slug
         });
-        setIsDrawerOpen(true);
-        toast.success(t('products.addToCartSuccess'));
     };
 
     return (
@@ -92,11 +90,11 @@ export default function BestSellerCard({ product, index }: { product: any; index
                 <button
                     onClick={handleAddToCart}
                     type="submit"
-                    className="absolute bottom-4 right-4 w-10 h-10 bg-accent text-black flex items-center justify-center rounded-xl shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-black hover:text-white hover:scale-110 active:scale-95"
+                    className="absolute bottom-3 right-3 md:bottom-4 md:right-4 w-8 h-8 md:w-10 md:h-10 bg-accent text-black flex items-center justify-center rounded-lg md:rounded-xl shadow-lg transition-all duration-300 opacity-100 translate-y-0 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 hover:bg-black hover:text-white hover:scale-110 active:scale-95"
                     aria-label={t('products.addToCart')}
                 >
                     <span className="sr-only">{t('products.addToCart')}</span>
-                    <svg aria-hidden="true" focusable="false" fill="none" width="16" height="16" viewBox="0 0 12 12" className="icon icon-plus">
+                    <svg aria-hidden="true" focusable="false" fill="none" width="14" height="14" viewBox="0 0 12 12" className="md:w-4 md:h-4">
                         <path d="M6 0v12M0 6h12" stroke="currentColor" strokeWidth="2"></path>
                     </svg>
                 </button>
@@ -104,9 +102,6 @@ export default function BestSellerCard({ product, index }: { product: any; index
 
             {/* Info Area */}
             <div className="flex flex-col p-5 space-y-2">
-                <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                    {language === 'ar' && product.category?.nameAr ? product.category.nameAr : product.category?.name}
-                </div>
                 <Link
                     href={`/products/${product.slug}`}
                     className="text-sm font-bold text-primary group-hover:text-accent transition-colors line-clamp-2 min-h-[40px]"
