@@ -83,6 +83,55 @@ export default function CollectionPage({
     const isAr = language === 'ar';
     const displayName = isAr && collectionNameAr ? collectionNameAr : collectionName;
 
+    // Filtering and Sorting logic
+    const processedProducts = useMemo(() => {
+        let filtered = [...products];
+
+        // Apply filters
+        if (filters.inStockOnly) {
+            filtered = filtered.filter(product => product.Stock > 0);
+        }
+
+        // Filter by price
+        filtered = filtered.filter(product => {
+            const price = product.discountPrice || product.Price;
+            return price >= filters.priceRange.min && price <= filters.priceRange.max;
+        });
+
+        // Apply sorting
+        switch (sortBy) {
+            case 'best-selling':
+                filtered.sort((a, b) => (b.BestSeller ? 1 : 0) - (a.BestSeller ? 1 : 0));
+                break;
+            case 'title-ascending':
+                filtered.sort((a, b) => a.Name.localeCompare(b.Name));
+                break;
+            case 'title-descending':
+                filtered.sort((a, b) => b.Name.localeCompare(a.Name));
+                break;
+            case 'price-ascending':
+                filtered.sort((a, b) => (a.discountPrice || a.Price) - (b.discountPrice || b.Price));
+                break;
+            case 'price-descending':
+                filtered.sort((a, b) => (b.discountPrice || b.Price) - (a.discountPrice || a.Price));
+                break;
+            case 'created-ascending':
+                break;
+            case 'created-descending':
+                filtered.reverse();
+                break;
+            default:
+                break;
+        }
+        return filtered;
+    }, [products, sortBy, filters]);
+
+    const getGridCols = () => {
+        if (layout === 'large') return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+        if (layout === 'medium') return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
+        return 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6';
+    };
+
     // If we have types and we are currently on a Brand page (but not a Type page yet)
     if (brandSlug && types && types.length > 0) {
         return (
@@ -147,48 +196,6 @@ export default function CollectionPage({
             </div>
         );
     }
-
-    // Filtering and Sorting logic
-    const processedProducts = useMemo(() => {
-        let filtered = [...products];
-
-        // Apply filters
-        if (filters.inStockOnly) {
-            filtered = filtered.filter(product => product.Stock > 0);
-        }
-
-        // Filter by price
-        filtered = filtered.filter(product => {
-            const price = product.discountPrice || product.Price;
-            return price >= filters.priceRange.min && price <= filters.priceRange.max;
-        });
-
-        // Apply sorting
-        switch (sortBy) {
-            case 'best-selling':
-                return filtered.sort((a, b) => (b.BestSeller ? 1 : 0) - (a.BestSeller ? 1 : 0));
-            case 'title-ascending':
-                return filtered.sort((a, b) => a.Name.localeCompare(b.Name));
-            case 'title-descending':
-                return filtered.sort((a, b) => b.Name.localeCompare(a.Name));
-            case 'price-ascending':
-                return filtered.sort((a, b) => (a.discountPrice || a.Price) - (b.discountPrice || b.Price));
-            case 'price-descending':
-                return filtered.sort((a, b) => (b.discountPrice || b.Price) - (a.discountPrice || a.Price));
-            case 'created-ascending':
-                return filtered;
-            case 'created-descending':
-                return filtered.reverse();
-            default:
-                return filtered;
-        }
-    }, [products, sortBy, filters]);
-
-    const getGridCols = () => {
-        if (layout === 'large') return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-        if (layout === 'medium') return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
-        return 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6';
-    };
 
     return (
         <div className="flex flex-col min-h-screen bg-white pt-[90px]">

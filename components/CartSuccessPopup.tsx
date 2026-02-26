@@ -2,10 +2,9 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useCart } from '@/app/context/CartContext';
 import { useLanguage } from '@/app/context/LanguageContext';
-import { HiCheck, HiX } from 'react-icons/hi';
+import { HiX } from 'react-icons/hi';
 
 export default function CartSuccessPopup() {
     const { showSuccess, setShowSuccess, lastAddedItem, setIsDrawerOpen } = useCart();

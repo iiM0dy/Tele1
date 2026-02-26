@@ -11,7 +11,7 @@ type TranslationObject = { [key: string]: TranslationValue };
 interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => void;
-    t: (key: string) => any;
+    t: (key: string) => string;
     dir: 'ltr' | 'rtl';
     isLoaded: boolean;
 }
@@ -74,21 +74,21 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     // Translation function with fallback
-    const t = useCallback((key: string): any => {
-        if (!translations) return ''; // Return empty string instead of key to prevent flash
+    const t = useCallback((key: string): string => {
+        if (!translations) return '';
 
         const keys = key.split('.');
-        let result: TranslationValue = translations;
+        let result: any = translations;
 
         for (const k of keys) {
-            if (typeof result === 'object' && result !== null && !Array.isArray(result) && k in result) {
+            if (result && typeof result === 'object' && k in result) {
                 result = result[k];
             } else {
                 return key;
             }
         }
 
-        return result;
+        return typeof result === 'string' ? result : key;
     }, [translations]);
 
     const dir = language === 'ar' ? 'rtl' : 'ltr';

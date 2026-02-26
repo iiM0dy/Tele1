@@ -27,14 +27,13 @@ interface ProductsClientProps {
 
 export default function ProductsClient({ initialProducts }: ProductsClientProps) {
     const { t, language } = useLanguage();
-    const [cols, setCols] = useState(4);
-
-    useEffect(() => {
-        // Set default to 2 columns on mobile
+    const [cols, setCols] = useState(() => {
         if (typeof window !== 'undefined' && window.innerWidth < 768) {
-            setCols(2);
+            return 2;
         }
-    }, []);
+        return 4;
+    });
+
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     // Sort state

@@ -38,17 +38,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const [lastAddedItem, setLastAddedItem] = useState<CartItem | null>(null);
     const [showSuccess, setShowSuccess] = useState(false);
 
-    // Load from local storage on mount
+    // Initial load from localStorage
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            try {
-                setItems(JSON.parse(savedCart));
-            } catch (error) {
-                console.error("Failed to parse cart from local storage", error);
+        if (typeof window !== 'undefined') {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                try {
+                    const parsed = JSON.parse(savedCart);
+                    setItems(parsed);
+                } catch (error) {
+                    console.error("Failed to parse cart from local storage", error);
+                }
             }
+            setIsLoaded(true);
         }
-        setIsLoaded(true);
     }, []);
 
     // Save to local storage on change

@@ -206,7 +206,7 @@ export default function ReviewsClient({
                                         </div>
 
                                         <p className="text-[10px] text-white/60 line-clamp-3 mb-6 leading-relaxed font-medium italic">
-                                            "{review.description}"
+                                            &quot;{review.description}&quot;
                                         </p>
 
                                         <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
