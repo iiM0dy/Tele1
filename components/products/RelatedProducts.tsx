@@ -15,7 +15,7 @@ export default function RelatedProducts({ products }: { products: any[] }) {
         if (scrollRef.current) {
             const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
             // Scroll by one item width (approx 25% of container on desktop)
-            const itemWidth = clientWidth / 4;
+            const itemWidth = clientWidth / 5;
             const scrollTo = direction === 'left'
                 ? scrollLeft - clientWidth
                 : scrollLeft + clientWidth;
@@ -28,9 +28,9 @@ export default function RelatedProducts({ products }: { products: any[] }) {
     };
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="py-12 md:py-24 bg-white overflow-hidden">
             <div className="w-full px-4 md:px-[48px]">
-                <div className="flex flex-col items-center mb-16 relative">
+                <div className="flex flex-col items-center mb-8 md:mb-16 relative">
                     <h2
                         className="text-[35px] font-sans font-black tracking-tighter text-[#0F172A] mb-4 text-center uppercase"
                     >
@@ -42,7 +42,7 @@ export default function RelatedProducts({ products }: { products: any[] }) {
                 {/* Slider Container */}
                 <div className="relative group/carousel px-4 md:px-0">
                     {/* Navigation Buttons - Circular and centered on sides */}
-                    {products.length > 1 && (
+                    {products.length > 5 && (
                         <>
                             <button
                                 onClick={() => scroll('left')}
@@ -68,7 +68,7 @@ export default function RelatedProducts({ products }: { products: any[] }) {
                         {products.map((product, index) => (
                             <div
                                 key={product.id}
-                                className="min-w-[75%] md:min-w-[calc(25%-18px)] snap-start"
+                                className="min-w-[75%] md:w-[calc(20%-19.2px)] md:min-w-[calc(20%-19.2px)] md:max-w-[calc(20%-19.2px)] snap-start"
                             >
                                 <BestSellerCard product={product} index={index} />
                             </div>

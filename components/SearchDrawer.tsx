@@ -154,13 +154,13 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                                     onClick={onClose}
                                                     className="group block"
                                                 >
-                                                    <div className="relative aspect-4/5 bg-zinc-50 overflow-hidden rounded-2xl mb-4">
+                                                    <div className="relative aspect-4/5 bg-white overflow-hidden rounded-2xl mb-4">
                                                         <Image
                                                             src={product.Images?.[0] || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=400'}
                                                             alt={product.Name}
                                                             fill
                                                             unoptimized
-                                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                            className="object-contain p-2 transition-transform duration-700 group-hover:scale-105"
                                                         />
                                                     </div>
                                                     <h4 className="text-[13px] font-black uppercase tracking-tight text-primary mb-1 line-clamp-1 group-hover:text-accent transition-colors">

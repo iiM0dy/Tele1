@@ -25,7 +25,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             // On mobile, scroll by a significant portion of the screen like New Releases
             const step = window.innerWidth < 768
                 ? containerWidth * 0.75
-                : containerWidth / (window.innerWidth >= 1024 ? 4 : 2);
+                : containerWidth / (window.innerWidth >= 1024 ? 5 : 2);
 
             const { scrollLeft } = scrollRef.current;
             const scrollTo = direction === 'left'
@@ -53,20 +53,24 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             </div>
             <div className="relative group w-full px-4 md:px-[48px]">
                 {/* Navigation Buttons - Only visible on desktop/tablet where they make sense */}
-                <button
-                    onClick={() => scroll('left')}
-                    className="absolute left-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
-                    aria-label={t('common.previous')}
-                >
-                    <HiOutlineChevronLeft className="w-6 h-6" />
-                </button>
-                <button
-                    onClick={() => scroll('right')}
-                    className="absolute right-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
-                    aria-label={t('common.next')}
-                >
-                    <HiOutlineChevronRight className="w-6 h-6" />
-                </button>
+                {reviews.length > 5 && (
+                    <>
+                        <button
+                            onClick={() => scroll('left')}
+                            className="absolute left-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
+                            aria-label={t('common.previous')}
+                        >
+                            <HiOutlineChevronLeft className="w-6 h-6" />
+                        </button>
+                        <button
+                            onClick={() => scroll('right')}
+                            className="absolute right-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
+                            aria-label={t('common.next')}
+                        >
+                            <HiOutlineChevronRight className="w-6 h-6" />
+                        </button>
+                    </>
+                )}
 
                 {/* Slider Container */}
                 <div
@@ -76,7 +80,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                     {reviews.map((review) => (
                         <div
                             key={review.id}
-                            className="w-[85%] md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] min-w-[85%] md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] lg:max-w-[calc(25%-18px)] h-[420px] shrink-0 snap-start bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-zinc-100 flex flex-col"
+                            className="w-[85%] md:w-[calc(50%-12px)] lg:w-[calc(20%-19.2px)] min-w-[85%] md:min-w-[calc(50%-12px)] lg:min-w-[calc(20%-19.2px)] lg:max-w-[calc(20%-19.2px)] h-[420px] shrink-0 snap-start bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-zinc-100 flex flex-col"
                         >
                             {/* Review Image */}
                             {review.image && (
@@ -88,7 +92,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                                         className="object-cover"
                                         sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 25vw"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
                                 </div>
                             )}
 
@@ -105,7 +109,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                             </div>
 
                             {/* Review Content */}
-                            <div className="p-8 pt-6 flex flex-col gap-4 flex-grow text-center">
+                            <div className="p-8 pt-6 flex flex-col gap-4 grow text-center">
                                 {/* Name */}
                                 <span className="text-xl font-black text-primary tracking-tight">
                                     {review.name}

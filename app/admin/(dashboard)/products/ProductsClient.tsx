@@ -606,11 +606,7 @@ export default function ProductsClient({
                     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                         <div className="flex flex-col gap-1">
                             {/* Breadcrumbs */}
-                            <div className="flex items-center gap-2 text-sm text-white/60 mb-1">
-                                <Link href="/admin/dashboard" className="hover:text-accent cursor-pointer transition-colors uppercase tracking-[0.2em] text-[10px] font-black">{t('admin.dashboard')}</Link>
-                                <MdChevronRight className={`text-[12px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />
-                                <span className="text-white font-black uppercase tracking-[0.2em] text-[10px]">{t('admin.products')}</span>
-                            </div>
+
                             <h2 className="text-3xl font-black text-white tracking-tight uppercase">{t('admin.products')}</h2>
                             <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.manageCatalog')}</p>
                         </div>
@@ -657,9 +653,13 @@ export default function ProductsClient({
                                     </>
                                 )}
                             </div>
-                            <label className="bg-white/2 border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all shadow-sm cursor-pointer hover:border-accent/30">
-                                <MdFileDownload className="text-[20px] text-accent" />
-                                {t('admin.importData')}
+                            <label className="bg-white/2 border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all shadow-sm cursor-pointer hover:border-accent/30 disabled:opacity-50">
+                                {isSubmittingBulk ? (
+                                    <MdSync className="text-[20px] text-accent animate-spin" />
+                                ) : (
+                                    <MdFileDownload className="text-[20px] text-accent" />
+                                )}
+                                {isSubmittingBulk ? t('admin.importing') || "Importing..." : t('admin.importData')}
                                 <input
                                     type="file"
                                     accept=".csv, .xlsx, .xls"
@@ -879,7 +879,7 @@ export default function ProductsClient({
                         {/* Table */}
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse min-w-[900px]">
-                                <thead className="bg-white/[0.02] border-b border-white/5 text-[10px] font-semibold text-white/40 tracking-widest">
+                                <thead className="bg-white/[0.02] border-b border-white/5 text-[10px] font-bold text-white/40 tracking-wider">
                                     <tr>
                                         <th className="p-3 sm:p-5 w-10 sm:w-12 text-center">
                                             <input
@@ -917,10 +917,21 @@ export default function ProductsClient({
                                                     <div className="flex items-center gap-3 sm:gap-4">
                                                         <div className="relative size-10 sm:size-12 rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden shrink-0">
                                                             <Image
-                                                                src={product.images ? product.images.split(',')[0].trim() : '/placeholder.jpg'}
+                                                                src={(() => {
+                                                                    if (!product.images) return '/placeholder.jpg';
+                                                                    try {
+                                                                        const imgStr = product.images.trim();
+                                                                        if (imgStr.startsWith('[') && imgStr.endsWith(']')) {
+                                                                            const parsed = JSON.parse(imgStr);
+                                                                            if (Array.isArray(parsed) && parsed.length > 0) return parsed[0].trim();
+                                                                        }
+                                                                    } catch (e) { }
+                                                                    return product.images.split(',')[0].trim() || '/placeholder.jpg';
+                                                                })()}
                                                                 alt={product.name || 'Product Image'}
                                                                 fill
                                                                 className="object-cover"
+                                                                unoptimized={product.images?.includes('postimg.cc') || product.images?.includes('postimg.org')}
                                                                 sizes="(max-width: 640px) 40px, 48px"
                                                             />
                                                         </div>
@@ -940,11 +951,11 @@ export default function ProductsClient({
                                                 </td>
                                                 <td className="p-3 sm:p-5">
                                                     <div className="flex flex-col gap-1 items-start">
-                                                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-accent/10 text-accent border border-accent/20">
+                                                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-bold tracking-wider bg-accent/10 text-accent border border-accent/20">
                                                             {product.category?.name || 'Uncategorized'}
                                                         </span>
                                                         {product.subCategory && (
-                                                            <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-white/10 text-white/60 border border-white/10">
+                                                            <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-bold tracking-wider bg-white/10 text-white/60 border border-white/10">
                                                                 {product.subCategory.name}
                                                             </span>
                                                         )}
@@ -962,7 +973,7 @@ export default function ProductsClient({
                                                 </td>
                                                 <td className="p-3 sm:p-5">
                                                     <div className="flex flex-col gap-1 w-full max-w-[140px]">
-                                                        <div className="flex flex-wrap items-center text-[10px] font-black uppercase tracking-[0.2em]">
+                                                        <div className="flex flex-wrap items-center text-[10px] font-bold tracking-wider">
                                                             <span className={`font-black ${Number(product.stock) === 0 ? 'text-red-500' :
                                                                 Number(product.stock) <= 10 ? 'text-orange-500' :
                                                                     'text-accent'
@@ -970,7 +981,7 @@ export default function ProductsClient({
                                                                 {Number(product.stock) === 0 ? t('admin.outOfStock') : `${product.stock} ${t('admin.inStock')}`}
                                                             </span>
                                                             {Number(product.stock) > 0 && Number(product.stock) <= 10 && (
-                                                                <span className="text-orange-500 text-[10px] font-black uppercase ml-1 sm:ml-2">Low</span>
+                                                                <span className="text-orange-500 text-[10px] font-bold ml-1 sm:ml-2">Low</span>
                                                             )}
                                                         </div>
                                                     </div>
@@ -1004,7 +1015,7 @@ export default function ProductsClient({
                                                     </button>
                                                 </td>
                                                 <td className="p-3 sm:p-5">
-                                                    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] border ${Number(product.stock) > 0
+                                                    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider border ${Number(product.stock) > 0
                                                         ? 'bg-accent/10 text-accent border-accent/20'
                                                         : 'bg-white/[0.02] text-white/20 border-white/10'
                                                         }`}>

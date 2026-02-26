@@ -124,7 +124,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
 
     return (
         <>
-            <section className="bg-white min-h-screen pt-[144px] pb-12">
+            <section className="bg-white min-h-screen pt-[144px] pb-6 md:pb-12">
                 {/* Image Preview Modal (PhotoSwipe Style) */}
                 {previewIdx !== null && (
                     <div
@@ -220,7 +220,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                     src={img}
                                                     alt={`${product.Name} thumbnail ${idx + 1}`}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-contain p-2"
                                                     sizes="(max-width: 768px) 20vw, 100px"
                                                 />
                                             </button>
@@ -234,7 +234,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                     onMouseLeave={() => setIsHovered(false)}
                                 >
                                     <div
-                                        className="relative w-full aspect-square md:max-w-[500px] lg:max-w-[600px] mx-auto bg-zinc-50 rounded-lg overflow-hidden touch-pan-y"
+                                        className="relative w-full aspect-square md:max-w-[500px] lg:max-w-[600px] mx-auto bg-white rounded-lg overflow-hidden touch-pan-y"
                                         onTouchStart={onTouchStart}
                                         onTouchMove={onTouchMove}
                                         onTouchEnd={onTouchEnd}
@@ -263,7 +263,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                                         alt={`${product.Name} image ${idx + 1}`}
                                                         fill
                                                         priority={idx === 0}
-                                                        className="object-cover transition-transform duration-700 hover:scale-105"
+                                                        className="object-contain p-4 transition-transform duration-700 hover:scale-105"
                                                         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 800px"
                                                     />
                                                 </div>

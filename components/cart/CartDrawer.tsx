@@ -93,7 +93,7 @@ export default function CartDrawer() {
                                                     src={item.image}
                                                     alt={item.name}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-contain p-1"
                                                     sizes="80px"
                                                 />
                                             </div>
@@ -133,27 +133,27 @@ export default function CartDrawer() {
                                             <div className="flex items-center border border-[#dcdcdc] rounded-md h-8 w-fit bg-white">
                                                 <button
                                                     onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
-                                                className="w-8 h-full flex items-center justify-center hover:bg-[#f9f9f9] transition-colors"
-                                                aria-label={t('cart.decreaseQuantity')}
-                                            >
-                                                <svg className="w-2.5 h-2.5 fill-[#333]" viewBox="0 0 20 20">
+                                                    className="w-8 h-full flex items-center justify-center hover:bg-[#f9f9f9] transition-colors"
+                                                    aria-label={t('cart.decreaseQuantity')}
+                                                >
+                                                    <svg className="w-2.5 h-2.5 fill-[#333]" viewBox="0 0 20 20">
                                                         <path fillRule="evenodd" d="M5 10c0-.414.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75h-8.5c-.414 0-.75-.336-.75-.75Z"></path>
                                                     </svg>
                                                 </button>
                                                 <input
-                                                className="w-[30px] border-none text-center text-[0.9rem] font-medium text-[#1a1a1a] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                type="number"
-                                                aria-label={t('cart.quantity')}
-                                                value={item.quantity}
-                                                onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 0)}
-                                                min="0"
-                                            />
-                                            <button
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                className="w-8 h-full flex items-center justify-center hover:bg-[#f9f9f9] transition-colors"
-                                                aria-label={t('cart.increaseQuantity')}
-                                            >
-                                                <svg className="w-2.5 h-2.5 fill-[#333]" viewBox="0 0 20 20">
+                                                    className="w-[30px] border-none text-center text-[0.9rem] font-medium text-[#1a1a1a] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                    type="number"
+                                                    aria-label={t('cart.quantity')}
+                                                    value={item.quantity}
+                                                    onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 0)}
+                                                    min="0"
+                                                />
+                                                <button
+                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    className="w-8 h-full flex items-center justify-center hover:bg-[#f9f9f9] transition-colors"
+                                                    aria-label={t('cart.increaseQuantity')}
+                                                >
+                                                    <svg className="w-2.5 h-2.5 fill-[#333]" viewBox="0 0 20 20">
                                                         <path d="M10.75 5.75c0-.414-.336-.75-.75-.75s-.75.336-.75.75v3.5h-3.5c-.414 0-.75.336-.75.75s.336.75.75.75h3.5v3.5c0 .414.336.75.75.75s.75-.336.75-.75v-3.5h3.5c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-3.5v-3.5Z"></path>
                                                     </svg>
                                                 </button>

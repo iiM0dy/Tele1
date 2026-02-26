@@ -68,7 +68,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
     return (
         <div className="flex flex-col group h-full bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
             {/* Figure / Media Area */}
-            <div className="relative aspect-square overflow-hidden bg-zinc-50">
+            <div className="relative w-full aspect-square overflow-hidden bg-white mx-auto">
                 {/* Badges */}
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
                     {product.BestSeller && (
@@ -89,7 +89,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
                         src={mainImage}
                         alt={product.Name}
                         fill
-                        className={`object-cover transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-110'}`}
+                        className={`object-contain p-4 transition-all duration-700 ${hoverImage ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
                         sizes={getSizes()}
                         priority={isPriority}
                         fetchPriority={isPriority ? "high" : undefined}
@@ -99,7 +99,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
                             src={hoverImage}
                             alt={product.Name}
                             fill
-                            className="object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110"
+                            className="object-contain p-4 transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-105"
                             sizes={getSizes()}
                         />
                     )}
@@ -125,7 +125,7 @@ export default function ProductCard({ product, hideInfo, index, layout = 'medium
                 <div className="flex flex-col p-5 space-y-2">
                     <Link
                         href={`/products/${product.slug}`}
-                        className="text-sm font-bold text-primary group-hover:text-accent transition-colors line-clamp-2 min-h-[40px]"
+                        className="text-sm font-bold text-primary group-hover:text-accent transition-colors line-clamp-2 min-h-[45px]"
                     >
                         {product.Name}
                     </Link>

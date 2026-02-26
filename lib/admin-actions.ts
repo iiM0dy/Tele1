@@ -1280,28 +1280,40 @@ export async function bulkCreateProducts(products: any[]) {
             }
 
             // Merge images
-            const imageStr = (
-                p.Images || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"
-            ).toString();
-            const mainImages = imageStr
-                .split(",")
-                .map((s: string) => s.trim())
-                .filter(Boolean);
+            let imageStr = (
+                p.Images || p.images || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800"
+            ).toString().trim();
+
+            // Handle potential JSON array format from some exports/imports
+            let mainImages: string[] = [];
+            if (imageStr.startsWith('[') && imageStr.endsWith(']')) {
+                try {
+                    const parsed = JSON.parse(imageStr);
+                    if (Array.isArray(parsed)) {
+                        mainImages = parsed.map(img => img.toString().trim()).filter(Boolean);
+                    }
+                } catch (e) {
+                    // Fallback if JSON parse fails
+                    mainImages = imageStr.split(",").map((s: string) => s.trim()).filter(Boolean);
+                }
+            } else {
+                mainImages = imageStr.split(",").map((s: string) => s.trim()).filter(Boolean);
+            }
 
             const product = await prisma.product.create({
                 data: {
-                    Name: p.Name?.toString() || "Unnamed Product",
+                    Name: (p.Name || p.name)?.toString() || "Unnamed Product",
                     slug:
-                        (p.Name?.toString() || "unnamed")
+                        ((p.Name || p.name)?.toString() || "unnamed")
                             .toLowerCase()
                             .replace(/ /g, "-")
                             .replace(/[^\w-]+/g, "") +
                         "-" +
                         Math.random().toString(36).substr(2, 5),
-                    description: p.Description?.toString() || "",
+                    description: (p.Description || p.description)?.toString() || "",
                     Price: typeof p.Price === 'number' ? p.Price : parseFloat(p.Price?.toString() || "0"),
-                    quantity: typeof p.Stock === 'number' ? p.Stock : parseInt(p.Stock?.toString() || "0"),
-                    SKU: p.SKU?.toString() || "",
+                    quantity: typeof p.Stock === 'number' ? p.Stock : (typeof p.quantity === 'number' ? p.quantity : parseInt(p.Stock?.toString() || p.quantity?.toString() || "0")),
+                    SKU: (p.SKU || p.sku)?.toString() || "",
                     Images: mainImages.join(","),
                     Category: category.id,
                     subCategoryId: subCategoryId,
@@ -1968,10 +1980,9 @@ export async function bulkRemoveSale(ids: string[]) {
 }
 
 export async function bulkDeleteProducts(ids: string[]) {
-    // const session = await getServerSession(authOptions);
-    // if (!session || (session.user.role !== 'SUPER_ADMIN' && !session.user.canDeleteProducts)) {
-    //     return { success: false, error: "Unauthorized" };
-    // }
+    if (!Array.isArray(ids) || ids.length === 0) {
+        return { success: false, error: "No products selected" };
+    }
 
     try {
         // 1. Identify products that are part of orders (these cannot be deleted)

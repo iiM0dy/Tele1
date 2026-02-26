@@ -129,12 +129,12 @@ export default function SearchBar({ isOpen, onClose }: SearchBarProps) {
                                                 onClick={onClose}
                                                 className="flex items-center gap-4 group p-3 hover:bg-zinc-50 rounded-2xl transition-all border border-transparent hover:border-zinc-100"
                                             >
-                                                <div className="relative w-16 h-16 bg-zinc-50 rounded-xl overflow-hidden shrink-0">
+                                                <div className="relative w-16 h-16 bg-white rounded-xl overflow-hidden shrink-0">
                                                     <Image
                                                         src={product.Images?.[0] || '/placeholder.png'}
                                                         alt={product.Name}
                                                         fill
-                                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                                        className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                                                     />
                                                 </div>
                                                 <div className="flex-1 min-w-0">

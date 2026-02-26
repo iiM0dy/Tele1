@@ -18,7 +18,7 @@ interface CollectionListProps {
 const CollectionList = async ({ categories }: CollectionListProps) => {
   if (!categories || categories.length === 0) return null;
 
-  const { language } = await getI18n();
+  const { language, t } = await getI18n();
   const isAr = language === 'ar';
 
   return (
@@ -56,6 +56,27 @@ const CollectionList = async ({ categories }: CollectionListProps) => {
               </Link>
             );
           })}
+        </div>
+
+        {/* View All Button */}
+        <div className="mt-12 md:mt-16 flex justify-center">
+          <Link
+            href="/collections"
+            className="group relative inline-flex items-center gap-3 px-12 py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl overflow-hidden hover:bg-accent transition-all duration-500 shadow-2xl shadow-black/10"
+          >
+            <span className="relative z-10 group-hover:text-black transition-colors duration-500">
+              {t('common.viewAllCategories')}
+            </span>
+            <svg
+              className={`w-4 h-4 relative z-10 group-hover:text-black transition-all duration-500 transform group-hover:translate-x-1 ${isAr ? 'rotate-180' : ''}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+            <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+          </Link>
         </div>
       </div>
     </section>

@@ -19,12 +19,12 @@ export default function CartSuccessPopup() {
         >
             <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-zinc-100 p-3 pr-4 flex items-center gap-4">
                 {/* Product Image */}
-                <div className="relative w-12 h-12 bg-zinc-50 rounded-xl overflow-hidden shrink-0 border border-zinc-100">
+                <div className="relative w-12 h-12 bg-white rounded-xl overflow-hidden shrink-0 border border-zinc-100 p-1">
                     <Image
                         src={lastAddedItem.image}
                         alt={lastAddedItem.name}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                     />
                 </div>
 
