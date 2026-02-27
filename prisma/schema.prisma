@@ -20,11 +20,13 @@ model User {
   canDeleteOrders     Boolean  @default(true)
   canDeleteProducts   Boolean  @default(true)
   canDeletePromoCodes Boolean  @default(true)
+  canDeleteBlogs      Boolean  @default(true)
   canManageBanners    Boolean  @default(true)
   canManageCategories Boolean  @default(true)
   canManageOrders     Boolean  @default(true)
   canManageProducts   Boolean  @default(true)
   canManagePromoCodes Boolean  @default(true)
+  canManageBlogs      Boolean  @default(true)
 }
 
 model Category {
@@ -274,4 +276,30 @@ enum OrderStatus {
 enum Role {
   SUPER_ADMIN
   ADMIN
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  titleAr     String?
+  slug        String    @unique
+  slugAr      String?   @unique
+  content     String    @db.Text
+  contentAr   String?   @db.Text
+  excerpt     String?   @db.Text
+  excerptAr   String?   @db.Text
+  image       String?
+  isPublished Boolean   @default(false)
+  publishedAt DateTime? @default(now())
+
+  // SEO fields
+  metaTitle         String?
+  metaTitleAr       String?
+  metaDescription   String?
+  metaDescriptionAr String?
+  keywords          String? // Comma separated
+  keywordsAr        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -767,13 +767,57 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     // }
 
     try {
-        await prisma.order.update({
+        const order = await prisma.order.findUnique({
             where: { id },
-            data: { status }
+            include: { items: true }
+        });
+
+        if (!order) {
+            return { success: false, error: "Order not found" };
+        }
+
+        const oldStatus = order.status;
+
+        // Use transaction to update both status and stock
+        await prisma.$transaction(async (tx) => {
+            // Update order status
+            await tx.order.update({
+                where: { id },
+                data: { status }
+            });
+
+            // Handle stock reduction when status changes TO DELIVERED
+            if (status === 'DELIVERED' && oldStatus !== 'DELIVERED') {
+                for (const item of order.items) {
+                    await tx.product.update({
+                        where: { id: item.productId },
+                        data: {
+                            quantity: {
+                                decrement: item.quantity
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Handle stock reversal when status changes FROM DELIVERED
+            if (oldStatus === 'DELIVERED' && status !== 'DELIVERED') {
+                for (const item of order.items) {
+                    await tx.product.update({
+                        where: { id: item.productId },
+                        data: {
+                            quantity: {
+                                increment: item.quantity
+                            }
+                        }
+                    });
+                }
+            }
         });
 
         revalidatePath('/admin/orders');
         revalidatePath('/admin/dashboard');
+        revalidatePath('/admin/products');
         return { success: true };
     } catch (error) {
         console.error("Failed to update order status:", error);

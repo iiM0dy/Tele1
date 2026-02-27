@@ -59,12 +59,14 @@ export default function Header() {
     const desktopNavItems = [
         { title: t('common.store'), href: '/products' },
         { title: t('common.collections'), href: '/collections' },
+        { title: t('common.blog'), href: '/blog' },
         { title: t('common.aboutUs'), href: '/about-us' }
     ];
 
     const isCollectionPage = pathname?.startsWith('/collections');
     const isProductPage = pathname?.startsWith('/products/');
     const isProductsListPage = pathname === '/products';
+    const isBlogPage = pathname?.startsWith('/blog');
     const isCartPage = pathname === '/cart';
     const isAdminPage = pathname?.startsWith('/admin');
 
@@ -82,7 +84,7 @@ export default function Header() {
         return () => observer.disconnect();
     }, [pathname]);
 
-    const isSolid = isScrolled || isHovered || isCollectionPage || isProductPage || isProductsListPage || isCartPage || isNotFoundPage;
+    const isSolid = isScrolled || isHovered || isCollectionPage || isProductPage || isProductsListPage || isCartPage || isNotFoundPage || isBlogPage;
 
     if (pathname === '/checkout' || pathname === '/order-success' || isAdminPage) return null;
 
@@ -332,6 +334,17 @@ export default function Header() {
                                             </ul>
                                         </div>
                                     </div>
+                                </li>
+
+                                {/* Blog */}
+                                <li>
+                                    <Link
+                                        href="/blog"
+                                        className={`block ${language === 'ar' ? 'text-[16px]' : 'text-[13px]'} font-sans font-black uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors`}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        {t('common.blog')}
+                                    </Link>
                                 </li>
 
                                 {/* About Us */}

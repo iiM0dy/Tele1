@@ -51,7 +51,7 @@ export default function NewReleasesSection({ products }: { products: any[] }) {
     };
 
     return (
-        <section className="py-24 bg-zinc-50 overflow-hidden">
+        <section className="py-24 bg-white overflow-hidden">
             <div className="w-full px-4 md:px-[48px]">
                 <div className="flex flex-col items-center mb-16 relative">
                     <h2

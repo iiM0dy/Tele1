@@ -538,7 +538,7 @@ export default function ProductsClient({
                             normalized.Description = value;
                         } else if (k === 'price' || k === 'السعر' || k === t('admin.price').toLowerCase()) {
                             normalized.Price = value;
-                        } else if (k === 'sku' || k === 'رمز المنتج' || k === t('admin.sku').toLowerCase()) {
+                        } else if (k === 'sku' || k === 'sku code' || k === 'رمز المنتج' || k === t('admin.sku').toLowerCase()) {
                             normalized.SKU = value;
                         } else if (k === 'category' || k === 'الفئة' || k === 'القسم' || k === t('admin.category').toLowerCase()) {
                             normalized.Category = value;

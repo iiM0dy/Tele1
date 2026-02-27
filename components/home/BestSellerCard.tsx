@@ -47,14 +47,19 @@ export default function BestSellerCard({ product, index }: { product: any; index
     };
 
     return (
-        <div className="flex flex-col group h-full bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+        <div className="flex flex-col group w-full min-w-[240px] md:min-w-[220px] min-h-[400px] bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
             {/* Figure / Media Area */}
-            <div className="relative w-full aspect-square overflow-hidden bg-white mx-auto">
+            <div className="relative w-full aspect-square overflow-hidden bg-[#F8F8F8] mx-auto flex-shrink-0">
                 {/* Badges */}
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
                     {product.BestSeller && (
                         <span className="bg-primary text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
                             {t('home.bestSellerLabel')}
+                        </span>
+                    )}
+                    {product.IsTrending && !product.BestSeller && (
+                        <span className="bg-primary text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-lg">
+                            {t('home.newArrival')}
                         </span>
                     )}
                     {discountPrice && (
