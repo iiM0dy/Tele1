@@ -540,6 +540,8 @@
             "errorGeneric": "An error occurred. Please try again.",
             "productCreated": "Product created successfully",
             "productUpdated": "Product updated successfully",
+            "imageAdded": "Image added successfully",
+            "imageRemoved": "Image removed",
             "imagePreviewAlt": "Image preview"
         },
         "imageUrlPlaceholder": "https://example.com/image.jpg",

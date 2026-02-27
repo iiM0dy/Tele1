@@ -91,7 +91,7 @@ export default function NewReleasesSection({ products }: { products: any[] }) {
                         {displayProducts.map((product, index) => (
                             <div
                                 key={product.id}
-                                className="min-w-[75%] md:w-[calc(20%-19.2px)] md:min-w-[calc(20%-19.2px)] md:max-w-[calc(20%-19.2px)] snap-start"
+                                className="min-w-[75%] md:w-[calc(20%-19.2px)] md:min-w-[calc(20%-19.2px)] md:max-w-[calc(20%-19.2px)] snap-start flex"
                             >
                                 <BestSellerCard product={product} index={index} />
                             </div>

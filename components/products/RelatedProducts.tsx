@@ -28,7 +28,7 @@ export default function RelatedProducts({ products }: { products: any[] }) {
     };
 
     return (
-        <section className="py-12 md:py-24 bg-white overflow-hidden">
+        <section className="pt-4 pb-12 md:py-24 bg-white overflow-hidden">
             <div className="w-full px-4 md:px-[48px]">
                 <div className="flex flex-col items-center mb-8 md:mb-16 relative">
                     <h2
@@ -68,7 +68,7 @@ export default function RelatedProducts({ products }: { products: any[] }) {
                         {products.map((product, index) => (
                             <div
                                 key={product.id}
-                                className="min-w-[75%] md:w-[calc(20%-19.2px)] md:min-w-[calc(20%-19.2px)] md:max-w-[calc(20%-19.2px)] snap-start"
+                                className="min-w-[75%] md:w-[calc(20%-19.2px)] md:min-w-[calc(20%-19.2px)] md:max-w-[calc(20%-19.2px)] snap-start flex"
                             >
                                 <BestSellerCard product={product} index={index} />
                             </div>

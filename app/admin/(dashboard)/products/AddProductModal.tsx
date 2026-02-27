@@ -206,13 +206,16 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
         if (!currentImages.includes(imageLink)) {
             const newImages = [...currentImages, imageLink].filter(Boolean).join(',');
             setFormData({ ...formData, images: newImages });
+            toast.success(t("admin.addProductModal.imageAdded") || "Image added successfully");
         }
         setImageLink("");
     };
 
-    const removeImage = (url: string) => {
-        const newImages = formData.images.split(',').filter(img => img !== url).join(',');
+    const removeImage = (urlToRemove: string) => {
+        const currentImages = formData.images.split(',').filter(Boolean);
+        const newImages = currentImages.filter(url => url !== urlToRemove).join(',');
         setFormData({ ...formData, images: newImages });
+        toast.success(t("admin.addProductModal.imageRemoved") || "Image removed");
     };
 
     return (
@@ -244,7 +247,9 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
 
                     {/* Images Section */}
                     <div className="space-y-4">
-                        <label className="text-[11px] font-semibold tracking-wider text-white/40">{t("admin.addProductModal.productImages")}</label>
+                        <label className="text-[11px] font-semibold tracking-wider text-white/40">
+                            {t("admin.addProductModal.productImages")} ({formData.images ? formData.images.split(',').filter(Boolean).length : 0})
+                        </label>
 
                         {/* Image Gallery */}
                         {formData.images && (
@@ -256,7 +261,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                                                 src={url}
                                                 alt={`${t("admin.addProductModal.imagePreviewAlt")} ${index}`}
                                                 fill
-                                                className="object-cover"
+                                                className="object-contain"
                                                 sizes="(max-width: 640px) 50vw, 25vw"
                                             />
                                         </div>

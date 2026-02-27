@@ -124,7 +124,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
 
     return (
         <>
-            <section className="bg-white min-h-screen pt-[144px] pb-6 md:pb-12">
+            <section className="bg-white min-h-screen pt-[144px] pb-0 md:pb-12">
                 {/* Image Preview Modal (PhotoSwipe Style) */}
                 {previewIdx !== null && (
                     <div
@@ -554,7 +554,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                 </div>
 
                                 {/* Extra Information Accordion Section - Mobile Only placement */}
-                                <div id="product-extra-information-mobile" className="lg:hidden product-content-below-gallery empty:hidden scroll-margin-offset mt-12 w-full">
+                                <div id="product-extra-information-mobile" className="lg:hidden product-content-below-gallery empty:hidden scroll-margin-offset mt-6 w-full">
                                     <details className="accordion accordion--lg group border-t border-zinc-100" aria-expanded="false">
                                         <summary className="flex items-center justify-between py-6 cursor-pointer list-none">
                                             <span className="accordion__toggle h6 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#0F172A]">

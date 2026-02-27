@@ -536,7 +536,9 @@
             "errorGeneric": "حدث خطأ. يرجى المحاولة مرة أخرى.",
             "imagePreviewAlt": "معاينة الصورة",
             "productUpdated": "تم تحديث المنتج بنجاح",
-            "productCreated": "تم إنشاء المنتج بنجاح"
+            "productCreated": "تم إنشاء المنتج بنجاح",
+            "imageAdded": "تمت إضافة الصورة بنجاح",
+            "imageRemoved": "تمت إزالة الصورة"
         },
         "imageUrlPlaceholder": "https://example.com/image.jpg",
         "invalidImage": "رابط الصورة غير صالح",
