@@ -3,6 +3,7 @@
 import { MdPendingActions, MdLocalShipping, MdTaskAlt, MdPayments, MdExpandMore, MdVisibility, MdDelete, MdSync, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import Link from "next/link";
 import { updateOrderStatus, deleteOrder } from "../../../../lib/admin-actions";
+import { OrderStatus } from "@prisma/client";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
@@ -261,7 +262,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="border-b border-white/5 bg-white/[0.01]">
-                                            <th 
+                                            <th
                                                 className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                                 onClick={() => handleSort('id')}
                                             >
@@ -272,7 +273,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                                     )}
                                                 </div>
                                             </th>
-                                            <th 
+                                            <th
                                                 className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                                 onClick={() => handleSort('Name')}
                                             >
@@ -283,7 +284,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                                     )}
                                                 </div>
                                             </th>
-                                            <th 
+                                            <th
                                                 className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                                 onClick={() => handleSort('createdAt')}
                                             >
@@ -294,7 +295,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                                     )}
                                                 </div>
                                             </th>
-                                            <th 
+                                            <th
                                                 className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                                 onClick={() => handleSort('totalAmount')}
                                             >
@@ -414,7 +415,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                         .replace('{total}', pagination.total.toString())}
                                 </p>
                                 <div className="flex items-center gap-2">
-                                    <button 
+                                    <button
                                         onClick={() => updateUrl({ page: Math.max(1, currentPage - 1).toString() })}
                                         disabled={currentPage === 1}
                                         className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
@@ -423,7 +424,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                         <MdChevronLeft className={`text-[18px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                                     </button>
                                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                                        <button 
+                                        <button
                                             key={page}
                                             onClick={() => updateUrl({ page: page.toString() })}
                                             className={`size-8 flex items-center justify-center rounded-xl text-[10px] font-black tracking-widest transition-all ${currentPage === page ? 'bg-accent text-white' : 'border border-white/5 text-white/40 hover:bg-white/5'}`}
@@ -431,7 +432,7 @@ export default function OrdersClient({ orders, pagination }: { orders: Order[], 
                                             {page}
                                         </button>
                                     ))}
-                                    <button 
+                                    <button
                                         onClick={() => updateUrl({ page: Math.min(totalPages, currentPage + 1).toString() })}
                                         disabled={currentPage === totalPages || totalPages === 0}
                                         className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"

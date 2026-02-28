@@ -46,8 +46,8 @@ export default function UsersClient({ users }: { users: User[] }) {
 
     const sortedUsers = [...users].sort((a, b) => {
         if (!sortConfig.key) return 0;
-        let aValue = a[sortConfig.key];
-        let bValue = b[sortConfig.key];
+        let aValue: any = a[sortConfig.key];
+        let bValue: any = b[sortConfig.key];
 
         if (sortConfig.key === 'createdAt') {
             aValue = new Date(a.createdAt).getTime();
@@ -124,7 +124,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                             <table className="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/1">
-                                        <th 
+                                        <th
                                             className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('username')}
                                         >
@@ -135,7 +135,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                                 )}
                                             </div>
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('role')}
                                         >
@@ -147,7 +147,7 @@ export default function UsersClient({ users }: { users: User[] }) {
                                             </div>
                                         </th>
                                         <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.permissionsSummary')}</th>
-                                        <th 
+                                        <th
                                             className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('createdAt')}
                                         >
