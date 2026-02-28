@@ -19,20 +19,18 @@ export default async function Home() {
     getI18n()
   ]);
 
-  console.log('Home Page - Best Sellers count:', bestSellers?.length);
-
   return (
     <div className="flex flex-col gap-0">
       <HeroSlideshow banners={banners} />
 
       <BestSellerSection products={bestSellers} />
-      
+
       <CollectionList categories={featuredCategories as any} />
-      
+
       <NewReleasesSection products={trendingProducts} />
-      
+
       <ReviewsCarousel reviews={reviews} />
-      
+
       <PurposeSection />
     </div>
   );

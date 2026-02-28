@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartSuccessPopup from "@/components/CartSuccessPopup";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -65,6 +66,7 @@ export default function RootLayout({
         <AuthProvider>
           <LanguageProvider>
             <CartProvider>
+              <NextTopLoader color="#000000" showSpinner={false} />
               <div className="flex flex-col min-h-screen">
                 <Header />
                 <main className="flex-grow">

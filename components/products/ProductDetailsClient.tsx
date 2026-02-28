@@ -87,10 +87,6 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
         fetchRelated();
     }, [product.Category, product.id]);
 
-    if (process.env.NODE_ENV === 'development') {
-        console.log('ProductDetailsClient images:', images);
-    }
-
     const price = Number(product.Price);
     const discountPrice = product.discountPrice;
 
@@ -533,11 +529,10 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         type="submit"
                                         onClick={handleAddToCart}
                                         disabled={isOutOfStock}
-                                        className={`w-full h-[56px] rounded-xl flex items-center justify-center text-[13px] font-bold uppercase tracking-[0.2em] transition-all shadow-lg active:scale-[0.98] group ${
-                                            isOutOfStock 
-                                            ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed shadow-none' 
-                                            : 'bg-accent text-white hover:bg-accent/90 shadow-accent/20'
-                                        }`}
+                                        className={`w-full h-[56px] rounded-xl flex items-center justify-center text-[13px] font-bold uppercase tracking-[0.2em] transition-all shadow-lg active:scale-[0.98] group ${isOutOfStock
+                                                ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed shadow-none'
+                                                : 'bg-accent text-white hover:bg-accent/90 shadow-accent/20'
+                                            }`}
                                     >
                                         <span className="mr-2 group-hover:scale-110 transition-transform">
                                             {isOutOfStock ? t('products.outOfStock') : t('products.addToCart')}

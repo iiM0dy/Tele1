@@ -107,8 +107,8 @@ export default function ProductsClient({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const canDelete = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteProducts;
-    const canEdit = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageProducts;
+    const canDelete = true;
+    const canEdit = true;
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -902,7 +902,7 @@ export default function ProductsClient({
                                                 aria-label="Select all products"
                                             />
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('name')}
                                         >
@@ -913,7 +913,7 @@ export default function ProductsClient({
                                                 )}
                                             </div>
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('category.name')}
                                         >
@@ -924,7 +924,7 @@ export default function ProductsClient({
                                                 )}
                                             </div>
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('price')}
                                         >
@@ -935,7 +935,7 @@ export default function ProductsClient({
                                                 )}
                                             </div>
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('stock')}
                                         >
@@ -946,7 +946,7 @@ export default function ProductsClient({
                                                 )}
                                             </div>
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('isTrending')}
                                         >
@@ -957,7 +957,7 @@ export default function ProductsClient({
                                                 )}
                                             </div>
                                         </th>
-                                        <th 
+                                        <th
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('bestSeller')}
                                         >
