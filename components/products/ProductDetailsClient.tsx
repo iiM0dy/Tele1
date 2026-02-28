@@ -18,6 +18,7 @@ interface Product {
     Price: number;
     discountPrice: number | null;
     Images: string[];
+    Stock: number;
     badge?: string | null;
     color?: string | null;
     model?: string | null;
@@ -29,14 +30,18 @@ interface Product {
 
 export default function ProductDetailsClient({ product }: { product: Product }) {
     const { t, language } = useLanguage();
-    const { addItem } = useCart();
+    const [quantity, setQuantity] = useState(1);
+    const { addItem, setIsDrawerOpen } = useCart();
+    const isOutOfStock = Number(product.Stock || 0) <= 0;
+
     // Use pre-validated images from transformProduct
     const images = [...(product.Images || [])];
-    const [quantity, setQuantity] = useState(1);
     const [previewIdx, setPreviewIdx] = useState<number | null>(null);
     const [activeSlide, setActiveSlide] = useState(0);
     const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
     const [isHovered, setIsHovered] = useState(false);
+
+    // Handle touch events for mobile slider
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -485,28 +490,41 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                 {/* 7. Customization Section (GPO Style) */}
                                 <div className="product-info__block-item space-y-6 pt-6 border-t border-zinc-100 mt-8" data-block-type="variant-picker">
                                     {/* Quantity Selector */}
-                                    <div className="space-y-3 pt-2">
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#0F172A]">
-                                            {t('products.quantity')}
-                                        </span>
-                                        <div className="flex items-center w-36 border-2 border-zinc-100 rounded-xl overflow-hidden">
-                                            <button
-                                                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                                className="flex-1 h-12 flex items-center justify-center hover:bg-zinc-50 transition-colors text-zinc-600"
-                                            >
-                                                <HiMinus className="w-4 h-4" />
-                                            </button>
-                                            <span className="flex-1 h-12 flex items-center justify-center text-sm font-bold bg-white text-[#0F172A]">
-                                                {quantity}
+                                    {!isOutOfStock && (
+                                        <div className="space-y-3 pt-2">
+                                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#0F172A]">
+                                                {t('products.quantity')}
                                             </span>
-                                            <button
-                                                onClick={() => setQuantity(quantity + 1)}
-                                                className="flex-1 h-12 flex items-center justify-center hover:bg-zinc-50 transition-colors text-zinc-600"
-                                            >
-                                                <HiPlus className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex items-center w-36 border-2 border-zinc-100 rounded-xl overflow-hidden">
+                                                <button
+                                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                                    className="flex-1 h-12 flex items-center justify-center hover:bg-zinc-50 transition-colors text-zinc-600"
+                                                >
+                                                    <HiMinus className="w-4 h-4" />
+                                                </button>
+                                                <span className="flex-1 h-12 flex items-center justify-center text-sm font-bold bg-white text-[#0F172A]">
+                                                    {quantity}
+                                                </span>
+                                                <button
+                                                    onClick={() => setQuantity(quantity + 1)}
+                                                    className="flex-1 h-12 flex items-center justify-center hover:bg-zinc-50 transition-colors text-zinc-600"
+                                                >
+                                                    <HiPlus className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
+
+                                    {isOutOfStock && (
+                                        <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600">
+                                            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                            </svg>
+                                            <span className="text-sm font-bold uppercase tracking-widest">
+                                                {t('products.outOfStock')}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* 8. Action Buttons Block */}
@@ -514,12 +532,21 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                     <button
                                         type="submit"
                                         onClick={handleAddToCart}
-                                        className="w-full h-[56px] bg-accent text-white rounded-xl flex items-center justify-center text-[13px] font-bold uppercase tracking-[0.2em] hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 active:scale-[0.98] group"
+                                        disabled={isOutOfStock}
+                                        className={`w-full h-[56px] rounded-xl flex items-center justify-center text-[13px] font-bold uppercase tracking-[0.2em] transition-all shadow-lg active:scale-[0.98] group ${
+                                            isOutOfStock 
+                                            ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed shadow-none' 
+                                            : 'bg-accent text-white hover:bg-accent/90 shadow-accent/20'
+                                        }`}
                                     >
-                                        <span className="mr-2 group-hover:scale-110 transition-transform">{t('products.addToCart')}</span>
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                        </svg>
+                                        <span className="mr-2 group-hover:scale-110 transition-transform">
+                                            {isOutOfStock ? t('products.outOfStock') : t('products.addToCart')}
+                                        </span>
+                                        {!isOutOfStock && (
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                            </svg>
+                                        )}
                                     </button>
                                 </div>
 

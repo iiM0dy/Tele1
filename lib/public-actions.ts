@@ -147,6 +147,7 @@ function transformProduct(product: any) {
         ...product,
         Images: images,
         Price: Number(product.Price),
+        Stock: Number(product.quantity || 0),
         discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
         discountValue: product.discountValue ? Number(product.discountValue) : null,
         createdAt: product.createdAt.toISOString(),

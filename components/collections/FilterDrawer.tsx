@@ -11,7 +11,7 @@ interface FilterDrawerProps {
 }
 
 export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerProps) {
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const [mounted, setMounted] = useState(false);
     const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
@@ -48,8 +48,10 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
 
             {/* Drawer */}
             <div 
-                className={`fixed top-0 right-0 bottom-0 w-full sm:max-w-[400px] bg-white z-[101] shadow-2xl flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
-                    isOpen ? 'translate-x-0' : 'translate-x-full'
+                className={`fixed top-0 bottom-0 w-full sm:max-w-[400px] bg-white z-[101] shadow-2xl flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
+                    dir === 'rtl' ? 'left-0' : 'right-0'
+                } ${
+                    isOpen ? 'translate-x-0' : (dir === 'rtl' ? '-translate-x-full' : 'translate-x-full')
                 }`}
             >
                 {/* Header */}
@@ -122,7 +124,10 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                         {isPriceOpen && (
                             <div className="mt-10 space-y-8">
                                 {/* Price Range Slider */}
-                                <div className="relative h-[3px] w-full bg-zinc-100 rounded-full mt-12 mb-10">
+                                <div 
+                                    className="relative h-[3px] w-full bg-zinc-100 rounded-full mt-12 mb-10" 
+                                    style={{ direction: 'ltr', unicodeBidi: 'bidi-override' }}
+                                >
                                     {/* Track highlighting between handles */}
                                     <div 
                                         className="absolute h-full bg-accent rounded-full"
@@ -144,7 +149,7 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                             setPriceRange({ ...priceRange, min: val });
                                         }}
                                         className="absolute w-full h-full bg-transparent appearance-none pointer-events-none z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-accent [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-accent [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-lg"
-                                        style={{ top: '50%', transform: 'translateY(-50%)' }}
+                                        style={{ top: '50%', transform: 'translateY(-50%)', direction: 'ltr' }}
                                     />
                                     <input
                                         type="range"
@@ -157,30 +162,30 @@ export default function FilterDrawer({ isOpen, onClose, onApply }: FilterDrawerP
                                             setPriceRange({ ...priceRange, max: val });
                                         }}
                                         className="absolute w-full h-full bg-transparent appearance-none pointer-events-none z-20 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-accent [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-accent [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-lg"
-                                        style={{ top: '50%', transform: 'translateY(-50%)' }}
+                                        style={{ top: '50%', transform: 'translateY(-50%)', direction: 'ltr' }}
                                     />
                                 </div>
 
                                 <div className="flex items-center gap-4">
                                     <div className="flex-1 relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold">$</span>
+                                        <span className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold`}>$</span>
                                         <input 
                                             type="number" 
                                             value={priceRange.min}
                                             aria-label={t('collection.filters.minPrice')}
                                             onChange={(e) => setPriceRange({ ...priceRange, min: parseInt(e.target.value) || 0 })}
-                                            className="w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 pl-8 pr-4 text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all"
+                                            className={`w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 ${dir === 'rtl' ? 'pr-8 pl-4' : 'pl-8 pr-4'} text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all`}
                                         />
                                     </div>
                                     <span className="text-[12px] text-zinc-500 font-black uppercase tracking-widest">{t('collection.filters.to')}</span>
                                     <div className="flex-1 relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold">$</span>
+                                        <span className={`absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-primary/60 text-[14px] font-bold`}>$</span>
                                         <input 
                                             type="number" 
                                             value={priceRange.max}
                                             aria-label={t('collection.filters.maxPrice')}
                                             onChange={(e) => setPriceRange({ ...priceRange, max: parseInt(e.target.value) || 0 })}
-                                            className="w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 pl-8 pr-4 text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all"
+                                            className={`w-full border border-zinc-100 bg-zinc-50 rounded-xl py-3.5 ${dir === 'rtl' ? 'pr-8 pl-4' : 'pl-8 pr-4'} text-[14px] font-bold text-primary focus:outline-none focus:border-accent focus:bg-white transition-all`}
                                         />
                                     </div>
                                 </div>

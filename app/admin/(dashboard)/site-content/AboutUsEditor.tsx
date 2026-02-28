@@ -44,15 +44,15 @@ export default function AboutUsEditor({ initialContent }: AboutUsEditorProps) {
                 <Icon size={24} />
             </div>
             <div>
-                <h4 className="text-sm font-black text-white uppercase tracking-widest">{title}</h4>
-                <p className="text-[10px] text-white/40 font-bold uppercase tracking-tight mt-1">{subtitle}</p>
+                <h4 className="text-sm font-black text-white tracking-widest">{title}</h4>
+                <p className="text-[10px] text-white/40 font-bold tracking-tight mt-1">{subtitle}</p>
             </div>
         </div>
     );
 
     const InputGroup = ({ label, name, value, placeholder, type = "text", ar = false }: any) => (
         <div className="flex flex-col gap-2">
-            <label className="text-[10px] font-black text-white/40 uppercase tracking-widest px-1">
+            <label className="text-[10px] font-black text-white/40 tracking-widest px-1">
                 {label} {ar && <span className="text-accent">(Arabic)</span>}
             </label>
             {type === "textarea" ? (

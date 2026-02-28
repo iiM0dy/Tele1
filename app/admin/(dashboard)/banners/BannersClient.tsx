@@ -90,17 +90,17 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                 <div className="max-w-[1200px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div>
-                            <h3 className="text-3xl font-black text-white uppercase tracking-[0.2em]">
+                            <h3 className="text-3xl font-black text-white tracking-[0.2em]">
                                 {t('admin.heroBanners')}
                             </h3>
-                            <p className="text-white/60 mt-2 uppercase tracking-[0.2em] text-[10px] font-black">
+                            <p className="text-white/60 mt-2 tracking-[0.2em] text-[10px] font-black">
                                 {t('admin.controlHero')}
                             </p>
                         </div>
                         {canManage && (
                             <button
                                 onClick={handleAdd}
-                                className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                                className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-2xl font-black tracking-[0.2em] text-[10px] hover:opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
                                 aria-label={t('admin.createNewAd')}
                             >
                                 <MdAdd className="text-xl" />
@@ -131,32 +131,32 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                                     <div className="flex flex-col gap-4">
                                         <div className="flex items-center gap-3">
                                             {!banner.isActive && (
-                                                <span className="bg-white/[0.05] text-white/40 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-white/5">
+                                                <span className="bg-white/[0.05] text-white/40 px-3 py-1 rounded-full text-[10px] font-black tracking-[0.2em] border border-white/5">
                                                     {t('admin.hidden')}
                                                 </span>
                                             )}
                                         </div>
-                                        <h3 className="text-xl font-black text-white uppercase tracking-[0.2em]">{banner.title}</h3>
-                                        <p className="text-[10px] text-white/60 line-clamp-2 uppercase tracking-[0.2em] font-black leading-relaxed">
+                                        <h3 className="text-xl font-black text-white tracking-[0.2em]">{banner.title}</h3>
+                                        <p className="text-[10px] text-white/60 line-clamp-2 tracking-[0.2em] font-black leading-relaxed">
                                             {banner.subtitle || t('admin.noSubtitle')}
                                         </p>
                                         {banner.titleAr && (
                                             <div className="mt-4 pt-4 border-t border-white/5 flex flex-col gap-4">
-                                                <h3 className="text-xl font-black text-white text-right uppercase tracking-[0.2em]" dir="rtl">{banner.titleAr}</h3>
-                                                <p className="text-[10px] text-white/60 line-clamp-2 text-right uppercase tracking-[0.2em] font-black leading-relaxed" dir="rtl">
+                                                <h3 className="text-xl font-black text-white text-right tracking-[0.2em]" dir="rtl">{banner.titleAr}</h3>
+                                                <p className="text-[10px] text-white/60 line-clamp-2 text-right tracking-[0.2em] font-black leading-relaxed" dir="rtl">
                                                     {banner.subtitleAr || t('admin.noSubtitle')}
                                                 </p>
                                             </div>
                                         )}
                                         <div className="flex flex-col sm:flex-row gap-4 mt-4 p-5 bg-white/[0.01] rounded-2xl border border-white/5">
                                             <div className="flex-1 flex flex-col">
-                                                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.2em] mb-1.5">{t('admin.button')}</span>
-                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">{banner.buttonText}</span>
+                                                <span className="text-[9px] text-white/60 font-black tracking-[0.2em] mb-1.5">{t('admin.button')}</span>
+                                                <span className="text-[10px] font-black tracking-[0.2em] text-white">{banner.buttonText}</span>
                                             </div>
                                             <div className="hidden sm:block w-px bg-white/5 h-full self-stretch" />
                                             <div className="flex-1 flex flex-col">
-                                                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.2em] mb-1.5">{t('admin.link')}</span>
-                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white truncate max-w-[300px]">{banner.link}</span>
+                                                <span className="text-[9px] text-white/60 font-black tracking-[0.2em] mb-1.5">{t('admin.link')}</span>
+                                                <span className="text-[10px] font-black tracking-[0.2em] text-white truncate max-w-[300px]">{banner.link}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -166,7 +166,7 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                                             <button
                                                 onClick={() => handleToggleStatus(banner.id, banner.isActive)}
                                                 disabled={loadingMap[banner.id] || !canManage}
-                                                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${banner.isActive
+                                                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[10px] font-black tracking-[0.2em] transition-all ${banner.isActive
                                                     ? 'bg-green-500/10 text-green-500 border border-green-500/20 hover:bg-green-500/20'
                                                     : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10'
                                                     }`}
@@ -211,12 +211,12 @@ export default function BannersClient({ banners }: { banners: Banner[] }) {
                     {banners.length === 0 && (
                         <div className="text-center py-32 bg-white/[0.01] rounded-[2rem] border-2 border-dashed border-white/5">
                             <MdViewCarousel className="text-6xl text-white/5 mb-6 mx-auto" />
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
+                            <p className="text-[10px] font-black tracking-[0.2em] text-white/60">
                                 {t('admin.noBanners')}
                             </p>
                             <button
                                 onClick={handleAdd}
-                                className="mt-6 text-accent font-black uppercase tracking-[0.2em] text-[10px] hover:underline"
+                                className="mt-6 text-accent font-black tracking-[0.2em] text-[10px] hover:underline"
                                 aria-label={t('admin.addFirstBanner')}
                             >
                                 {t('admin.addFirstBanner')}

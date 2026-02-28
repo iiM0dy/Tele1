@@ -24,6 +24,8 @@ export default async function AdminProductsPage({
     const stockStatus = (params.stock as string) || "all";
     const showTrendingOnly = params.trending === "true";
     const showBestSellerOnly = params.bestSeller === "true";
+    const sortBy = (params.sortBy as string) || "createdAt";
+    const sortDir = (params.sortDir as "asc" | "desc") || "desc";
 
     const [productsData, categories, stats] = await Promise.all([
         getAdminProducts({
@@ -33,7 +35,9 @@ export default async function AdminProductsPage({
             categoryId: category,
             stockStatus,
             isTrending: showTrendingOnly,
-            isBestSeller: showBestSellerOnly
+            isBestSeller: showBestSellerOnly,
+            sortBy,
+            sortDir
         }),
         getAdminCategoryOptions(),
         getAdminProductStats()

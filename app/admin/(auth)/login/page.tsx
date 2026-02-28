@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
                     {/* Header */}
                     <div className="flex flex-col items-center mb-10 text-center">
                         <div className="mb-6">
-                            <span className="text-3xl font-black tracking-tighter uppercase text-white">
+                            <span className="text-3xl font-black tracking-tighter text-white">
                                 TELE1<span className="text-accent">.</span>
                             </span>
                         </div>
@@ -77,7 +77,7 @@ export default function AdminLoginPage() {
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {error && (
-                            <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-wider text-center animate-shake">
+                            <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-2xl text-[11px] font-bold tracking-wider text-center animate-shake">
                                 {error}
                             </div>
                         )}

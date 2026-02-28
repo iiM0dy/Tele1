@@ -103,10 +103,10 @@ export default function PromoCodeModal({ isOpen, onClose, promoCode }: PromoCode
                         <input
                             type="text"
                             value={code}
-                            onChange={(e) => setCode(e.target.value.toUpperCase().replace(/\s/g, ''))}
+                            onChange={(e) => setCode(e.target.value.replace(/\s/g, ''))}
                             placeholder={t('admin.codePlaceholder')}
                             required
-                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:outline-none focus:border-accent/30 transition-all uppercase font-mono text-xs tracking-widest placeholder:text-white/10"
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:outline-none focus:border-accent/30 transition-all font-mono text-xs tracking-widest placeholder:text-white/10"
                         />
                     </div>
 

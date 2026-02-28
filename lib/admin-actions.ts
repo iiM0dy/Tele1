@@ -280,7 +280,9 @@ export async function getAdminProducts({
     categoryId = "",
     stockStatus = "",
     isTrending = false,
-    isBestSeller = false
+    isBestSeller = false,
+    sortBy = "createdAt",
+    sortDir = "desc"
 }: {
     page?: number;
     limit?: number;
@@ -289,6 +291,8 @@ export async function getAdminProducts({
     stockStatus?: string;
     isTrending?: boolean;
     isBestSeller?: boolean;
+    sortBy?: string;
+    sortDir?: "asc" | "desc";
 } = {}) {
     try {
         const skip = (page - 1) * limit;
@@ -305,24 +309,7 @@ export async function getAdminProducts({
         }
 
         if (categoryId && categoryId !== 'all') {
-            if (categoryId === 'uncategorized') {
-                where.Category = null; // Or empty string? Schema says Category is String, but relation is optional? 
-                // Schema: Category String. It's a required field. So uncategorized is impossible unless Category is invalid.
-                // Wait, Schema: Category String. @relation(fields: [Category], references: [id])
-                // It is required. So there are no uncategorized products unless the relation is broken.
-                // But ProductsClient handles "uncategorized". 
-                // Let's assume 'uncategorized' means "Category is empty or invalid".
-                // But since it's a foreign key, it must exist.
-                // Maybe the client code handles it for legacy reasons?
-                // I'll ignore 'uncategorized' specific logic for now or handle it if I see it used.
-            } else {
-                // The client passes category NAME or ID?
-                // Client: uniqueCategories.map(cat => <option value={cat}>{cat}</option>)
-                // Client uses category NAME for filtering!
-                // "uniqueCategories = ... products.map(p => p.category?.name)"
-                // So I need to filter by category.name
-                where.category = { name: categoryId };
-            }
+            where.category = { name: categoryId };
         }
 
         if (stockStatus && stockStatus !== 'all') {
@@ -341,6 +328,26 @@ export async function getAdminProducts({
 
         if (isBestSeller) {
             where.BestSeller = true;
+        }
+
+        // Build order by
+        const orderBy: any = {};
+        if (sortBy === 'name') {
+            orderBy.Name = sortDir;
+        } else if (sortBy === 'price') {
+            orderBy.Price = sortDir;
+        } else if (sortBy === 'stock') {
+            orderBy.quantity = sortDir;
+        } else if (sortBy === 'isTrending') {
+            orderBy.IsTrending = sortDir;
+        } else if (sortBy === 'bestSeller') {
+            orderBy.BestSeller = sortDir;
+        } else if (sortBy === 'category.name') {
+            orderBy.category = { name: sortDir };
+        } else if (sortBy === 'subCategory.name') {
+            orderBy.subCategory = { name: sortDir };
+        } else {
+            orderBy[sortBy] = sortDir;
         }
 
         const [products, total] = await Promise.all([
@@ -390,9 +397,7 @@ export async function getAdminProducts({
                 },
                 skip,
                 take: limit,
-                orderBy: {
-                    createdAt: 'desc'
-                }
+                orderBy
             }),
             prisma.product.count({ where })
         ]);
@@ -495,9 +500,20 @@ export async function getAdminCategories(page = 1, limit = 500) {
     }
 }
 
-export async function getAdminOrders(page = 1, limit = 50) {
+export async function getAdminOrders(page = 1, limit = 50, sortBy = "createdAt", sortDir = "desc") {
     try {
         const skip = (page - 1) * limit;
+
+        // Build order by
+        const orderBy: any = {};
+        if (sortBy === 'totalAmount') {
+            orderBy.totalAmount = sortDir;
+        } else if (sortBy === 'Name') {
+            orderBy.Name = sortDir;
+        } else {
+            orderBy[sortBy] = sortDir;
+        }
+
         const [orders, total] = await Promise.all([
             prisma.order.findMany({
                 select: {
@@ -531,9 +547,7 @@ export async function getAdminOrders(page = 1, limit = 50) {
                 },
                 skip,
                 take: limit,
-                orderBy: {
-                    createdAt: 'desc'
-                }
+                orderBy
             }),
             prisma.order.count()
         ]);
@@ -553,10 +567,11 @@ export async function getAdminOrders(page = 1, limit = 50) {
                 createdAt: order.createdAt.toISOString(),
                 updatedAt: order.updatedAt.toISOString(),
                 items: order.items.map(item => ({
-                    ...item,
+                    id: item.id,
+                    quantity: item.quantity,
                     price: Number(item.price),
                     product: item.product ? {
-                        ...item.product,
+                        id: item.product.id,
                         name: item.product.Name,
                         images: item.product.Images,
                         price: Number(item.product.Price),

@@ -3,12 +3,11 @@
 import { MdPendingActions, MdLocalShipping, MdTaskAlt, MdPayments, MdExpandMore, MdVisibility, MdDelete, MdSync, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import Link from "next/link";
 import { updateOrderStatus, deleteOrder } from "../../../../lib/admin-actions";
-import { useState, useRef, useEffect, useMemo } from "react";
-import OrderDetailsModal from "./OrderDetailsModal";
-import { OrderStatus } from "@prisma/client";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useCallback, useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useLanguage } from "@/app/context/LanguageContext";
-import { useRouter } from "next/navigation";
+import OrderDetailsModal from "./OrderDetailsModal";
 import { toast } from "react-hot-toast";
 
 interface Order {
@@ -31,9 +30,11 @@ interface Order {
     }[];
 }
 
-export default function OrdersClient({ orders }: { orders: Order[] }) {
+export default function OrdersClient({ orders, pagination }: { orders: Order[], pagination: { total: number, pages: number, page: number, limit: number } }) {
     const { data: session } = useSession();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
     const canManage = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canManageOrders;
     const canDelete = true; // session?.user?.role === 'SUPER_ADMIN' || session?.user?.canDeleteOrders;
     const { t, dir } = useLanguage();
@@ -44,7 +45,32 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [filter, setFilter] = useState<string>("ALL");
 
-    // Calculate stats
+    // Sorting state from URL
+    const sortBy = searchParams.get('sortBy') || "createdAt";
+    const sortDir = (searchParams.get('sortDir') as 'asc' | 'desc') || "desc";
+
+    const updateUrl = useCallback((updates: Record<string, string | null>) => {
+        const params = new URLSearchParams(searchParams.toString());
+        Object.entries(updates).forEach(([key, value]) => {
+            if (value === null || value === "") {
+                params.delete(key);
+            } else {
+                params.set(key, value);
+            }
+        });
+        router.push(`${pathname}?${params.toString()}`);
+    }, [pathname, router, searchParams]);
+
+    const handleSort = (key: string) => {
+        let direction: 'asc' | 'desc' = 'asc';
+        if (sortBy === key && sortDir === 'asc') {
+            direction = 'desc';
+        }
+        updateUrl({ sortBy: key, sortDir: direction });
+    };
+
+    // Calculate stats - Note: These stats are only for the current 50 orders fetched.
+    // In a real app, these stats should probably be fetched separately from the server for all orders.
     const stats = useMemo(() => ({
         pending: orders.filter(o => o.status === 'PENDING').length,
         shippedToday: orders.filter(o => {
@@ -67,10 +93,14 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
             .reduce((sum, o) => sum + Number(o.totalAmount), 0)
     }), [orders]);
 
-    const filteredOrders = useMemo(() => orders.filter(o => {
-        if (filter === "ALL") return true;
-        return o.status === filter;
-    }), [orders, filter]);
+    const filteredOrders = useMemo(() => {
+        if (filter === "ALL") return orders;
+        return orders.filter(o => o.status === filter);
+    }, [orders, filter]);
+
+    const currentItems = filteredOrders;
+    const totalPages = pagination.pages;
+    const currentPage = pagination.page;
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -129,8 +159,8 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
 
     return (
         <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#202126]">
-            <div className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-8 scrollbar-hide">
-                <div className="max-w-[1400px] mx-auto flex flex-col gap-8 pb-10">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 scrollbar-hide">
+                <div className="max-w-[1600px] mx-auto flex flex-col gap-6 md:gap-8 pb-10">
 
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -140,7 +170,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                     <MdPendingActions className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.pendingOrders')}</p>
+                            <p className="text-white/60 text-[10px] font-black tracking-[0.2em]">{t('admin.pendingOrders')}</p>
                             <h3 className="text-white text-2xl font-black mt-1 tracking-tight">{stats.pending}</h3>
                         </div>
 
@@ -150,7 +180,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                     <MdLocalShipping className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.shippedToday')}</p>
+                            <p className="text-white/60 text-[10px] font-black tracking-[0.2em]">{t('admin.shippedToday')}</p>
                             <h3 className="text-white text-2xl font-black mt-1 tracking-tight">{stats.shippedToday}</h3>
                         </div>
 
@@ -160,7 +190,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                     <MdTaskAlt className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.deliveredMtd')}</p>
+                            <p className="text-white/60 text-[10px] font-black tracking-[0.2em]">{t('admin.deliveredMtd')}</p>
                             <h3 className="text-white text-2xl font-black mt-1 tracking-tight">{stats.deliveredMTD}</h3>
                         </div>
 
@@ -170,7 +200,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                     <MdPayments className="text-2xl" />
                                 </div>
                             </div>
-                            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">{t('admin.totalRevenue')}</p>
+                            <p className="text-white/60 text-[10px] font-black tracking-[0.2em]">{t('admin.totalRevenue')}</p>
                             <h3 className="text-accent text-2xl font-black mt-1 tracking-tight">
                                 ${stats.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                             </h3>
@@ -180,32 +210,32 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div className="flex flex-wrap items-center gap-4">
-                                <h3 className="text-white text-sm font-black uppercase tracking-[0.2em]">{t('admin.allOrders')} ({filteredOrders.length})</h3>
+                                <h3 className="text-white text-sm font-black tracking-[0.2em]">{t('admin.allOrders')} ({filteredOrders.length})</h3>
                                 <div className="flex bg-white/[0.02] rounded-xl p-1 border border-white/5">
                                     <button
-                                        onClick={() => setFilter("ALL")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "ALL" ? "bg-accent text-white" : "text-white/60 hover:text-white"}`}
+                                        onClick={() => { setFilter("ALL"); updateUrl({ page: '1' }); }}
+                                        className={`px-4 py-1.5 text-[10px] font-black tracking-widest rounded-lg transition-all ${filter === "ALL" ? "bg-accent text-white" : "text-white/60 hover:text-white"}`}
                                         aria-label={t('admin.filterBy').replace('{status}', t('admin.allOrders'))}
                                     >
                                         {t('admin.viewAll')}
                                     </button>
                                     <button
-                                        onClick={() => setFilter("PENDING")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "PENDING" ? "bg-indigo-500 text-white" : "text-white/60 hover:text-indigo-500"}`}
+                                        onClick={() => { setFilter("PENDING"); updateUrl({ page: '1' }); }}
+                                        className={`px-4 py-1.5 text-[10px] font-black tracking-widest rounded-lg transition-all ${filter === "PENDING" ? "bg-indigo-500 text-white" : "text-white/60 hover:text-indigo-500"}`}
                                         aria-label={t('admin.filterBy').replace('{status}', t('admin.pendingOrders'))}
                                     >
                                         {t('admin.pending')}
                                     </button>
                                     <button
-                                        onClick={() => setFilter("SHIPPED")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "SHIPPED" ? "bg-purple-500 text-white" : "text-white/60 hover:text-purple-500"}`}
+                                        onClick={() => { setFilter("SHIPPED"); updateUrl({ page: '1' }); }}
+                                        className={`px-4 py-1.5 text-[10px] font-black tracking-widest rounded-lg transition-all ${filter === "SHIPPED" ? "bg-purple-500 text-white" : "text-white/60 hover:text-purple-500"}`}
                                         aria-label={t('admin.filterBy').replace('{status}', t('admin.shipped'))}
                                     >
                                         {t('admin.shipped')}
                                     </button>
                                     <button
-                                        onClick={() => setFilter("DELIVERED")}
-                                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${filter === "DELIVERED" ? "bg-accent text-white" : "text-white/60 hover:text-accent"}`}
+                                        onClick={() => { setFilter("DELIVERED"); updateUrl({ page: '1' }); }}
+                                        className={`px-4 py-1.5 text-[10px] font-black tracking-widest rounded-lg transition-all ${filter === "DELIVERED" ? "bg-accent text-white" : "text-white/60 hover:text-accent"}`}
                                         aria-label={t('admin.filterBy').replace('{status}', t('admin.delivered'))}
                                     >
                                         {t('admin.delivered')}
@@ -231,30 +261,70 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="border-b border-white/5 bg-white/[0.01]">
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderId')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.customerName')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.date')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalAmount')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.products')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderStatus')}</th>
-                                            <th className={`p-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
+                                            <th 
+                                                className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                                onClick={() => handleSort('id')}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    {t('admin.orderId')}
+                                                    {sortBy === 'id' && (
+                                                        <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                    )}
+                                                </div>
+                                            </th>
+                                            <th 
+                                                className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                                onClick={() => handleSort('Name')}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    {t('admin.customerName')}
+                                                    {sortBy === 'Name' && (
+                                                        <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                    )}
+                                                </div>
+                                            </th>
+                                            <th 
+                                                className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                                onClick={() => handleSort('createdAt')}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    {t('admin.date')}
+                                                    {sortBy === 'createdAt' && (
+                                                        <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                    )}
+                                                </div>
+                                            </th>
+                                            <th 
+                                                className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                                onClick={() => handleSort('totalAmount')}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    {t('admin.totalAmount')}
+                                                    {sortBy === 'totalAmount' && (
+                                                        <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                    )}
+                                                </div>
+                                            </th>
+                                            <th className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.products')}</th>
+                                            <th className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.orderStatus')}</th>
+                                            <th className={`p-4 text-[10px] font-black tracking-[0.2em] text-white/60 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
-                                        {filteredOrders.map((order) => {
+                                        {currentItems.map((order) => {
                                             const statusColor = getStatusColor(order.status);
                                             return (
                                                 <tr key={order.id} className="hover:bg-white/[0.02] transition-all group">
-                                                    <td className="p-4 text-xs font-black text-white uppercase tracking-tighter">#{order.id.slice(-6).toUpperCase()}</td>
+                                                    <td className="p-4 text-xs font-black text-white tracking-tighter">#{order.id.slice(-6).toUpperCase()}</td>
                                                     <td className="p-4">
                                                         <div className="flex flex-col gap-0.5">
-                                                            <span className="text-xs font-black text-white uppercase tracking-tight">{order.Name}</span>
+                                                            <span className="text-xs font-black text-white tracking-tight">{order.Name}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="p-4 text-[11px] font-black text-white/40 uppercase tracking-widest">{new Date(order.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                                                    <td className="p-4 text-xs font-black text-accent uppercase tracking-tight">${Number(order.totalAmount).toFixed(2)}</td>
+                                                    <td className="p-4 text-[11px] font-black text-white/40 tracking-widest">{new Date(order.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                                    <td className="p-4 text-xs font-black text-accent tracking-tight">${Number(order.totalAmount).toFixed(2)}</td>
                                                     <td className="p-4">
-                                                        <span className="text-[10px] font-black uppercase tracking-widest text-white/40 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/10 max-w-[150px] truncate block group-hover:border-accent/30 transition-all">
+                                                        <span className="text-[10px] font-black tracking-widest text-white/40 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/10 max-w-[150px] truncate block group-hover:border-accent/30 transition-all">
                                                             {order.items.map(i => i.product?.name).join(', ') || t('admin.unknown')}
                                                         </span>
                                                     </td>
@@ -265,7 +335,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                                                 disabled={updatingId === order.id || !canManage}
                                                                 onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
                                                                 aria-label={t('admin.updateStatusOrder').replace('{id}', order.id)}
-                                                                className={`appearance-none pl-11 pr-12 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none border shadow-sm hover:shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${statusColor === "blue" ? "text-blue-500 bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20" :
+                                                                className={`appearance-none pl-11 pr-12 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all outline-none border shadow-sm hover:shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${statusColor === "blue" ? "text-blue-500 bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20" :
                                                                     statusColor === "indigo" ? "text-indigo-500 bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-500/20" :
                                                                         statusColor === "accent" ? "text-accent bg-accent/10 border-accent/20 hover:bg-accent/20" :
                                                                             statusColor === "red" ? "text-red-500 bg-red-500/10 border-red-500/20 hover:bg-red-500/20" :
@@ -304,7 +374,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                                         <div className="flex items-center gap-2 justify-end">
                                                             <button
                                                                 onClick={() => handleViewDetails(order)}
-                                                                className="text-accent hover:text-accent/80 text-[10px] font-black uppercase tracking-[0.2em] transition-colors"
+                                                                className="text-accent hover:text-accent/80 text-[10px] font-black tracking-[0.2em] transition-colors"
                                                             >
                                                                 {t('admin.viewDetails')}
                                                             </button>
@@ -327,9 +397,9 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                                 </tr>
                                             );
                                         })}
-                                        {filteredOrders.length === 0 && (
+                                        {currentItems.length === 0 && (
                                             <tr>
-                                                <td colSpan={7} className="p-12 text-center text-white/20 italic text-[11px] font-black uppercase tracking-[0.2em]">
+                                                <td colSpan={7} className="p-12 text-center text-white/20 italic text-[11px] font-black tracking-[0.2em]">
                                                     {t('admin.noOrdersFound')}
                                                 </td>
                                             </tr>
@@ -338,19 +408,33 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
                                 </table>
                             </div>
                             <div className="p-4 border-t border-white/5 bg-white/[0.01] flex items-center justify-between">
-                                <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em]">
-                                    {t('admin.showingEntries').replace('{count}', filteredOrders.length.toString()).replace('{total}', orders.length.toString())}
+                                <p className="text-[10px] text-white/20 font-black tracking-[0.2em]">
+                                    {t('admin.showingEntries')
+                                        .replace('{count}', currentItems.length.toString())
+                                        .replace('{total}', pagination.total.toString())}
                                 </p>
                                 <div className="flex items-center gap-2">
                                     <button 
-                                        className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all"
+                                        onClick={() => updateUrl({ page: Math.max(1, currentPage - 1).toString() })}
+                                        disabled={currentPage === 1}
+                                        className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                                         aria-label={t('common.previous')}
                                     >
                                         <MdChevronLeft className={`text-[18px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                                     </button>
-                                    <button className="size-8 flex items-center justify-center rounded-xl bg-accent text-white text-[10px] font-black uppercase tracking-widest">1</button>
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                        <button 
+                                            key={page}
+                                            onClick={() => updateUrl({ page: page.toString() })}
+                                            className={`size-8 flex items-center justify-center rounded-xl text-[10px] font-black tracking-widest transition-all ${currentPage === page ? 'bg-accent text-white' : 'border border-white/5 text-white/40 hover:bg-white/5'}`}
+                                        >
+                                            {page}
+                                        </button>
+                                    ))}
                                     <button 
-                                        className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all"
+                                        onClick={() => updateUrl({ page: Math.min(totalPages, currentPage + 1).toString() })}
+                                        disabled={currentPage === totalPages || totalPages === 0}
+                                        className="size-8 flex items-center justify-center rounded-xl border border-white/5 text-white/40 hover:bg-white/5 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                                         aria-label={t('common.next')}
                                     >
                                         <MdChevronRight className={`text-[18px] ${dir === 'rtl' ? 'rotate-180' : ''}`} />

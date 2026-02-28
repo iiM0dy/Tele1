@@ -124,6 +124,18 @@ export default function ProductsClient({
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
     const [isSubmittingBulk, setIsSubmittingBulk] = useState(false);
 
+    // Sorting state from URL
+    const sortBy = searchParams.get('sortBy') || "createdAt";
+    const sortDir = (searchParams.get('sortDir') as 'asc' | 'desc') || "desc";
+
+    const handleSort = (key: string) => {
+        let direction: 'asc' | 'desc' = 'asc';
+        if (sortBy === key && sortDir === 'asc') {
+            direction = 'desc';
+        }
+        updateUrl({ sortBy: key, sortDir: direction });
+    };
+
     // Update searchQuery when URL changes (e.g. back button)
     useEffect(() => {
         setSearchQuery(searchParams.get('search') || "");
@@ -165,7 +177,7 @@ export default function ProductsClient({
         return categories.map(c => c.name).sort();
     }, [categories]);
 
-    // Use products directly as they are already filtered by server
+    // Use products directly as they are already filtered and sorted by server
     const currentItems = products;
 
     // Pagination helpers
@@ -599,8 +611,8 @@ export default function ProductsClient({
 
     return (
         <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#202126]">
-            <div className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-8 scrollbar-hide">
-                <div className="max-w-[1200px] mx-auto flex flex-col gap-6 md:gap-8 pb-10">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 scrollbar-hide">
+                <div className="max-w-[1600px] mx-auto flex flex-col gap-6 md:gap-8 pb-10">
 
                     {/* Page Heading & Breadcrumbs */}
                     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -890,12 +902,72 @@ export default function ProductsClient({
                                                 aria-label="Select all products"
                                             />
                                         </th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.productName')}</th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.categoryName')}</th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.priceValue')}</th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.addProductModal.stockQuantity') || "Quantity"}</th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.trending')}</th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.bestSeller')}</th>
+                                        <th 
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('name')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.productName')}
+                                                {sortBy === 'name' && (
+                                                    <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('category.name')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.categoryName')}
+                                                {sortBy === 'category.name' && (
+                                                    <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('price')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.priceValue')}
+                                                {sortBy === 'price' && (
+                                                    <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('stock')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.addProductModal.stockQuantity') || "Quantity"}
+                                                {sortBy === 'stock' && (
+                                                    <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('isTrending')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.trending')}
+                                                {sortBy === 'isTrending' && (
+                                                    <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('bestSeller')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.bestSeller')}
+                                                {sortBy === 'bestSeller' && (
+                                                    <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.statusValue')}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>

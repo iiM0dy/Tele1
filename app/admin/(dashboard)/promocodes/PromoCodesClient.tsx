@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import PromoCodeModal from "./PromoCodeModal";
 import { deletePromoCode, togglePromoCodeStatus } from "../../../../lib/admin-actions";
 import { toast } from "react-hot-toast";
@@ -36,10 +36,42 @@ export default function PromoCodesClient({ promoCodes, categoriesCount }: PromoC
     const [searchQuery, setSearchQuery] = useState("");
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
 
-    const filteredPromoCodes = promoCodes.filter(pc =>
-        pc.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (pc.delegateName?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
-    );
+    // Sorting state
+    const [sortConfig, setSortConfig] = useState<{ key: keyof PromoCode | null, direction: 'asc' | 'desc' }>({
+        key: 'createdAt',
+        direction: 'desc'
+    });
+
+    const handleSort = (key: keyof PromoCode) => {
+        let direction: 'asc' | 'desc' = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedPromoCodes = useMemo(() => {
+        const filtered = promoCodes.filter(pc =>
+            pc.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (pc.delegateName?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
+        );
+
+        if (!sortConfig.key) return filtered;
+
+        return [...filtered].sort((a, b) => {
+            let aValue: any = a[sortConfig.key!];
+            let bValue: any = b[sortConfig.key!];
+
+            if (sortConfig.key === 'createdAt') {
+                aValue = new Date(a.createdAt).getTime();
+                bValue = new Date(b.createdAt).getTime();
+            }
+
+            if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }, [promoCodes, searchQuery, sortConfig]);
 
     const handleAdd = () => {
         setSelectedPromoCode(null);
@@ -85,9 +117,9 @@ export default function PromoCodesClient({ promoCodes, categoriesCount }: PromoC
     };
 
     return (
-        <div className="flex-1 flex flex-col h-screen overflow-hidden">
-            <div className="flex-1 overflow-y-auto p-6 sm:p-10 scrollbar-hide">
-                <div className="max-w-[1200px] mx-auto pb-10">
+        <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#202126]">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 scrollbar-hide">
+                <div className="max-w-[1600px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div className="">
                             <h3 className="text-3xl font-black text-white tracking-tight leading-tight">
@@ -154,18 +186,88 @@ export default function PromoCodesClient({ promoCodes, categoriesCount }: PromoC
                             <table className={`w-full text-left border-collapse ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/1">
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.code')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.discount')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.delegate')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.totalSales')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.thisMonth')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.usage')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.status')}</th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('code')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.code')}
+                                                {sortConfig.key === 'code' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('discountPercentage')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.discount')}
+                                                {sortConfig.key === 'discountPercentage' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('delegateName')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.delegate')}
+                                                {sortConfig.key === 'delegateName' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('totalSales')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.totalSales')}
+                                                {sortConfig.key === 'totalSales' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('thisMonthSales')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.thisMonth')}
+                                                {sortConfig.key === 'thisMonthSales' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('usageCount')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.usage')}
+                                                {sortConfig.key === 'usageCount' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/40 tracking-widest cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('isActive')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.status')}
+                                                {sortConfig.key === 'isActive' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
                                         <th className={`p-6 text-sm font-semibold text-white tracking-wider ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
-                                    {filteredPromoCodes.map((pc) => (
+                                    {sortedPromoCodes.map((pc) => (
                                         <tr key={pc.id} className="group hover:bg-white/2 transition-colors">
                                             <td className="p-6">
                                                 <span className="font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-xl text-[10px] tracking-wider border border-accent/10">
@@ -233,7 +335,7 @@ export default function PromoCodesClient({ promoCodes, categoriesCount }: PromoC
                                             </td>
                                         </tr>
                                     ))}
-                                    {filteredPromoCodes.length === 0 && (
+                                    {sortedPromoCodes.length === 0 && (
                                         <tr>
                                             <td colSpan={8} className="text-center py-20 bg-white/1">
                                                 <p className="text-[11px] font-semibold tracking-wider text-white/20">

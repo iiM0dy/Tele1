@@ -30,6 +30,35 @@ export default function UsersClient({ users }: { users: User[] }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
+    // Sorting state
+    const [sortConfig, setSortConfig] = useState<{ key: keyof User | null, direction: 'asc' | 'desc' }>({
+        key: 'createdAt',
+        direction: 'desc'
+    });
+
+    const handleSort = (key: keyof User) => {
+        let direction: 'asc' | 'desc' = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedUsers = [...users].sort((a, b) => {
+        if (!sortConfig.key) return 0;
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
+
+        if (sortConfig.key === 'createdAt') {
+            aValue = new Date(a.createdAt).getTime();
+            bValue = new Date(b.createdAt).getTime();
+        }
+
+        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+    });
+
     const handleEdit = (user: User) => {
         setSelectedUser(user);
         setIsModalOpen(true);
@@ -56,9 +85,9 @@ export default function UsersClient({ users }: { users: User[] }) {
     };
 
     return (
-        <div className="flex-1 flex flex-col h-screen overflow-hidden">
-            <div className="flex-1 overflow-y-auto p-6 sm:p-10 scrollbar-hide">
-                <div className="max-w-[1200px] mx-auto pb-10">
+        <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#202126]">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 scrollbar-hide">
+                <div className="max-w-[1600px] mx-auto pb-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
                         <div className="">
                             <h2 className="text-2xl font-black text-white tracking-tight">
@@ -95,15 +124,45 @@ export default function UsersClient({ users }: { users: User[] }) {
                             <table className="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/1">
-                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.username')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.role')}</th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('username')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.username')}
+                                                {sortConfig.key === 'username' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('role')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.role')}
+                                                {sortConfig.key === 'role' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
                                         <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.permissionsSummary')}</th>
-                                        <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.createdAt')}</th>
+                                        <th 
+                                            className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            onClick={() => handleSort('createdAt')}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {t('admin.createdAt')}
+                                                {sortConfig.key === 'createdAt' && (
+                                                    <span className="text-accent">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                                )}
+                                            </div>
+                                        </th>
                                         <th className={`p-6 text-[10px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
-                                    {users.map((user) => (
+                                    {sortedUsers.map((user) => (
                                         <tr key={user.id} className="group hover:bg-white/2 transition-colors">
                                             <td className="p-6">
                                                 <div className="flex items-center gap-4">

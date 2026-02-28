@@ -155,12 +155,19 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                                     className="group block"
                                                 >
                                                     <div className="relative aspect-4/5 bg-white overflow-hidden rounded-2xl mb-4">
+                                                        {Number(product.Stock || 0) <= 0 && (
+                                                            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                                                                <span className="bg-white text-black text-[8px] font-black px-3 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-xl border border-black transform -rotate-12">
+                                                                    {t('products.outOfStock')}
+                                                                </span>
+                                                            </div>
+                                                        )}
                                                         <Image
                                                             src={product.Images?.[0] || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=400'}
                                                             alt={product.Name}
                                                             fill
                                                             unoptimized
-                                                            className="object-contain p-2 transition-transform duration-700 group-hover:scale-105"
+                                                            className={`object-contain p-2 transition-transform duration-700 group-hover:scale-105 ${Number(product.Stock || 0) <= 0 ? 'grayscale opacity-60' : ''}`}
                                                         />
                                                     </div>
                                                     <h4 className="text-[13px] font-black uppercase tracking-tight text-primary mb-1 line-clamp-1 group-hover:text-accent transition-colors">

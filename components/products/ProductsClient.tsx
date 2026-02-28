@@ -299,13 +299,13 @@ export default function ProductsClient({ initialProducts }: ProductsClientProps)
                                 <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
                                     {t('common.price') || 'Price'}
                                 </h3>
-                                <span className="text-[11px] font-black text-accent bg-accent/5 px-2 py-1 rounded-md">
+                                <span className="text-[11px] font-black text-accent bg-accent/5 px-2 py-1 rounded-md" dir="ltr">
                                     ${tempPriceRange[0]} - ${tempPriceRange[1]}
                                 </span>
                             </div>
 
                             <div className="space-y-8 px-2">
-                                <div className="relative h-1.5 bg-zinc-100 rounded-full">
+                                <div className="relative h-1.5 bg-zinc-100 rounded-full" dir="ltr">
                                     <div
                                         className="absolute h-full bg-accent rounded-full"
                                         style={{
@@ -320,6 +320,7 @@ export default function ProductsClient({ initialProducts }: ProductsClientProps)
                                         value={tempPriceRange[0]}
                                         onChange={(e) => setTempPriceRange([Number(e.target.value), tempPriceRange[1]])}
                                         className="absolute top-1/2 -translate-y-1/2 w-full h-full opacity-0 cursor-pointer z-10"
+                                        style={{ direction: 'ltr' }}
                                     />
                                     <input
                                         type="range"
@@ -328,6 +329,7 @@ export default function ProductsClient({ initialProducts }: ProductsClientProps)
                                         value={tempPriceRange[1]}
                                         onChange={(e) => setTempPriceRange([tempPriceRange[0], Number(e.target.value)])}
                                         className="absolute top-1/2 -translate-y-1/2 w-full h-full opacity-0 cursor-pointer z-10"
+                                        style={{ direction: 'ltr' }}
                                     />
                                     {/* Custom thumbs */}
                                     <div
@@ -342,26 +344,30 @@ export default function ProductsClient({ initialProducts }: ProductsClientProps)
 
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-1">
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Min Price</span>
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                                            {t('collection.filters.minPrice') || 'Min Price'}
+                                        </span>
                                         <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">$</span>
+                                            <span className={`absolute ${language === 'ar' ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-zinc-400 text-xs`}>$</span>
                                             <input
                                                 type="number"
                                                 value={tempPriceRange[0]}
                                                 onChange={(e) => setTempPriceRange([Number(e.target.value), tempPriceRange[1]])}
-                                                className="w-full pl-6 pr-3 py-2.5 bg-zinc-50 border border-zinc-100 rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-accent/20"
+                                                className={`w-full ${language === 'ar' ? 'pr-8 pl-3' : 'pl-8 pr-3'} py-2.5 bg-zinc-50 border border-zinc-100 rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-accent/20`}
                                             />
                                         </div>
                                     </div>
                                     <div className="flex-1 space-y-1">
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Max Price</span>
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                                            {t('collection.filters.maxPrice') || 'Max Price'}
+                                        </span>
                                         <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">$</span>
+                                            <span className={`absolute ${language === 'ar' ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-zinc-400 text-xs`}>$</span>
                                             <input
                                                 type="number"
                                                 value={tempPriceRange[1]}
                                                 onChange={(e) => setTempPriceRange([tempPriceRange[0], Number(e.target.value)])}
-                                                className="w-full pl-6 pr-3 py-2.5 bg-zinc-50 border border-zinc-100 rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-accent/20"
+                                                className={`w-full ${language === 'ar' ? 'pr-8 pl-3' : 'pl-8 pr-3'} py-2.5 bg-zinc-50 border border-zinc-100 rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-accent/20`}
                                             />
                                         </div>
                                     </div>

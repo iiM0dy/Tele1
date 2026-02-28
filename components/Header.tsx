@@ -68,6 +68,7 @@ export default function Header() {
     const isProductsListPage = pathname === '/products';
     const isBlogPage = pathname?.startsWith('/blog');
     const isCartPage = pathname === '/cart';
+    const isOrderSuccessPage = pathname === '/order-success';
     const isAdminPage = pathname?.startsWith('/admin');
 
     // Detect 404 page via body attribute set in not-found.tsx
@@ -84,13 +85,13 @@ export default function Header() {
         return () => observer.disconnect();
     }, [pathname]);
 
-    const isSolid = isScrolled || isHovered || isCollectionPage || isProductPage || isProductsListPage || isCartPage || isNotFoundPage || isBlogPage;
+    const isSolid = isScrolled || isHovered || isCollectionPage || isProductPage || isProductsListPage || isCartPage || isNotFoundPage || isBlogPage || isOrderSuccessPage;
 
-    if (pathname === '/checkout' || pathname === '/order-success' || isAdminPage) return null;
+    if (pathname === '/checkout' || isAdminPage) return null;
 
     return (
         <div
-            className={`${(isCartPage || isNotFoundPage) ? 'relative' : 'fixed top-0 left-0'} w-full z-50 group/header transition-all duration-700 ease-in-out ${isSolid
+            className={`${(isCartPage || isNotFoundPage || isOrderSuccessPage) ? 'relative' : 'fixed top-0 left-0'} w-full z-50 group/header transition-all duration-700 ease-in-out ${isSolid
                 ? 'bg-primary shadow-2xl py-0'
                 : 'bg-transparent py-2'
                 }`}
@@ -185,16 +186,6 @@ export default function Header() {
                         {/* Secondary Nav - Right */}
                         <div className="flex items-center justify-end gap-3 md:gap-6">
                             <LanguageToggle />
-                            <Link
-                                href="/account"
-                                className="hidden sm:block transition-all text-white/70 hover:text-white hover:scale-110"
-                            >
-                                <span className="sr-only">Account</span>
-                                <svg aria-hidden="true" fill="none" focusable="false" width="22" height="22" viewBox="0 0 24 24">
-                                    <path d="M16.125 8.75c-.184 2.478-2.063 4.5-4.125 4.5s-3.944-2.021-4.125-4.5c-.187-2.578 1.64-4.5 4.125-4.5 2.484 0 4.313 1.969 4.125 4.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                    <path d="M3.017 20.747C3.783 16.5 7.922 14.25 12 14.25s8.217 2.25 8.984 6.497" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"></path>
-                                </svg>
-                            </Link>
 
                             <button
                                 onClick={() => setIsSearchOpen(!isSearchOpen)}
