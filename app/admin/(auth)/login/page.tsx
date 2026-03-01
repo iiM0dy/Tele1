@@ -65,7 +65,10 @@ export default function AdminLoginPage() {
                     {/* Header */}
                     <div className="flex flex-col items-center mb-10 text-center">
                         <div className="mb-6">
-                            <span className="text-3xl font-black tracking-tighter text-white">
+                            <span
+                                dir="ltr"
+                                className="text-3xl font-logo font-black tracking-tighter text-white uppercase"
+                            >
                                 TELE1<span className="text-accent">.</span>
                             </span>
                         </div>

@@ -71,7 +71,10 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                         {/* Logo & Brand */}
                         <div className="flex items-center justify-between px-2">
                             <div className="flex flex-col">
-                                <h1 className="text-white text-2xl font-black tracking-tighter leading-tight">
+                                <h1
+                                    dir="ltr"
+                                    className="text-white text-2xl font-logo font-black tracking-tighter leading-tight uppercase"
+                                >
                                     TELE1<span className="text-accent">.</span>
                                 </h1>
                                 <p className="text-white/60 text-[11px] font-semibold tracking-wider">

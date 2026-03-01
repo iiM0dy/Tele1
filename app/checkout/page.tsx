@@ -176,10 +176,13 @@ export default function CheckoutPage() {
                             <div className="w-5 lg:hidden"></div> {/* Spacer for mobile logo centering */}
 
                             <Link href="/" className="inline-block">
-                                <span className="text-xl md:text-2xl font-sans font-black tracking-tighter uppercase text-black">
-                                    TELE1<span className="text-accent">.</span>
-                                </span>
-                            </Link>
+                                    <span
+                                        dir="ltr"
+                                        className="text-2xl font-logo font-black tracking-tighter uppercase text-primary"
+                                    >
+                                        TELE1<span className="text-accent">.</span>
+                                    </span>
+                                </Link>
 
                             <div className="flex justify-end lg:hidden">
                                 <Link href="/cart" aria-label="Cart" className="text-[#333] hover:text-black transition-colors">

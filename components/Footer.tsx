@@ -28,7 +28,10 @@ export default function Footer() {
                     {/* Brand & Description */}
                     <div className="md:col-span-4 space-y-8">
                         <Link href="/" className="inline-block group">
-                            <h3 className="text-3xl font-sans font-black tracking-tighter uppercase group-hover:text-accent transition-colors">
+                            <h3
+                                dir="ltr"
+                                className="text-3xl font-logo font-black tracking-tighter uppercase group-hover:text-accent transition-colors"
+                            >
                                 TELE1<span className="text-accent">.</span>
                             </h3>
                         </Link>

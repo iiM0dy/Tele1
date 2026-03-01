@@ -176,7 +176,8 @@ export default function Header() {
                             <Link href="/" className="relative block group">
                                 <span className="sr-only">TELE1</span>
                                 <span
-                                    className="text-2xl md:text-4xl font-sans font-black tracking-tighter uppercase transition-all text-white group-hover:text-accent"
+                                    dir="ltr"
+                                    className="text-2xl md:text-4xl font-logo font-black tracking-tighter uppercase transition-all text-white group-hover:text-accent"
                                 >
                                     TELE1<span className="text-accent">.</span>
                                 </span>
@@ -238,7 +239,10 @@ export default function Header() {
                 >
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between p-6 border-b border-zinc-100">
-                            <span className="text-2xl font-sans font-black tracking-tighter uppercase text-primary">
+                            <span
+                                dir="ltr"
+                                className="text-2xl font-logo font-black tracking-tighter uppercase text-primary"
+                            >
                                 TELE1<span className="text-accent">.</span>
                             </span>
                             <button

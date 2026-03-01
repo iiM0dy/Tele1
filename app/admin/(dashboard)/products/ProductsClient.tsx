@@ -615,25 +615,23 @@ export default function ProductsClient({
                 <div className="max-w-[1600px] mx-auto flex flex-col gap-6 md:gap-8 pb-10">
 
                     {/* Page Heading & Breadcrumbs */}
-                    <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex flex-col gap-1">
-                            {/* Breadcrumbs */}
-
-                            <h2 className="text-3xl font-black text-white tracking-tight uppercase">{t('admin.products')}</h2>
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.manageCatalog')}</p>
+                            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">{t('admin.products')}</h2>
+                            <p className="text-white/60 text-[10px] sm:text-[11px] font-semibold tracking-wider">{t('admin.manageCatalog')}</p>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3">
-                            <div className="relative">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <div className="relative flex-1 sm:flex-none">
                                 <button
                                     onClick={() => setShowExportMenu(!showExportMenu)}
-                                    className="bg-white/[0.02] border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all shadow-sm hover:border-accent/30"
+                                    className="w-full sm:w-auto bg-white/[0.02] border border-white/5 hover:bg-white/5 text-white h-10 sm:h-12 px-4 sm:px-6 rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-[11px] tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm hover:border-accent/30"
                                     aria-label="Export data options"
                                     aria-expanded={showExportMenu}
                                     aria-haspopup="true"
                                 >
-                                    <MdFileUpload className="text-[20px] text-accent" />
-                                    {t('admin.exportData')}
-                                    <MdExpandMore className={`text-[16px] transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+                                    <MdFileUpload className="text-[18px] sm:text-[20px] text-accent" />
+                                    <span className="whitespace-nowrap">{t('admin.exportData')}</span>
+                                    <MdExpandMore className={`text-[14px] sm:text-[16px] transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
                                 </button>
 
                                 {showExportMenu && (
@@ -642,7 +640,7 @@ export default function ProductsClient({
                                             className="fixed inset-0 z-10"
                                             onClick={() => setShowExportMenu(false)}
                                         />
-                                        <div className="absolute top-full mt-2 right-0 w-48 bg-[#0F172A] border border-white/5 rounded-2xl shadow-xl z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className={`absolute top-full mt-2 ${dir === 'rtl' ? 'left-0' : 'right-0'} w-48 bg-[#0F172A] border border-white/5 rounded-2xl shadow-xl z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200`}>
                                             <button
                                                 onClick={handleExportCSV}
                                                 className="w-full px-4 py-3 text-left text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 hover:text-accent transition-colors flex items-center gap-3"
@@ -665,13 +663,13 @@ export default function ProductsClient({
                                     </>
                                 )}
                             </div>
-                            <label className="bg-white/2 border border-white/5 hover:bg-white/5 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all shadow-sm cursor-pointer hover:border-accent/30 disabled:opacity-50">
+                            <label className="flex-1 sm:flex-none bg-white/2 border border-white/5 hover:bg-white/5 text-white h-10 sm:h-12 px-4 sm:px-6 rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-[11px] tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer hover:border-accent/30 disabled:opacity-50">
                                 {isSubmittingBulk ? (
-                                    <MdSync className="text-[20px] text-accent animate-spin" />
+                                    <MdSync className="text-[18px] sm:text-[20px] text-accent animate-spin" />
                                 ) : (
-                                    <MdFileDownload className="text-[20px] text-accent" />
+                                    <MdFileDownload className="text-[18px] sm:text-[20px] text-accent" />
                                 )}
-                                {isSubmittingBulk ? t('admin.importing') || "Importing..." : t('admin.importData')}
+                                <span className="whitespace-nowrap">{isSubmittingBulk ? t('admin.importing') || "Importing..." : t('admin.importData')}</span>
                                 <input
                                     type="file"
                                     accept=".csv, .xlsx, .xls"
@@ -687,10 +685,10 @@ export default function ProductsClient({
                                         setSelectedProduct(null);
                                         setIsAddModalOpen(true);
                                     }}
-                                    className="bg-accent hover:bg-accent/90 text-white h-12 px-6 rounded-2xl font-black text-[11px] tracking-wider flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                                    className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white h-10 sm:h-12 px-4 sm:px-6 rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-[11px] tracking-wider flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                                 >
-                                    <MdAdd className="text-[20px]" />
-                                    {t('admin.addNewProduct')}
+                                    <MdAdd className="text-[18px] sm:text-[20px]" />
+                                    <span className="whitespace-nowrap">{t('admin.addNewProduct')}</span>
                                 </button>
                             )}
                         </div>
@@ -707,43 +705,43 @@ export default function ProductsClient({
                     />
 
                     {/* Stats Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.totalProducts')}</p>
-                            <p className="text-2xl font-black text-white tracking-tight">{stats.total.toLocaleString()}</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                        <div className="bg-white/2 p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[80px] sm:min-h-[90px]">
+                            <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-wider line-clamp-1">{t('admin.totalProducts')}</p>
+                            <p className="text-xl sm:text-2xl font-black text-white tracking-tight">{stats.total.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.trending')}</p>
-                            <p className="text-2xl font-black text-accent tracking-tight">{products.filter(p => p.isTrending).length}</p>
+                        <div className="bg-white/2 p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[80px] sm:min-h-[90px]">
+                            <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-wider line-clamp-1">{t('admin.trending')}</p>
+                            <p className="text-xl sm:text-2xl font-black text-accent tracking-tight">{products.filter(p => p.isTrending).length}</p>
                         </div>
-                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.outOfStock')}</p>
-                            <p className="text-2xl font-black text-red-500 tracking-tight">{stats.outOfStock.toLocaleString()}</p>
+                        <div className="bg-white/2 p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[80px] sm:min-h-[90px]">
+                            <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-wider line-clamp-1">{t('admin.outOfStock')}</p>
+                            <p className="text-xl sm:text-2xl font-black text-red-500 tracking-tight">{stats.outOfStock.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.lowInventory')}</p>
-                            <p className="text-2xl font-black text-orange-500 tracking-tight">{stats.lowStock.toLocaleString()}</p>
+                        <div className="bg-white/2 p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[80px] sm:min-h-[90px]">
+                            <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-wider line-clamp-1">{t('admin.lowInventory')}</p>
+                            <p className="text-xl sm:text-2xl font-black text-orange-500 tracking-tight">{stats.lowStock.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.categories')}</p>
-                            <p className="text-2xl font-black text-white tracking-tight">{stats.categories.toLocaleString()}</p>
+                        <div className="bg-white/2 p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[80px] sm:min-h-[90px]">
+                            <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-wider line-clamp-1">{t('admin.categories')}</p>
+                            <p className="text-xl sm:text-2xl font-black text-white tracking-tight">{stats.categories.toLocaleString()}</p>
                         </div>
-                        <div className="bg-white/2 p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[90px]">
-                            <p className="text-white/60 text-[11px] font-semibold tracking-wider">{t('admin.bestSeller')}</p>
-                            <p className="text-2xl font-black text-accent tracking-tight">{stats.bestSellers.toLocaleString()}</p>
+                        <div className="bg-white/2 p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-accent/30 transition-all shadow-sm flex flex-col gap-1 min-h-[80px] sm:min-h-[90px]">
+                            <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-wider line-clamp-1">{t('admin.bestSeller')}</p>
+                            <p className="text-xl sm:text-2xl font-black text-accent tracking-tight">{stats.bestSellers.toLocaleString()}</p>
                         </div>
                     </div>
 
                     {/* Filters & Table Container */}
-                    <div className="bg-white/2 border border-white/5 rounded-3xl shadow-sm overflow-hidden">
+                    <div className="bg-white/2 border border-white/5 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden">
                         {/* Toolbar */}
-                        <div className="p-6 border-b border-white/5 flex flex-col lg:flex-row gap-4 lg:items-center justify-between">
-                            <div className="relative w-full lg:w-80">
+                        <div className="p-4 sm:p-6 border-b border-white/5 flex flex-col xl:flex-row gap-4 xl:items-center justify-between">
+                            <div className="relative w-full xl:w-96">
                                 <span className={`absolute inset-y-0 ${dir === 'rtl' ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
                                     <MdSearch className="text-accent text-[20px]" />
                                 </span>
                                 <input
-                                    className={`block w-full ${dir === 'rtl' ? 'pr-12 pl-3' : 'pl-12 pr-3'} py-3 border border-white/5 rounded-2xl bg-white/2 text-[13px] font-medium tracking-normal text-white placeholder-white/20 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all outline-none`}
+                                    className={`block w-full ${dir === 'rtl' ? 'pr-12 pl-3' : 'pl-12 pr-3'} py-3 border border-white/5 rounded-xl sm:rounded-2xl bg-white/2 text-[13px] font-medium tracking-normal text-white placeholder-white/20 focus:ring-1 focus:ring-accent/20 focus:border-accent/30 transition-all outline-none`}
                                     placeholder={t('admin.searchPlaceholder')}
                                     type="text"
                                     value={searchQuery}
@@ -751,11 +749,11 @@ export default function ProductsClient({
                                     aria-label="Search products"
                                 />
                             </div>
-                            <div className="flex flex-wrap items-center gap-3">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                                 {/* Category Filter */}
-                                <div className="relative flex-1 sm:flex-initial">
+                                <div className="relative flex-1 sm:flex-none">
                                     <select
-                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[12px] font-medium tracking-normal text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
+                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/2 border border-white/5 rounded-xl sm:rounded-2xl text-[12px] font-medium tracking-normal text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[130px] outline-none transition-all`}
                                         value={selectedCategory}
                                         onChange={(e) => updateUrl({ category: e.target.value })}
                                         aria-label="Filter by category"
@@ -769,9 +767,9 @@ export default function ProductsClient({
                                     </div>
                                 </div>
                                 {/* Stock Filter */}
-                                <div className="relative flex-1 sm:flex-initial">
+                                <div className="relative flex-1 sm:flex-none">
                                     <select
-                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/2 border border-white/5 rounded-2xl text-[12px] font-medium tracking-normal text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[140px] outline-none transition-all`}
+                                        className={`appearance-none w-full ${dir === 'rtl' ? 'pr-3 pl-10' : 'pl-3 pr-10'} py-3 bg-white/2 border border-white/5 rounded-xl sm:rounded-2xl text-[12px] font-medium tracking-normal text-white focus:ring-1 focus:ring-accent/20 focus:border-accent/30 hover:border-accent/30 cursor-pointer min-w-[130px] outline-none transition-all`}
                                         value={selectedStockStatus}
                                         onChange={(e) => updateUrl({ stock: e.target.value })}
                                         aria-label="Filter by stock status"
@@ -789,25 +787,25 @@ export default function ProductsClient({
                                 {/* Trending Filter Toggle */}
                                 <button
                                     onClick={() => updateUrl({ trending: !showTrendingOnly ? 'true' : null })}
-                                    className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-[11px] font-semibold tracking-wider transition-all ${showTrendingOnly
+                                    className={`flex items-center gap-2 px-4 sm:px-5 py-3 rounded-xl sm:rounded-2xl text-[11px] font-semibold tracking-wider transition-all flex-1 sm:flex-none justify-center ${showTrendingOnly
                                         ? 'bg-accent text-white'
                                         : 'bg-white/2 border border-white/5 text-white hover:border-accent/30 hover:text-accent'
                                         }`}
                                 >
                                     <MdLocalFireDepartment className={`text-[20px] ${showTrendingOnly ? 'text-white' : 'text-accent'}`} />
-                                    <span className="hidden sm:inline">{t('admin.trendingOnly')}</span>
+                                    <span className="whitespace-nowrap">{t('admin.trendingOnly')}</span>
                                 </button>
 
                                 {/* Best Seller Filter Toggle */}
                                 <button
                                     onClick={() => updateUrl({ bestSeller: !showBestSellerOnly ? 'true' : null })}
-                                    className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${showBestSellerOnly
+                                    className={`flex items-center gap-2 px-4 sm:px-5 py-3 rounded-xl sm:rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex-1 sm:flex-none justify-center ${showBestSellerOnly
                                         ? 'bg-accent text-white'
                                         : 'bg-white/2 border border-white/5 text-white hover:border-accent/30 hover:text-accent'
                                         }`}
                                 >
                                     <MdStar className={`text-[20px] ${showBestSellerOnly ? 'text-white' : 'text-accent'}`} />
-                                    <span className="hidden sm:inline">{t('admin.bestSellerOnly')}</span>
+                                    <span className="whitespace-nowrap">{t('admin.bestSellerOnly')}</span>
                                 </button>
                             </div>
                         </div >
@@ -906,7 +904,7 @@ export default function ProductsClient({
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('name')}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
                                                 {t('admin.productName')}
                                                 {sortBy === 'name' && (
                                                     <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
@@ -914,10 +912,10 @@ export default function ProductsClient({
                                             </div>
                                         </th>
                                         <th
-                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'} hidden lg:table-cell`}
                                             onClick={() => handleSort('category.name')}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
                                                 {t('admin.categoryName')}
                                                 {sortBy === 'category.name' && (
                                                     <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
@@ -928,7 +926,7 @@ export default function ProductsClient({
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('price')}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
                                                 {t('admin.priceValue')}
                                                 {sortBy === 'price' && (
                                                     <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
@@ -939,7 +937,7 @@ export default function ProductsClient({
                                             className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                             onClick={() => handleSort('stock')}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
                                                 {t('admin.addProductModal.stockQuantity') || "Quantity"}
                                                 {sortBy === 'stock' && (
                                                     <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
@@ -947,10 +945,10 @@ export default function ProductsClient({
                                             </div>
                                         </th>
                                         <th
-                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'} hidden xl:table-cell`}
                                             onClick={() => handleSort('isTrending')}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
                                                 {t('admin.trending')}
                                                 {sortBy === 'isTrending' && (
                                                     <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
@@ -958,17 +956,17 @@ export default function ProductsClient({
                                             </div>
                                         </th>
                                         <th
-                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                            className={`p-3 sm:p-5 cursor-pointer hover:text-accent transition-colors ${dir === 'rtl' ? 'text-right' : 'text-left'} hidden xl:table-cell`}
                                             onClick={() => handleSort('bestSeller')}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
                                                 {t('admin.bestSeller')}
                                                 {sortBy === 'bestSeller' && (
                                                     <span className="text-accent">{sortDir === 'asc' ? '↑' : '↓'}</span>
                                                 )}
                                             </div>
                                         </th>
-                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>{t('admin.statusValue')}</th>
+                                        <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-right' : 'text-left'} hidden sm:table-cell`}>{t('admin.statusValue')}</th>
                                         <th className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>{t('admin.actions')}</th>
                                     </tr>
                                 </thead>
@@ -1010,24 +1008,24 @@ export default function ProductsClient({
                                                         <div className="flex flex-col min-w-0">
                                                             <span className="font-semibold text-white text-xs sm:text-sm line-clamp-1 tracking-tight">{product.name}</span>
                                                             <div className="flex flex-wrap gap-x-2 gap-y-1">
-                                                                <span className="text-[10px] text-white/60 font-semibold tracking-wider">{t('admin.sku')}: {product.sku || 'N/A'}</span>
+                                                                <span className="text-[10px] text-white/60 font-semibold tracking-wider whitespace-nowrap">{t('admin.sku')}: {product.sku || 'N/A'}</span>
                                                                 {product.color && (
-                                                                    <span className="text-[10px] text-accent font-semibold tracking-wider">| {product.color}</span>
+                                                                    <span className="text-[10px] text-accent font-semibold tracking-wider whitespace-nowrap">| {product.color}</span>
                                                                 )}
                                                                 {product.model && (
-                                                                    <span className="text-[10px] text-white/40 font-semibold tracking-wider">| {product.model}</span>
+                                                                    <span className="text-[10px] text-white/40 font-semibold tracking-wider whitespace-nowrap">| {product.model}</span>
                                                                 )}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="p-3 sm:p-5">
+                                                <td className="p-3 sm:p-5 hidden lg:table-cell">
                                                     <div className="flex flex-col gap-1 items-start">
-                                                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-bold tracking-wider bg-accent/10 text-accent border border-accent/20">
+                                                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-bold tracking-wider bg-accent/10 text-accent border border-accent/20 whitespace-nowrap">
                                                             {product.category?.name || 'Uncategorized'}
                                                         </span>
                                                         {product.subCategory && (
-                                                            <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-bold tracking-wider bg-white/10 text-white/60 border border-white/10">
+                                                            <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-[10px] font-bold tracking-wider bg-white/10 text-white/60 border border-white/10 whitespace-nowrap">
                                                                 {product.subCategory.name}
                                                             </span>
                                                         )}
@@ -1036,29 +1034,29 @@ export default function ProductsClient({
                                                 <td className="p-3 sm:p-5 text-xs sm:text-sm font-black text-white">
                                                     {product.discountPrice !== null && product.discountPrice !== undefined ? (
                                                         <div className="flex flex-col">
-                                                            <span className="text-accent">${Number(product.discountPrice).toFixed(2)}</span>
-                                                            <span className="text-[10px] text-white/40 line-through decoration-red-500/50">${Number(product.price).toFixed(2)}</span>
+                                                            <span className="text-accent whitespace-nowrap">${Number(product.discountPrice).toFixed(2)}</span>
+                                                            <span className="text-[10px] text-white/40 line-through decoration-red-500/50 whitespace-nowrap">${Number(product.price).toFixed(2)}</span>
                                                         </div>
                                                     ) : (
-                                                        <span>${Number(product.price).toFixed(2)}</span>
+                                                        <span className="whitespace-nowrap">${Number(product.price).toFixed(2)}</span>
                                                     )}
                                                 </td>
                                                 <td className="p-3 sm:p-5">
                                                     <div className="flex flex-col gap-1 w-full max-w-[140px]">
                                                         <div className="flex flex-wrap items-center text-[10px] font-bold tracking-wider">
-                                                            <span className={`font-black ${Number(product.stock) === 0 ? 'text-red-500' :
+                                                            <span className={`font-black whitespace-nowrap ${Number(product.stock) === 0 ? 'text-red-500' :
                                                                 Number(product.stock) <= 10 ? 'text-orange-500' :
                                                                     'text-accent'
                                                                 }`}>
                                                                 {Number(product.stock) === 0 ? t('admin.outOfStock') : `${product.stock} ${t('admin.inStock')}`}
                                                             </span>
                                                             {Number(product.stock) > 0 && Number(product.stock) <= 10 && (
-                                                                <span className="text-orange-500 text-[10px] font-bold ml-1 sm:ml-2">Low</span>
+                                                                <span className="text-orange-500 text-[10px] font-bold ml-1 sm:ml-2 whitespace-nowrap">Low</span>
                                                             )}
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="p-3 sm:p-5">
+                                                <td className="p-3 sm:p-5 hidden xl:table-cell">
                                                     <button
                                                         onClick={() => handleToggleTrending(product.id, product.isTrending)}
                                                         disabled={loadingMap[product.id]}
@@ -1072,7 +1070,7 @@ export default function ProductsClient({
                                                         )}
                                                     </button>
                                                 </td>
-                                                <td className="p-3 sm:p-5">
+                                                <td className="p-3 sm:p-5 hidden xl:table-cell">
                                                     <button
                                                         onClick={() => handleToggleBestSeller(product.id, product.bestSeller)}
                                                         disabled={loadingMap[product.id]}
@@ -1086,8 +1084,8 @@ export default function ProductsClient({
                                                         )}
                                                     </button>
                                                 </td>
-                                                <td className="p-3 sm:p-5">
-                                                    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider border ${Number(product.stock) > 0
+                                                <td className="p-3 sm:p-5 hidden sm:table-cell">
+                                                    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider border whitespace-nowrap ${Number(product.stock) > 0
                                                         ? 'bg-accent/10 text-accent border-accent/20'
                                                         : 'bg-white/[0.02] text-white/20 border-white/10'
                                                         }`}>

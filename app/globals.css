@@ -52,8 +52,9 @@
   --color-text-sub: var(--text-sub);
   --color-surface-light: var(--surface-light);
   --color-surface-dark: var(--surface-dark);
-  --font-sans: var(--font-plus-jakarta);
-  --font-body: var(--font-inter);
+  --font-sans: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -75,15 +76,19 @@
   --surface-dark: #1A1A1A;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body);
+  font-family: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
+  font-family: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -91,6 +96,18 @@ h1, h2, h3, h4, h5, h6 {
 .uppercase-tracking {
   text-transform: uppercase;
   letter-spacing: 0.2em;
+}
+
+.font-sans {
+  font-family: var(--font-rubik), ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.font-body {
+  font-family: var(--font-rubik), ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.font-logo {
+  font-family: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif !important;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

@@ -91,7 +91,10 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                 <div className="w-full max-w-[1440px] mx-auto px-4 md:px-[48px] pt-8 md:pt-16 pb-20">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-12 md:mb-20">
-                        <span className="text-2xl font-sans font-black tracking-tighter uppercase text-primary">
+                        <span
+                            dir="ltr"
+                            className="text-2xl font-logo font-black tracking-tighter uppercase text-primary"
+                        >
                             TELE1<span className="text-accent">.</span>
                         </span>
                         <button

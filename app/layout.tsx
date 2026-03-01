@@ -7,12 +7,13 @@ import { Toaster } from "react-hot-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartSuccessPopup from "@/components/CartSuccessPopup";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Rubik, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from 'nextjs-toploader';
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin", "arabic"],
+  weight: ["300", "400", "500", "700", "900"],
 });
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -60,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="light" style={{ colorScheme: 'light' }} suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${plusJakarta.variable} antialiased font-body`}
+        className={`${rubik.variable} ${plusJakarta.variable} antialiased font-body`}
         suppressHydrationWarning
       >
         <AuthProvider>
