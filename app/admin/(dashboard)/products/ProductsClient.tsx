@@ -813,72 +813,79 @@ export default function ProductsClient({
                         {/* Bulk Actions Bar */}
                         {
                             selectedIds.size > 0 && (
-                                <div className="bg-accent/10 border-b border-white/5 px-6 py-4 flex items-center justify-between animate-in slide-in-from-top duration-300">
+                                <div className="bg-accent/10 border-b border-white/5 px-4 sm:px-6 py-3 sm:py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4 animate-in slide-in-from-top duration-300">
                                     <div className="flex items-center gap-3">
-                                        <span className="flex items-center justify-center size-6 bg-accent text-white text-[10px] font-black rounded-full">{selectedIds.size}</span>
-                                        <span className="text-[11px] font-semibold tracking-wider text-white">{t('admin.selected')}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="flex items-center justify-center size-6 bg-accent text-white text-[10px] font-black rounded-full shrink-0">{selectedIds.size}</span>
+                                            <span className="text-[11px] font-semibold tracking-wider text-white whitespace-nowrap">{t('admin.selected')}</span>
+                                        </div>
+                                        <div className="h-4 w-px bg-white/10 hidden lg:block" />
                                         <button
                                             onClick={() => setSelectedIds(new Set())}
-                                            className="text-[11px] text-white/40 hover:text-accent transition-colors font-semibold tracking-wider ml-2 underline"
+                                            className="text-[11px] text-white/40 hover:text-accent transition-colors font-semibold tracking-wider underline whitespace-nowrap"
                                         >
                                             {t('admin.deselectAll')}
                                         </button>
                                     </div>
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                                         {canEdit && (
                                             <button
                                                 onClick={handleBulkRemoveTrending}
                                                 disabled={isSubmittingBulk}
-                                                className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[11px] font-semibold tracking-wider rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
+                                                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-accent/20 text-accent text-[10px] sm:text-[11px] font-semibold tracking-wider rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50 whitespace-nowrap"
                                             >
                                                 {isSubmittingBulk ? (
-                                                    <MdSync className="animate-spin text-[18px]" />
+                                                    <MdSync className="animate-spin text-[16px] sm:text-[18px]" />
                                                 ) : (
-                                                    <MdTrendingDown className="text-[18px]" />
+                                                    <MdTrendingDown className="text-[16px] sm:text-[18px]" />
                                                 )}
-                                                {t('admin.removeTrending')}
+                                                <span className="hidden xs:inline">{t('admin.removeTrending')}</span>
+                                                <span className="xs:hidden">{t('admin.trending')}</span>
                                             </button>
                                         )}
                                         {canEdit && (
                                             <button
                                                 onClick={() => handleBulkToggleBestSeller(false)}
                                                 disabled={isSubmittingBulk}
-                                                className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
+                                                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-accent/20 text-accent text-[9px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50 whitespace-nowrap"
                                             >
                                                 {isSubmittingBulk ? (
-                                                    <MdSync className="animate-spin text-[18px]" />
+                                                    <MdSync className="animate-spin text-[16px] sm:text-[18px]" />
                                                 ) : (
-                                                    <MdStarOutline className="text-[18px]" />
+                                                    <MdStarOutline className="text-[16px] sm:text-[18px]" />
                                                 )}
-                                                {t('admin.removeBestSeller')}
+                                                <span className="hidden xs:inline">{t('admin.removeBestSeller')}</span>
+                                                <span className="xs:hidden">{t('admin.bestSeller')}</span>
                                             </button>
                                         )}
                                         {canEdit && (
                                             <button
                                                 onClick={handleBulkRemoveSale}
                                                 disabled={isSubmittingBulk}
-                                                className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50"
+                                                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-accent/20 text-accent text-[9px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-[0.2em] rounded-xl hover:bg-accent/30 transition-all border border-accent/30 disabled:opacity-50 whitespace-nowrap"
                                             >
                                                 {isSubmittingBulk ? (
-                                                    <MdSync className="animate-spin text-[18px]" />
+                                                    <MdSync className="animate-spin text-[16px] sm:text-[18px]" />
                                                 ) : (
-                                                    <MdMoneyOff className="text-[18px]" />
+                                                    <MdMoneyOff className="text-[16px] sm:text-[18px]" />
                                                 )}
-                                                {t('admin.removeSale')}
+                                                <span className="hidden xs:inline">{t('admin.removeSale')}</span>
+                                                <span className="xs:hidden">{t('admin.onSale')}</span>
                                             </button>
                                         )}
                                         {canDelete && (
                                             <button
                                                 onClick={handleBulkDelete}
                                                 disabled={isSubmittingBulk}
-                                                className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all disabled:opacity-50"
+                                                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-[0.2em] rounded-xl transition-all disabled:opacity-50 whitespace-nowrap"
                                             >
                                                 {isSubmittingBulk ? (
-                                                    <MdSync className="animate-spin text-[18px]" />
+                                                    <MdSync className="animate-spin text-[16px] sm:text-[18px]" />
                                                 ) : (
-                                                    <MdDelete className="text-[18px]" />
+                                                    <MdDelete className="text-[16px] sm:text-[18px]" />
                                                 )}
-                                                {t('admin.deleteSelected')}
+                                                <span className="hidden xs:inline">{t('admin.deleteSelected')}</span>
+                                                <span className="xs:hidden">{t('admin.delete')}</span>
                                             </button>
                                         )}
                                     </div>
