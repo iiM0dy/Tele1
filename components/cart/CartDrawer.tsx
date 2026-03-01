@@ -107,7 +107,8 @@ export default function CartDrawer() {
                                             <h3 className="text-[0.95rem] font-semibold leading-tight pr-2">
                                                 <Link
                                                     href={`/products/${item.slug}`}
-                                                    className="text-[#1a1a1a] hover:text-[#555] transition-colors"
+                                                    dir="ltr"
+                                                    className="text-[#1a1a1a] hover:text-[#555] transition-colors block"
                                                     onClick={() => setIsDrawerOpen(false)}
                                                 >
                                                     {item.name}
@@ -160,7 +161,7 @@ export default function CartDrawer() {
                                             </div>
 
                                             {/* Price */}
-                                            <span className="font-semibold text-base text-[#1a1a1a]">
+                                            <span className="font-semibold text-base text-[#1a1a1a]" dir="ltr">
                                                 ${item.price.toFixed(2)}
                                             </span>
                                         </div>

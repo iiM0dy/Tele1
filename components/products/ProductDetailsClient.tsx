@@ -397,7 +397,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
 
                                 {/* 2. Title & Subtitle Block - 0px spacing between name and subtitle */}
                                 <div className="product-info__block-item space-y-1" data-block-type="title">
-                                    <h1 className="text-3xl md:text-4xl font-sans font-extrabold text-[#0F172A] uppercase tracking-tight leading-tight">
+                                    <h1 dir="ltr" className="text-3xl md:text-4xl font-sans font-extrabold text-[#0F172A] uppercase tracking-tight leading-tight">
                                         {product.Name}
                                     </h1>
                                     <div className="product-subtitle">
@@ -409,7 +409,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
 
                                 {/* 3. Price Block - 8px spacing from category name */}
                                 <div className="product-info__block-item mt-6" data-block-type="price">
-                                    <div className="flex flex-col gap-1">
+                                    <div className="flex flex-col gap-1" dir="ltr">
                                         {discountPrice ? (
                                             <div className="flex items-baseline gap-4">
                                                 <span className="text-3xl font-extrabold text-accent">

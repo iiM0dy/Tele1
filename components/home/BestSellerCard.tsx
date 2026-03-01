@@ -123,12 +123,13 @@ export default function BestSellerCard({ product, index }: { product: any; index
             <div className="flex flex-col p-5 space-y-2">
                 <Link
                     href={`/products/${product.slug}`}
+                    dir="ltr"
                     className={`text-sm font-bold text-primary transition-colors line-clamp-2 min-h-[45px] ${isOutOfStock ? 'cursor-not-allowed' : 'group-hover:text-accent'}`}
                 >
                     {product.Name}
                 </Link>
 
-                <div className="flex items-center gap-3 pt-1">
+                <div className="flex items-center gap-3 pt-1" dir="ltr">
                     {discountPrice ? (
                         <>
                             <span className={`text-base font-black ${isOutOfStock ? 'text-zinc-400' : 'text-red-600'}`}>${discountPrice.toFixed(2)}</span>

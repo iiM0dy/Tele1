@@ -554,16 +554,16 @@ export default function CheckoutPage() {
                                                             </span>
                                                         </Link>
                                                         <div className="flex-1 min-w-0 text-left">
-                                                            <Link href={`/products/${item.slug}`} className="text-[0.9rem] font-medium text-[#333] truncate hover:underline block">
+                                                            <Link href={`/products/${item.slug}`} dir="ltr" className="text-[0.9rem] font-medium text-[#333] truncate hover:underline block">
                                                                 {item.name}
                                                             </Link>
                                                             {item.originalPrice && item.originalPrice > item.price && (
-                                                                <div className="text-[0.75rem] color-[#707070] flex items-center gap-1 mt-0.5">
+                                                                <div className="text-[0.75rem] color-[#707070] flex items-center gap-1 mt-0.5" dir="ltr">
                                                                     <span>{t('checkout.discount')} (-${(item.originalPrice - item.price).toFixed(2)})</span>
                                                                 </div>
                                                             )}
                                                         </div>
-                                                        <div className="text-right">
+                                                        <div className="text-right" dir="ltr">
                                                             {item.originalPrice && item.originalPrice > item.price ? (
                                                                 <div className="flex flex-col">
                                                                     <span className="text-[0.8rem] text-[#707070] line-through">

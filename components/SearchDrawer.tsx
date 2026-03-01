@@ -173,10 +173,13 @@ export default function SearchDrawer({ isOpen, onClose }: SearchDrawerProps) {
                                                             className={`object-contain p-2 transition-transform duration-700 group-hover:scale-105 ${Number(product.Stock || 0) <= 0 ? 'grayscale opacity-60' : ''}`}
                                                         />
                                                     </div>
-                                                    <h4 className="text-[13px] font-black uppercase tracking-tight text-primary mb-1 line-clamp-1 group-hover:text-accent transition-colors">
+                                                    <h4
+                                                        dir="ltr"
+                                                        className="text-[13px] font-black uppercase tracking-tight text-primary mb-1 line-clamp-1 group-hover:text-accent transition-colors"
+                                                    >
                                                         {product.Name}
                                                     </h4>
-                                                    <p className="text-[12px] font-bold text-zinc-500">
+                                                    <p className="text-[12px] font-bold text-zinc-500" dir="ltr">
                                                         ${product.discountPrice || product.Price}
                                                     </p>
                                                 </Link>

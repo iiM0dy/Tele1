@@ -1005,7 +1005,7 @@ export default function ProductsClient({
                                                                 sizes="(max-width: 640px) 40px, 48px"
                                                             />
                                                         </div>
-                                                        <div className="flex flex-col min-w-0">
+                                                        <div className="flex flex-col min-w-0" dir="ltr">
                                                             <span className="font-semibold text-white text-xs sm:text-sm line-clamp-1 tracking-tight">{product.name}</span>
                                                             <div className="flex flex-wrap gap-x-2 gap-y-1">
                                                                 <span className="text-[10px] text-white/60 font-semibold tracking-wider whitespace-nowrap">{t('admin.sku')}: {product.sku || 'N/A'}</span>
@@ -1031,7 +1031,7 @@ export default function ProductsClient({
                                                         )}
                                                     </div>
                                                 </td>
-                                                <td className="p-3 sm:p-5 text-xs sm:text-sm font-black text-white">
+                                                <td className="p-3 sm:p-5 text-xs sm:text-sm font-black text-white" dir="ltr">
                                                     {product.discountPrice !== null && product.discountPrice !== undefined ? (
                                                         <div className="flex flex-col">
                                                             <span className="text-accent whitespace-nowrap">${Number(product.discountPrice).toFixed(2)}</span>
