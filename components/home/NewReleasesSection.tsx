@@ -63,7 +63,7 @@ export default function NewReleasesSection({ products }: { products: any[] }) {
                 </div>
 
                 {/* Slider Container */}
-                <div className="relative group/carousel px-4 md:px-0">
+                <div className="relative group/carousel px-4 md:px-0" dir="ltr">
                     {/* Navigation Buttons - Circular and centered on sides */}
                     {displayProducts.length > 5 && (
                         <>
