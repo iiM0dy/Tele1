@@ -34,6 +34,7 @@ export default function HeroSlideshow({ banners = [] }: { banners?: Banner[] }) 
         titleAr: "تخفيضات التكنولوجيا",
         subtitleAr: "هواتف ذكية وإكسسوارات مميزة",
         image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2000&auto=format&fit=crop",
+        mobileImage: null,
         buttonText: null,
         link: "/products",
         isActive: true
