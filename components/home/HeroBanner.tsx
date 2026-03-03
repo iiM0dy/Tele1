@@ -12,6 +12,7 @@ interface Banner {
     titleAr: string | null;
     subtitleAr: string | null;
     image: string;
+    mobileImage?: string | null;
     buttonText: string | null;
     link: string | null;
     badge: string | null;
@@ -28,11 +29,21 @@ export default function HeroBanner({ banners }: { banners: Banner[] }) {
 
     return (
         <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-[#0F172A]">
+            {/* Desktop Image */}
             <Image
                 src={banner.image}
                 alt={title || "Banner"}
                 fill
-                className="object-cover opacity-60 scale-105 animate-slow-zoom"
+                className="hidden md:block object-cover opacity-60 scale-105 animate-slow-zoom"
+                priority
+                sizes="100vw"
+            />
+            {/* Mobile Image */}
+            <Image
+                src={banner.mobileImage || banner.image}
+                alt={title || "Banner"}
+                fill
+                className="block md:hidden object-cover opacity-60 scale-105 animate-slow-zoom"
                 priority
                 sizes="100vw"
             />

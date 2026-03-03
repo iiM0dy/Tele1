@@ -12,6 +12,7 @@ interface Banner {
     titleAr: string | null;
     subtitleAr: string | null;
     image: string;
+    mobileImage?: string | null;
     buttonText: string | null;
     link: string | null;
     isActive: boolean;
@@ -93,12 +94,22 @@ export default function HeroSlideshow({ banners = [] }: { banners?: Banner[] }) 
                         >
                             {/* Background Image Container */}
                             <div className="absolute inset-0 z-0">
+                                {/* Desktop Image */}
                                 <Image
                                     src={banner.image}
                                     alt={displayTitle || "Hero Banner"}
                                     fill
                                     priority={index === 0}
-                                    className="object-cover object-center scale-105 animate-slow-zoom"
+                                    className="hidden md:block object-cover object-center scale-105 animate-slow-zoom"
+                                    sizes="100vw"
+                                />
+                                {/* Mobile Image */}
+                                <Image
+                                    src={banner.mobileImage || banner.image}
+                                    alt={displayTitle || "Hero Banner"}
+                                    fill
+                                    priority={index === 0}
+                                    className="block md:hidden object-cover object-center scale-105 animate-slow-zoom"
                                     sizes="100vw"
                                 />
                                 {/* Gradient Overlay */}

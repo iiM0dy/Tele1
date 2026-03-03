@@ -16,6 +16,7 @@ interface BannerModalProps {
         titleAr: string | null;
         subtitleAr: string | null;
         image: string;
+        mobileImage?: string | null;
         buttonText: string | null;
         link: string | null;
         isActive: boolean;
@@ -29,6 +30,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
     const [titleAr, setTitleAr] = useState("");
     const [subtitleAr, setSubtitleAr] = useState("");
     const [image, setImage] = useState("");
+    const [mobileImage, setMobileImage] = useState("");
     const [buttonText, setButtonText] = useState("");
     const [link, setLink] = useState("");
     const [isActive, setIsActive] = useState(true);
@@ -41,6 +43,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
             setTitleAr(banner.titleAr || "");
             setSubtitleAr(banner.subtitleAr || "");
             setImage(banner.image);
+            setMobileImage(banner.mobileImage || "");
             setButtonText(banner.buttonText || "");
             setLink(banner.link || "");
             setIsActive(banner.isActive);
@@ -50,6 +53,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
             setTitleAr("");
             setSubtitleAr("");
             setImage("");
+            setMobileImage("");
             setButtonText("");
             setLink("");
             setIsActive(true);
@@ -69,6 +73,7 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                 titleAr,
                 subtitleAr: subtitleAr || undefined,
                 image,
+                mobileImage: mobileImage || null,
                 buttonText: buttonText || undefined,
                 link: link || undefined,
                 isActive
@@ -209,8 +214,11 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
 
                     <div className="flex flex-col gap-3">
                         <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
-                            {t('admin.imageUrl')}
+                            {t('admin.imageUrl')} ({t('admin.desktop')})
                         </label>
+                        <p className="text-[10px] text-white/40 tracking-wide">
+                            Recommended: 1920x800px (21:9 aspect ratio)
+                        </p>
                         <input
                             type="text"
                             value={image}
@@ -221,13 +229,42 @@ export default function BannerModal({ isOpen, onClose, banner }: BannerModalProp
                             className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/10"
                         />
                         {image && (
-                            <div className="mt-2 relative aspect-21/9 w-full rounded-2xl overflow-hidden border border-white/5 bg-white/1">
+                            <div className="mt-2 relative aspect-[21/9] w-full rounded-2xl overflow-hidden border border-white/5 bg-white/1">
                                 <img
                                     src={image}
                                     alt={t('admin.preview')}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                     onError={(e) => {
                                         (e.target as HTMLImageElement).src = "https://placehold.co/1200x500?text=" + encodeURIComponent(t('admin.invalidImage'));
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                        <label className={`text-[11px] font-semibold text-white/60 tracking-wider ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`}>
+                            {t('admin.mobileImageUrl')} ({t('admin.optional')})
+                        </label>
+                        <p className="text-[10px] text-white/40 tracking-wide">
+                            Recommended: 750x1334px (9:16 aspect ratio)
+                        </p>
+                        <input
+                            type="text"
+                            value={mobileImage}
+                            onChange={(e) => setMobileImage(e.target.value)}
+                            placeholder={t('admin.mobileImageUrlPlaceholder')}
+                            aria-label={t('admin.mobileImageUrl')}
+                            className="w-full px-5 py-4 rounded-2xl border border-white/5 bg-white/2 text-white focus:border-accent/30 transition-all outline-none text-[13px] font-medium placeholder:text-white/10"
+                        />
+                        {mobileImage && (
+                            <div className="mt-2 relative aspect-[9/16] w-32 rounded-2xl overflow-hidden border border-white/5 bg-white/1 mx-auto">
+                                <img
+                                    src={mobileImage}
+                                    alt={t('admin.preview')}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    onError={(e) => {
+                                        (e.target as HTMLImageElement).src = "https://placehold.co/500x1200?text=" + encodeURIComponent(t('admin.invalidImage'));
                                     }}
                                 />
                             </div>

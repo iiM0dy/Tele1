@@ -1428,6 +1428,7 @@ export interface BannerInput {
     titleAr: string;
     subtitleAr?: string;
     image: string;
+    mobileImage?: string | null;
     buttonText?: string;
     link?: string;
     isActive?: boolean;
@@ -1466,6 +1467,7 @@ export async function createBanner(data: BannerInput) {
                 titleAr: data.titleAr || null,
                 subtitleAr: data.subtitleAr || null,
                 image: data.image,
+                mobileImage: data.mobileImage || null,
                 buttonText: data.buttonText || "Shop Now",
                 link: data.link || "/products",
                 isActive: data.isActive ?? true,
@@ -1504,6 +1506,7 @@ export async function updateBanner(id: string, data: BannerInput) {
                 titleAr: data.titleAr || null,
                 subtitleAr: data.subtitleAr || null,
                 image: data.image,
+                mobileImage: data.mobileImage || null,
                 buttonText: data.buttonText,
                 link: data.link,
                 isActive: data.isActive,
