@@ -62,22 +62,12 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
         const isLeftSwipe = distance > minSwipeDistance;
         const isRightSwipe = distance < -minSwipeDistance;
 
-        if (isRtl) {
-            if (isLeftSwipe) {
-                setActiveSlide((prev) => (prev - 1 + images.length) % images.length);
-            } else if (isRightSwipe) {
-                setActiveSlide((prev) => (prev + 1) % images.length);
-            }
-        } else {
-            if (isLeftSwipe) {
-                setActiveSlide((prev) => (prev + 1) % images.length);
-            } else if (isRightSwipe) {
-                setActiveSlide((prev) => (prev - 1 + images.length) % images.length);
-            }
+        if (isLeftSwipe) {
+            setActiveSlide((prev) => (prev + 1) % images.length);
+        } else if (isRightSwipe) {
+            setActiveSlide((prev) => (prev - 1 + images.length) % images.length);
         }
     };
-
-    const isRtl = language === 'ar';
 
     useEffect(() => {
         if (images.length <= 1 || isHovered || previewIdx !== null) return;
@@ -253,7 +243,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
                                         {/* Slider Track */}
                                         <div
                                             className="flex h-full transition-transform duration-500 ease-out"
-                                            style={{ transform: `translateX(${isRtl ? (activeSlide * 100) : -(activeSlide * 100)}%)` }}
+                                            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
                                         >
                                             {images.map((img, idx) => (
                                                 <div

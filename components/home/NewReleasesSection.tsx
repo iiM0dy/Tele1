@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
@@ -30,11 +30,30 @@ interface Product {
 export default function NewReleasesSection({ products }: { products: any[] }) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const { t } = useLanguage();
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
 
     if (!products || products.length === 0) return null;
 
     // Show all trending products
     const displayProducts = products;
+
+    const checkScroll = () => {
+        if (scrollRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+            setCanScrollLeft(scrollLeft > 5);
+            setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+        }
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(checkScroll, 100);
+        window.addEventListener('resize', checkScroll);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', checkScroll);
+        };
+    }, [displayProducts]);
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
@@ -63,20 +82,20 @@ export default function NewReleasesSection({ products }: { products: any[] }) {
                 </div>
 
                 {/* Slider Container */}
-                <div className="relative group/carousel px-4 md:px-0" dir="ltr">
+                <div className="relative group/carousel px-4 md:px-0">
                     {/* Navigation Buttons - Circular and centered on sides */}
                     {displayProducts.length > 5 && (
                         <>
                             <button
                                 onClick={() => scroll('left')}
-                                className="absolute left-4 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm"
+                                className={`absolute left-4 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm ${!canScrollLeft ? 'md:hidden' : ''}`}
                                 aria-label={t('common.previous')}
                             >
                                 <HiOutlineChevronLeft className="w-6 h-6" />
                             </button>
                             <button
                                 onClick={() => scroll('right')}
-                                className="absolute right-4 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm"
+                                className={`absolute right-4 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white transition-all duration-300 md:opacity-0 group-hover/carousel:opacity-100 shadow-sm ${!canScrollRight ? 'md:hidden' : ''}`}
                                 aria-label={t('common.next')}
                             >
                                 <HiOutlineChevronRight className="w-6 h-6" />
@@ -86,6 +105,7 @@ export default function NewReleasesSection({ products }: { products: any[] }) {
 
                     <div
                         ref={scrollRef}
+                        onScroll={checkScroll}
                         className="flex overflow-x-auto gap-4 md:gap-6 scrollbar-hide snap-x snap-mandatory touch-pan-x"
                     >
                         {displayProducts.map((product, index) => (

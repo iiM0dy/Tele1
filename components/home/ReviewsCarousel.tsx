@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { HiOutlineChevronLeft, HiOutlineChevronRight, HiStar } from 'react-icons/hi';
 import { useLanguage } from '@/app/context/LanguageContext';
@@ -16,8 +16,27 @@ interface Review {
 export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const { t } = useLanguage();
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
 
     if (!reviews || reviews.length === 0) return null;
+
+    const checkScroll = () => {
+        if (scrollRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+            setCanScrollLeft(scrollLeft > 5);
+            setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+        }
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(checkScroll, 100);
+        window.addEventListener('resize', checkScroll);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', checkScroll);
+        };
+    }, [reviews]);
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
@@ -57,14 +76,14 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                     <>
                         <button
                             onClick={() => scroll('left')}
-                            className="absolute left-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
+                            className={`absolute left-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white ${!canScrollLeft ? 'md:hidden' : ''}`}
                             aria-label={t('common.previous')}
                         >
                             <HiOutlineChevronLeft className="w-6 h-6" />
                         </button>
                         <button
                             onClick={() => scroll('right')}
-                            className="absolute right-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white"
+                            className={`absolute right-10 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white border border-zinc-200 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hidden md:flex items-center justify-center text-primary hover:bg-accent hover:border-accent hover:text-white ${!canScrollRight ? 'md:hidden' : ''}`}
                             aria-label={t('common.next')}
                         >
                             <HiOutlineChevronRight className="w-6 h-6" />
@@ -75,6 +94,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                 {/* Slider Container */}
                 <div
                     ref={scrollRef}
+                    onScroll={checkScroll}
                     className="flex overflow-x-auto gap-6 scrollbar-hide snap-x snap-mandatory touch-pan-x"
                 >
                     {reviews.map((review) => (
