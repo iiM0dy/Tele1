@@ -35,8 +35,11 @@ import {
     MdEdit,
     MdSync,
     MdStar,
-    MdStarOutline
+    MdStarOutline,
+    MdShare,
+    MdContentCopy
 } from 'react-icons/md';
+import { FaFacebook, FaWhatsapp } from 'react-icons/fa';
 
 const AddProductModal = dynamic(() => import("./AddProductModal"), {
     ssr: false,
@@ -112,6 +115,7 @@ export default function ProductsClient({
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [activeShareId, setActiveShareId] = useState<string | null>(null);
 
     // Initialize filters from URL
     const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || "");
@@ -309,6 +313,32 @@ export default function ProductsClient({
         } finally {
             setIsSubmittingBulk(false);
         }
+    };
+
+    const handleCopyLink = (product: Product) => {
+        const url = `${window.location.origin}/products/${product.id}`;
+        navigator.clipboard.writeText(url);
+        toast.success(t('admin.linkCopied') || 'Link Copied!');
+        setActiveShareId(null);
+    };
+
+    const handleSocialShare = (platform: 'facebook' | 'whatsapp', product: Product) => {
+        const url = `${window.location.origin}/products/${product.id}`;
+        const text = `Check out ${product.name}!`;
+        let shareUrl = '';
+
+        if (platform === 'facebook') {
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        } else {
+            shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`;
+        }
+
+        const width = 600, height = 450;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        window.open(shareUrl, 'share-dialog', `width=${width},height=${height},top=${top},left=${left}`);
+        setActiveShareId(null);
     };
 
     const handleToggleTrending = async (id: string, currentStatus: boolean) => {
@@ -1102,6 +1132,56 @@ export default function ProductsClient({
                                                 </td>
                                                 <td className={`p-3 sm:p-5 ${dir === 'rtl' ? 'text-left' : 'text-right'}`}>
                                                     <div className={`flex items-center ${dir === 'rtl' ? 'justify-start' : 'justify-end'} gap-1 sm:gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity`}>
+                                                        {/* Share Feature */}
+                                                        <div className="relative">
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    setActiveShareId(activeShareId === product.id ? null : product.id);
+                                                                }}
+                                                                className={`p-1.5 sm:p-2 rounded-xl transition-all ${activeShareId === product.id ? 'bg-accent text-white shadow-lg' : 'text-white/40 hover:text-accent hover:bg-white/5'}`}
+                                                                title={t('admin.shareProduct')}
+                                                            >
+                                                                <MdShare className="text-[18px] sm:text-[20px]" />
+                                                            </button>
+
+                                                            {activeShareId === product.id && (
+                                                                <>
+                                                                    {/* Click-away overlay */}
+                                                                    <div
+                                                                        className="fixed inset-0 z-40"
+                                                                        onClick={() => setActiveShareId(null)}
+                                                                    />
+                                                                    <div className={`absolute bottom-full mb-2 ${dir === 'rtl' ? 'left-0' : 'right-0'} z-50 min-w-[180px] bg-[#1a1b1e] border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200`}>
+                                                                        <div className="p-1.5 flex flex-col gap-1">
+                                                                            <button
+                                                                                onClick={() => handleCopyLink(product)}
+                                                                                className="flex items-center gap-3 w-full px-3 py-2 text-[11px] font-semibold text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors group"
+                                                                            >
+                                                                                <MdContentCopy className="text-lg text-white/40 group-hover:text-accent" />
+                                                                                <span>{t('admin.copyLink')}</span>
+                                                                            </button>
+                                                                            <div className="h-px bg-white/5 mx-2 my-0.5" />
+                                                                            <button
+                                                                                onClick={() => handleSocialShare('facebook', product)}
+                                                                                className="flex items-center gap-3 w-full px-3 py-2 text-[11px] font-semibold text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors group"
+                                                                            >
+                                                                                <FaFacebook className="text-lg text-white/40 group-hover:text-[#1877F2]" />
+                                                                                <span>Facebook</span>
+                                                                            </button>
+                                                                            <button
+                                                                                onClick={() => handleSocialShare('whatsapp', product)}
+                                                                                className="flex items-center gap-3 w-full px-3 py-2 text-[11px] font-semibold text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors group"
+                                                                            >
+                                                                                <FaWhatsapp className="text-lg text-white/40 group-hover:text-[#25D366]" />
+                                                                                <span>WhatsApp</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+
                                                         {canEdit && (
                                                             <button
                                                                 onClick={() => handleEdit(product)}

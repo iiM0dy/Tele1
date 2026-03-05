@@ -255,7 +255,7 @@ export default function AddProductModal({ isOpen, onClose, categories, product }
                         {formData.images && (
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                                 {formData.images.split(',').filter(Boolean).map((url, index) => (
-                                    <div key={index} className="relative aspect-square rounded-2xl border border-white/5 overflow-hidden group bg-white/2">
+                                    <div key={index} className="relative aspect-square rounded-2xl border border-white/5 overflow-hidden group bg-white">
                                         <div className="relative w-full h-full">
                                             <Image
                                                 src={url}

@@ -76,7 +76,35 @@ export default function RootLayout({
                 <Footer />
               </div>
               <CartSuccessPopup />
-              <Toaster position="bottom-right" />
+              <Toaster
+                position="bottom-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: '#1a1b1e',
+                    color: '#fff',
+                    borderRadius: '24px',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    padding: '12px 20px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                    backdropFilter: 'blur(8px)',
+                  },
+                  success: {
+                    iconTheme: {
+                      primary: '#10b981',
+                      secondary: '#fff',
+                    },
+                  },
+                  error: {
+                    iconTheme: {
+                      primary: '#ef4444',
+                      secondary: '#fff',
+                    },
+                  },
+                }}
+              />
             </CartProvider>
           </LanguageProvider>
         </AuthProvider>
