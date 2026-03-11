@@ -12,6 +12,7 @@ export async function getBanners() {
         return banners.map(banner => ({
             ...banner,
             image: formatImagePath(banner.image) || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800',
+            mobileImage: banner.mobileImage ? formatImagePath(banner.mobileImage) : null,
             createdAt: banner.createdAt.toISOString(),
             updatedAt: banner.updatedAt.toISOString()
         }));
